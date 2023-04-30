@@ -1,0 +1,71 @@
+load("@npm//:defs.bzl", "npm_link_all_packages")
+load("@aspect_rules_js//js:defs.bzl", "js_binary", "js_test")
+load("@aspect_rules_ts//ts:defs.bzl", "ts_config", "ts_project")
+load("@aspect_rules_swc//swc:defs.bzl", "swc")
+load("@bazel_skylib//lib:partial.bzl", "partial")
+
+service_name = "data-backend"
+
+package_name = "server/backend"
+
+npm_link_all_packages(name = "node_modules")
+
+filegroup(
+    name = "project_support_files",
+    srcs = glob([
+        "*.json",
+        ".*.json",
+        "*.js",
+        ".*.js",
+    ]),
+)
+
+# ts_project(
+#     name = "tscompile",
+#     srcs = glob(
+#         [
+#             "src/**/*.ts",
+#             "test/**/*.ts",
+#             "migration/**/*.ts",
+#         ],
+#     ),
+#     data = [
+#         "project_support_files",
+#     ],
+#     declaration = True,
+#     incremental = True,
+#     source_map = True,
+#     validate = True,
+#     deps = [
+#         "//server/backend:node_modules",
+#     ],
+# )
+
+ts_project(
+    name = "ts",
+    srcs = glob(
+        [
+            "src/**/*.ts",
+            "test/**/*.ts",
+            "migration/**/*.ts",
+        ],
+    ),
+    data = [
+        "project_support_files",
+    ],
+    declaration = True,
+    incremental = True,
+    source_map = True,
+    validate = True,
+    deps = [
+        ":node_modules",
+    ],
+)
+
+js_binary(
+    name = "start",
+    data = [
+        ":ts",
+    ],
+    entry_point = ":src/main.js",
+)
