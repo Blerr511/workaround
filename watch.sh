@@ -3,8 +3,6 @@
 # Get the package path from the first positional argument
 PACKAGE_PATH="$1"
 
-echo $PACKAGE_PATH
-
 # If the package path is not provided or does not exist, exit the script with an error
 if [[ -z "$PACKAGE_PATH" ]] || [[ ! -d "$PACKAGE_PATH" ]]; then
   echo "Error: Invalid or no package path provided" && exit 1
@@ -12,7 +10,7 @@ fi
 
 # Check if nodemon.json exists in the package directory
 if [[ ! -f "$PACKAGE_PATH/nodemon.json" ]]; then
-  echo "Error: nodemon.json not found in package directory" && exit 1
+  echo "Error: nodemon.json not found in package directory $PACKAGE_PATH" && exit 1
 fi
 
 # Read the config from nodemon.json
@@ -42,8 +40,6 @@ WATCH_OPTS=""
 for path in "${WATCH_PATHS[@]}"; do
   WATCH_OPTS+=" --watch $path"
 done
-
-echo $WATCH_OPTS;
 
 # Run nodemon with the extracted and modified configuration
 nodemon $WATCH_OPTS --exec "$EXEC" --ext $EXT
