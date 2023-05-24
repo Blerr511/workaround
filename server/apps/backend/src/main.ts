@@ -4,7 +4,6 @@ import { Logger } from '@wr/logger';
 
 async function bootstrap() {
   const mainLogger = new Logger('APP');
-
   const app = await NestFactory.create(AppModule, {
     logger: mainLogger,
   });

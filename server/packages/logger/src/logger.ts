@@ -50,8 +50,7 @@ export class Logger {
       }),
       winston.format.printf(
         ({ message, timestamp, level, namespace, meta }: any) => {
-          const data =
-            meta && typeof meta === 'object' ? ` ${JSON.stringify(meta)}` : '';
+          const data = isNotEmpty(meta) ? ` ${JSON.stringify(meta)}` : '';
 
           return `${colors.red(`[${timestamp}]`)} ${colors.red(
             `[[${namespace}]]`
@@ -101,3 +100,14 @@ export class Logger {
     );
   }
 }
+
+const isNotEmpty = (data: any) => {
+  if (!data) return false;
+
+  if (typeof data === 'object') {
+    if (Array.isArray(data)) return !!data.length;
+    else return Object.keys(data).length;
+  }
+
+  return true;
+};

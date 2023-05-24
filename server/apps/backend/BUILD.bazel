@@ -1,5 +1,5 @@
 load("@npm//:defs.bzl", "npm_link_all_packages")
-load("@aspect_rules_js//js:defs.bzl", "js_binary", "js_test")
+load("@aspect_rules_js//js:defs.bzl", "js_binary", "js_run_devserver", "js_test")
 load("@aspect_rules_ts//ts:defs.bzl", "ts_config", "ts_project")
 
 service_name = "data-backend"
@@ -18,26 +18,30 @@ filegroup(
     ]),
 )
 
+srcs = glob(
+    [
+        "src/**/*.ts",
+        "test/**/*.ts",
+        "migration/**/*.ts",
+    ],
+)
+
+data = ["project_support_files"]
+
+deps = [
+    ":node_modules",
+    "//:node_modules/@wr/logger",
+]
+
 ts_project(
     name = "ts",
-    srcs = glob(
-        [
-            "src/**/*.ts",
-            "test/**/*.ts",
-            "migration/**/*.ts",
-        ],
-    ),
-    data = [
-        "project_support_files",
-    ],
+    srcs = srcs,
+    data = data,
     declaration = True,
     incremental = True,
     source_map = True,
     validate = True,
-    deps = [
-        ":node_modules",
-        "//:node_modules/@wr/logger",
-    ],
+    deps = deps,
 )
 
 js_binary(

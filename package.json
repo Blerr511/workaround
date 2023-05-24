@@ -2,6 +2,7 @@
   "name": "ws",
   "dependencies": {
     "@wr/logger": "workspace:*",
+    "nodemon": "^2.0.22",
     "typescript": "4.3.5"
   }
 }
