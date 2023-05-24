@@ -9,13 +9,15 @@
     "target": "es2017",
     "sourceMap": true,
     "baseUrl": ".",
-    "rootDir": ".",
     "incremental": true,
     "skipLibCheck": true,
     "strictNullChecks": false,
     "noImplicitAny": false,
     "strictBindCallApply": false,
     "forceConsistentCasingInFileNames": false,
-    "noFallthroughCasesInSwitch": false
+    "noFallthroughCasesInSwitch": false,
+    "paths": {
+      "@wr/logger": ["../../packages/logger/src"]
+    }
   }
 }

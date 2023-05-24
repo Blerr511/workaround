@@ -1,2 +1,3 @@
-tmp
 node_modules
+server/apps/backend/node_modules
+server/packages/logger/node_modules
