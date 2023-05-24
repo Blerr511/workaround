@@ -3,3 +3,4 @@
 # compiled output
 node_modules
 /bazel-*
+local.bazelrc
