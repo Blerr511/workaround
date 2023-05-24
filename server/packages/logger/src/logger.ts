@@ -1,5 +1,4 @@
 import { Format } from 'logform';
-import stringify from 'safe-json-stringify';
 import * as winston from 'winston';
 import * as Transport from 'winston-transport';
 
@@ -50,9 +49,9 @@ export class Logger {
         format: 'YYYY-MM-DD hh:mm:ss.SSS A',
       }),
       winston.format.printf(
-        ({ message, timestamp, level, namespace, meta, ...restArgs }: any) => {
+        ({ message, timestamp, level, namespace, meta }: any) => {
           const data =
-            meta && Object.keys(meta)?.length ? ` ${stringify(meta)}` : '';
+            meta && typeof meta === 'object' ? ` ${JSON.stringify(meta)}` : '';
 
           return `${colors.red(`[${timestamp}]`)} ${colors.red(
             `[[${namespace}]]`
@@ -65,6 +64,13 @@ export class Logger {
   protected static config: Partial<LoggerConfig> = {
     logLevel: 'debug',
   };
+
+  log(message: string, ...meta: any) {
+    this.logger.log(LogLevel.info, message, {
+      meta,
+      namespace: this.namespace,
+    });
+  }
 
   error(message: string | Error, meta?: any) {
     this.logger.error(message instanceof Error ? message.message : message, {

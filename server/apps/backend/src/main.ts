@@ -1,20 +1,18 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './modules/app.module';
-// import { Logger, LogLevel } from '@wr/logger';
-
-// Logger.configure({
-//   logLevel: LogLevel.debug,
-// });
-
-// const l = new Logger('asd');
-
-// l.info('working');
+import { Logger } from '@wr/logger';
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
+  const mainLogger = new Logger('APP');
 
-  await app.listen(3000);
+  const app = await NestFactory.create(AppModule, {
+    logger: mainLogger,
+  });
 
-  console.log(`Application is running on: ${await app.getUrl()}`);
+  const appPort = 3000;
+
+  await app.listen(appPort);
+
+  mainLogger.log(`Application is running on: http://localhost:${appPort}/`);
 }
 bootstrap();
