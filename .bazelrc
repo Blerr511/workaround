@@ -24,4 +24,4 @@ import %workspace%/.aspect/bazelrc/bazel6.bazelrc
 # # this file. See https://bazel.build/configure/best-practices#bazelrc-file.
 # try-import %workspace%/local.bazelrc
 
-import %workspace%/.aspect/bazelrc/services.bazelrc
+import %workspace%/.aspect/bazelrc/config.bazelrc

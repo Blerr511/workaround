@@ -5,9 +5,9 @@ services:
     image: postgres:13.3
     restart: always
     ports:
-      - '${POSTGRES_PORT}:${POSTGRES_PORT}'
+      - '${POSTGRES_PORT}:5432'
     volumes:
-      - db_data:/var/lib/postgresql/data
+      - pg_data:/var/lib/postgresql/data
     environment:
       POSTGRES_DB: ${POSTGRES_DATABASE}
       POSTGRES_USER: ${POSTGRES_USERNAME}
@@ -15,4 +15,4 @@ services:
       POSTGRES_SSLMODE: disable
 
 volumes:
-  db_data:
+  pg_data:

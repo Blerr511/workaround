@@ -23,3 +23,25 @@ import_env_vars(
     },
     visibility = ["//visibility:public"],
 )
+
+import_env_vars(
+    name = "data_source_env_vars",
+    vars_mapping = {
+        "DATA_SOURCE_POSTGRES_HOST": "DATA_SOURCE_POSTGRES_HOST",
+        "DATA_SOURCE_POSTGRES_PORT": "DATA_SOURCE_POSTGRES_PORT",
+        "DATA_SOURCE_POSTGRES_USERNAME": "DATA_SOURCE_POSTGRES_USERNAME",
+        "DATA_SOURCE_POSTGRES_PASSWORD": "DATA_SOURCE_POSTGRES_PASSWORD",
+        "DATA_SOURCE_POSTGRES_DATABASE": "DATA_SOURCE_POSTGRES_DATABASE",
+    },
+)
+
+import_env_vars(
+    name = "backend_env_vars",
+    vars_mapping = {
+        "BACKEND_POSTGRES_HOST": "BACKEND_POSTGRES_HOST",
+        "BACKEND_POSTGRES_PORT": "BACKEND_POSTGRES_PORT",
+        "BACKEND_POSTGRES_USERNAME": "BACKEND_POSTGRES_USERNAME",
+        "BACKEND_POSTGRES_PASSWORD": "BACKEND_POSTGRES_PASSWORD",
+        "BACKEND_POSTGRES_DATABASE": "BACKEND_POSTGRES_DATABASE",
+    },
+)
