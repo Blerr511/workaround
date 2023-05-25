@@ -15,10 +15,6 @@
     "noImplicitAny": false,
     "strictBindCallApply": false,
     "forceConsistentCasingInFileNames": false,
-    "noFallthroughCasesInSwitch": false,
-    "paths": {
-      "@wr/logger": ["../../packages/logger/src"],
-      "@wr/data-source": ["../../packages/data-source/src"]
-    }
+    "noFallthroughCasesInSwitch": false
   }
 }

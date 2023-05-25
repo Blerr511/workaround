@@ -1,0 +1,17 @@
+{
+  "name": "@wr/data-source",
+  "version": "1.0.0",
+  "description": "",
+  "main": "src/index.js",
+  "scripts": {
+    "generate": "./node_modules/.bin/prisma generate",
+    "g": "./node_modules/.bin/prisma generate"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@prisma/client": "4.11.0",
+    "prisma": "4.11.0"
+  }
+}

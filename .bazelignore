@@ -1,3 +1,5 @@
 node_modules
 server/apps/backend/node_modules
 server/packages/logger/node_modules
+server/packages/data-source/node_modules
+server/packages/data-source/prisma/prisma-client/node_modules

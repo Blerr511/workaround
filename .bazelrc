@@ -16,10 +16,10 @@ import %workspace%/.aspect/bazelrc/javascript.bazelrc
 # Import Aspect recommended Bazel 6 settings for all projects
 import %workspace%/.aspect/bazelrc/bazel6.bazelrc
 
-### YOUR PROJECT SPECIFIC SETTINGS GO HERE ###
+# ### YOUR PROJECT SPECIFIC SETTINGS GO HERE ###
 
-# Load any settings & overrides specific to the current user from `.aspect/bazelrc/user.bazelrc`.
-# This file should appear in `.gitignore` so that settings are not shared with team members. This
-# should be last statement in this config so the user configuration is able to overwrite flags from
-# this file. See https://bazel.build/configure/best-practices#bazelrc-file.
-try-import %workspace%/local.bazelrc
+# # Load any settings & overrides specific to the current user from `.aspect/bazelrc/user.bazelrc`.
+# # This file should appear in `.gitignore` so that settings are not shared with team members. This
+# # should be last statement in this config so the user configuration is able to overwrite flags from
+# # this file. See https://bazel.build/configure/best-practices#bazelrc-file.
+# try-import %workspace%/local.bazelrc

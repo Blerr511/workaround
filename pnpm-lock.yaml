@@ -4,12 +4,24 @@ importers:
 
   .:
     dependencies:
+      '@prisma/client':
+        specifier: 4.11.0
+        version: 4.11.0(prisma@4.11.0)
+      '@types/node':
+        specifier: 18.15.3
+        version: 18.15.3
+      '@wr/data-source':
+        specifier: workspace:*
+        version: link:server/packages/data-source
       '@wr/logger':
         specifier: workspace:*
         version: link:server/packages/logger
       nodemon:
         specifier: ^2.0.22
         version: 2.0.22
+      prisma:
+        specifier: 4.11.0
+        version: 4.11.0
       typescript:
         specifier: 4.3.5
         version: 4.3.5
@@ -25,6 +37,9 @@ importers:
       '@nestjs/platform-express':
         specifier: ^8.0.0
         version: 8.4.7(@nestjs/common@8.4.7)(@nestjs/core@8.4.7)
+      '@wr/data-source':
+        specifier: workspace:^
+        version: link:../../packages/data-source
       '@wr/logger':
         specifier: workspace:^
         version: link:../../packages/logger
@@ -110,6 +125,17 @@ importers:
       typescript:
         specifier: 4.3.5
         version: 4.3.5
+
+  server/packages/data-source:
+    dependencies:
+      '@prisma/client':
+        specifier: 4.11.0
+        version: 4.11.0(prisma@4.11.0)
+      prisma:
+        specifier: 4.11.0
+        version: 4.11.0
+
+  server/packages/data-source/prisma/prisma-client: {}
 
   server/packages/logger:
     dependencies:
@@ -1070,6 +1096,29 @@ packages:
     transitivePeerDependencies:
       - encoding
 
+  /@prisma/client@4.11.0(prisma@4.11.0):
+    resolution: {integrity: sha512-0INHYkQIqgAjrt7NzhYpeDQi8x3Nvylc2uDngKyFDDj1tTRQ4uV1HnVmd1sQEraeVAN63SOK0dgCKQHlvjL0KA==}
+    engines: {node: '>=14.17'}
+    requiresBuild: true
+    peerDependencies:
+      prisma: '*'
+    peerDependenciesMeta:
+      prisma:
+        optional: true
+    dependencies:
+      '@prisma/engines-version': 4.11.0-57.8fde8fef4033376662cad983758335009d522acb
+      prisma: 4.11.0
+    dev: false
+
+  /@prisma/engines-version@4.11.0-57.8fde8fef4033376662cad983758335009d522acb:
+    resolution: {integrity: sha512-3Vd8Qq06d5xD8Ch5WauWcUUrsVPdMC6Ge8ILji8RFfyhUpqon6qSyGM0apvr1O8n8qH8cKkEFqRPsYjuz5r83g==}
+    dev: false
+
+  /@prisma/engines@4.11.0:
+    resolution: {integrity: sha512-0AEBi2HXGV02cf6ASsBPhfsVIbVSDC9nbQed4iiY5eHttW9ZtMxHThuKZE1pnESbr8HRdgmFSa/Kn4OSNYuibg==}
+    requiresBuild: true
+    dev: false
+
   /@sinclair/typebox@0.24.51:
     resolution: {integrity: sha512-1P1OROm/rdubP5aFDSZQILU0vrLCJ4fvHt6EoqHEM+2D/G5MK3bIaymUKLit8Js9gbns5UyJnkP/TZROLw4tUA==}
     dev: true
@@ -1235,6 +1284,10 @@ packages:
 
   /@types/node@16.18.31:
     resolution: {integrity: sha512-KPXltf4z4g517OlVJO9XQ2357CYw7fvuJ3ZuBynjXC5Jos9i+K7LvFb7bUIwtJXSZj0vTp9Q6NJBSQpkwwO8Zw==}
+
+  /@types/node@18.15.3:
+    resolution: {integrity: sha512-p6ua9zBxz5otCmbpb5D3U4B5Nanw6Pk3PPyX05xnxbB/fRv71N7CPmORg7uAD5P70T0xmx1pzAx/FUfa5X+3cw==}
+    dev: false
 
   /@types/parse-json@4.0.0:
     resolution: {integrity: sha512-//oorEZjL6sbPcKUaCdIGlIUeH26mgzimjBB77G6XRgnDl/L5wOnpyBGRe/Mmf5CVW3PwEBE1NjiMZ/ssFh4wA==}
@@ -4264,6 +4317,15 @@ packages:
       ansi-styles: 5.2.0
       react-is: 18.2.0
     dev: true
+
+  /prisma@4.11.0:
+    resolution: {integrity: sha512-4zZmBXssPUEiX+GeL0MUq/Yyie4ltiKmGu7jCJFnYMamNrrulTBc+D+QwAQSJ01tyzeGHlD13kOnqPwRipnlNw==}
+    engines: {node: '>=14.17'}
+    hasBin: true
+    requiresBuild: true
+    dependencies:
+      '@prisma/engines': 4.11.0
+    dev: false
 
   /process-nextick-args@2.0.1:
     resolution: {integrity: sha512-3ouUOpQhtgrbOa17J7+uxOTpITYWaGP7/AhoR3+A+/1e9skrzelGi/dXzEYyvbxubEF6Wn2ypscTKiKJFFn1ag==}

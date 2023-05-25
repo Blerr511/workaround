@@ -4,3 +4,4 @@
 node_modules
 /bazel-*
 local.bazelrc
+**/prisma/prisma-client
