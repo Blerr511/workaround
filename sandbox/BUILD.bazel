@@ -1,0 +1,25 @@
+load("//tools/bazel:variables.bzl", "import_env_vars")
+
+import_env_vars(
+    name = "postgres_env_vars",
+    vars_mapping = {
+        "POSTGRES_HOST": "POSTGRES_HOST",
+        "POSTGRES_PORT": "POSTGRES_PORT",
+        "POSTGRES_USERNAME": "POSTGRES_USERNAME",
+        "POSTGRES_PASSWORD": "POSTGRES_PASSWORD",
+        "POSTGRES_DATABASE": "POSTGRES_DATABASE",
+    },
+    visibility = ["//visibility:public"],
+)
+
+import_env_vars(
+    name = "local_dc_env_vars",
+    vars_mapping = {
+        "POSTGRES_HOST": "POSTGRES_HOST",
+        "POSTGRES_PORT": "POSTGRES_PORT",
+        "POSTGRES_USERNAME": "POSTGRES_USERNAME",
+        "POSTGRES_PASSWORD": "POSTGRES_PASSWORD",
+        "POSTGRES_DATABASE": "POSTGRES_DATABASE",
+    },
+    visibility = ["//visibility:public"],
+)

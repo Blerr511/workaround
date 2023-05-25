@@ -1,0 +1,19 @@
+package_name = "sandbox/environment"
+
+sh_binary(
+    name = "dc_services",
+    srcs = [
+        "//tools/bazel/shell:dc",
+    ],
+    args = [
+        "--env-file $(location {env_vars_file})".format(env_vars_file = "//sandbox:local_dc_env_vars"),
+        "--file={package}/docker-compose.development.yml".format(package = package_name),
+    ],
+    data = [
+        ":docker-compose.development.yml",
+        "//sandbox:local_dc_env_vars",
+    ],
+    toolchains = [
+        "//sandbox:local_dc_env_vars",
+    ],
+)

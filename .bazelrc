@@ -23,3 +23,5 @@ import %workspace%/.aspect/bazelrc/bazel6.bazelrc
 # # should be last statement in this config so the user configuration is able to overwrite flags from
 # # this file. See https://bazel.build/configure/best-practices#bazelrc-file.
 # try-import %workspace%/local.bazelrc
+
+import %workspace%/.aspect/bazelrc/services.bazelrc

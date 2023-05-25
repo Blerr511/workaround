@@ -1,0 +1,6 @@
+filegroup(
+    name = "dc",
+    srcs = [":docker-compose.sh"],
+    # data = [],
+    visibility = ["//visibility:public"],
+)
