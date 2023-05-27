@@ -1,6 +1,5 @@
 import { DynamicModule, Module, Provider, Type } from '@nestjs/common';
 import { PrismaClient } from '../prisma/prisma-client';
-import { PRISMA } from './lib/tokens';
 
 export interface PrismaModuleOptions {
   client: PrismaClient;
@@ -17,7 +16,7 @@ export class PrismaModule {
 
     const providers: Provider[] = [
       {
-        provide: PRISMA,
+        provide: PrismaClient,
         useValue: client,
       },
     ];
