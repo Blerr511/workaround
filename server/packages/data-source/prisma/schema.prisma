@@ -14,8 +14,3 @@ model MyUser {
   lastName String
   email    String @unique
 }
-
-model Data {
-  id   Int    @id @default(autoincrement())
-  name String
-}
