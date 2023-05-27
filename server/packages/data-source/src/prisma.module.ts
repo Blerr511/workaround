@@ -1,4 +1,4 @@
-import { DynamicModule, Module, Provider, Type } from '@nestjs/common';
+import { DynamicModule, Module, Provider } from '@nestjs/common';
 import { PrismaClient } from '../prisma/prisma-client';
 
 export interface PrismaModuleOptions {
@@ -26,19 +26,6 @@ export class PrismaModule {
       providers,
       exports: providers,
       global: true,
-    };
-  }
-
-  static forDao(daoList: Type[]): DynamicModule {
-    const providers: Provider[] = daoList.map((daoCls) => ({
-      provide: daoCls,
-      useClass: daoCls,
-    }));
-
-    return {
-      module: PrismaModule,
-      providers: providers,
-      exports: providers,
     };
   }
 }

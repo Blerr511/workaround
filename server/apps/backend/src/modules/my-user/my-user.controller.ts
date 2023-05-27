@@ -7,6 +7,6 @@ export class MyUserController {
 
   @Get('dummy')
   dummy() {
-    return this.myUserService.some();
+    return this.myUserService.dummy();
   }
 }
