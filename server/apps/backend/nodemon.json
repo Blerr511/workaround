@@ -1,6 +1,10 @@
 {
   "$schema": "https://raw.githubusercontent.com/SchemaStore/schemastore/master/src/schemas/json/nodemon.json",
   "exec": "bazel run //server/apps/backend:start",
-  "watch": ["./src", "server/packages/logger/src"],
+  "watch": [
+    "./src",
+    "server/packages/logger/src",
+    "server/packages/data-source"
+  ],
   "ext": ".ts,.js,.json"
 }
