@@ -1,5 +1,5 @@
-import { PrismaClient } from '../prisma/prisma-client';
+export { PrismaClient } from '../prisma/prisma-client';
 
-const prisma = new PrismaClient();
+export { PrismaModule } from './prisma.module';
 
-export default prisma;
+export * from './dao';

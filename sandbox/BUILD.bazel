@@ -30,6 +30,7 @@ import_env_vars(
     vars_mapping = {
         "DATA_SOURCE_POSTGRES_URL": "DATA_SOURCE_POSTGRES_URL",
     },
+    visibility = ["//visibility:public"],
 )
 
 import_env_vars(
