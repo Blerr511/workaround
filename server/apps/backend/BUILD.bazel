@@ -33,14 +33,20 @@ deps = [
     "//:node_modules/@wr/logger",
 ]
 
+ts_config(
+    name = "tsconfig",
+    src = "tsconfig.json",
+)
+
 ts_project(
     name = "ts",
     srcs = srcs,
     data = data,
-    declaration = True,
-    incremental = True,
+    declaration = False,
+    incremental = False,
     source_map = True,
     validate = True,
+    tsconfig = ":tsconfig",
     deps = deps,
 )
 
