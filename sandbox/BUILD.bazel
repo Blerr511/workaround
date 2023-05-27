@@ -8,6 +8,7 @@ import_env_vars(
         "POSTGRES_USERNAME": "POSTGRES_USERNAME",
         "POSTGRES_PASSWORD": "POSTGRES_PASSWORD",
         "POSTGRES_DATABASE": "POSTGRES_DATABASE",
+        "POSTGRES_URL": "POSTGRES_URL",
     },
     visibility = ["//visibility:public"],
 )
@@ -27,11 +28,7 @@ import_env_vars(
 import_env_vars(
     name = "data_source_env_vars",
     vars_mapping = {
-        "DATA_SOURCE_POSTGRES_HOST": "DATA_SOURCE_POSTGRES_HOST",
-        "DATA_SOURCE_POSTGRES_PORT": "DATA_SOURCE_POSTGRES_PORT",
-        "DATA_SOURCE_POSTGRES_USERNAME": "DATA_SOURCE_POSTGRES_USERNAME",
-        "DATA_SOURCE_POSTGRES_PASSWORD": "DATA_SOURCE_POSTGRES_PASSWORD",
-        "DATA_SOURCE_POSTGRES_DATABASE": "DATA_SOURCE_POSTGRES_DATABASE",
+        "DATA_SOURCE_POSTGRES_URL": "DATA_SOURCE_POSTGRES_URL",
     },
 )
 
