@@ -1,3 +1,5 @@
 packages:
   - 'server/apps/**'
   - 'server/packages/**'
+  - 'client/apps/**'
+  - 'client/packages/**'
