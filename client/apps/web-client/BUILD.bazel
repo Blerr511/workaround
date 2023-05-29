@@ -1,7 +1,7 @@
 load("@aspect_rules_js//js:defs.bzl", "js_library", "js_test")
 load("@bazel_skylib//rules:build_test.bzl", "build_test")
 load("@npm//:defs.bzl", "npm_link_all_packages")
-load("//client/apps/web-client/bazel:next.bzl", "next")
+load("//client/bazel:next.bzl", "next")
 load("@npm//:next/package_json.bzl", next_bin = "bin")
 
 npm_link_all_packages(name = "node_modules")
