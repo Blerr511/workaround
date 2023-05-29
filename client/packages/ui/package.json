@@ -2,11 +2,21 @@
   "name": "@wr/ui",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "src/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "devDependencies": {
+    "@babel/preset-env": "^7.22.4",
+    "@babel/preset-react": "^7.22.3",
+    "babel-cli": "6",
+    "babel-preset-react-app": "3"
+  },
+  "dependencies": {
+    "@types/react": "18.0.37",
+    "@types/react-dom": "18.0.11"
+  }
 }
