@@ -23,6 +23,7 @@ ts_project(
     incremental = True,
     resolve_json_module = True,
     source_map = True,
+    preserve_jsx = True,
     transpiler = partial.make(
         babel,
         presets = {
