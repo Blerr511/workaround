@@ -5,7 +5,7 @@ See https://bazelbuild.github.io/rules_nodejs/TypeScript.html#ts_project-transpi
 
 load("@npm//:@babel/cli/package_json.bzl", "bin")
 
-def babel(name, srcs, out_dir = None, **kwargs):
+def babel(name, srcs, out_dir = None, presets = {}, **kwargs):
     # rules_js runs under the output tree in bazel-out/[arch]/bin
     execroot = "../../.."
 
@@ -26,29 +26,36 @@ def babel(name, srcs, out_dir = None, **kwargs):
 
         # Predict the output paths where babel will write
         if out_dir:
-            js_out = "%s/%s" % (out_dir, src.replace(".tsx",".ts").replace(".ts", ".js"))
-            map_out = "%s/%s" % (out_dir, src.replace(".tsx",".ts").replace(".ts", ".js.map"))
+            js_out = "%s/%s" % (out_dir, src.replace(".tsx", ".ts").replace(".ts", ".js"))
+            map_out = "%s/%s" % (out_dir, src.replace(".tsx", ".ts").replace(".ts", ".js.map"))
         else:
-            js_out = src.replace(".tsx",".ts").replace(".ts", ".js")
-            map_out = src.replace(".tsx",".ts").replace(".ts", ".js.map")
+            js_out = src.replace(".tsx", ".ts").replace(".ts", ".js")
+            map_out = src.replace(".tsx", ".ts").replace(".ts", ".js.map")
+
+        presets_names = []
+        preset_deps = []
+
+        for key in presets:
+            presets_names.append(key)
+            preset_deps.append(presets[key])
 
         # see https://babeljs.io/docs/en/babel-cli
         args = [
             "{}/$(location {})".format(execroot, src),
-            "--presets=@babel/preset-typescript,@babel/preset-env,@babel/preset-react",
             "--out-file",
             "{}/$(location {})".format(execroot, js_out),
             "--source-maps",
         ]
 
+        if len(presets_names) != 0:
+            presets_str = ",".join(presets_names)
+            args.append("--presets={}".format(presets_str))
+
         bin.babel(
             name = "{}_{}".format(name, idx),
             srcs = [
                 src,
-                "//:node_modules/@babel/preset-typescript",
-                "//:node_modules/@babel/preset-env",
-                "//:node_modules/@babel/preset-react",
-            ],
+            ] + preset_deps,
             outs = [js_out, map_out],
             args = args,
             **kwargs
