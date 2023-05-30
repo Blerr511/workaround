@@ -1,6 +1,6 @@
 {
   "$schema": "https://raw.githubusercontent.com/SchemaStore/schemastore/master/src/schemas/json/nodemon.json",
-  "exec": "ibazel run //client/apps/web-client:next_dev",
+  "exec": "ibazel run //client/apps/web-client:dev",
   "ignore": ["**/*"],
   "watch": [],
   "ext": ".ignore"
