@@ -1,0 +1,73 @@
+load("@npm//:defs.bzl", "npm_link_all_packages")
+load("@aspect_rules_js//js:defs.bzl", "js_binary")
+load("@aspect_rules_ts//ts:defs.bzl", "ts_config", "ts_project")
+load("@aspect_rules_js//npm:defs.bzl", "npm_package")
+
+npm_link_all_packages(name = "node_modules")
+
+filegroup(
+    name = "project_support_files",
+    srcs = glob([
+        "*.json",
+        ".*.json",
+        "*.js",
+        ".*.js",
+    ]),
+)
+
+srcs = glob(
+    [
+        "src/**/*.ts",
+    ],
+)
+
+data = ["project_support_files"]
+
+deps = [
+    ":node_modules",
+]
+
+ts_config(
+    name = "tsconfig",
+    src = "tsconfig.json",
+)
+
+ts_project(
+    name = "ts",
+    srcs = glob(["src/**"]),
+    data = [
+        ":tsconfig",
+    ],
+    declaration = True,
+    incremental = False,
+    source_map = True,
+    tsconfig = ":tsconfig",
+    validate = True,
+    deps = [
+        ":node_modules",
+    ],
+)
+
+js_binary(
+    name = "generate",
+    data = [
+        ":ts",
+    ] + ["//server/apps/backend:schema"],
+    entry_point = ":src/generate.js",
+    env = {
+        "SCHEMA_PATH": "server/apps/backend/schema.gql)",
+        "OUTPUT": "src/__generated__/gql-types.ts",
+    },
+)
+
+# make this library available via node_modules
+npm_package(
+    name = "backend-api",
+    srcs = [
+        "package.json",
+        ":ts",
+    ],
+    # This is a perf improvement; the default will be flipped to False in rules_js 2.0
+    include_runfiles = False,
+    visibility = ["//visibility:public"],
+)

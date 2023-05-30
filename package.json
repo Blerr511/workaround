@@ -8,6 +8,7 @@
     "@wr/data-source": "workspace:*",
     "@wr/logger": "workspace:*",
     "@wr/ui": "workspace:*",
+    "@wr/backend-api": "workspace:*",
     "next": "13.3.0",
     "nodemon": "^2.0.22",
     "prisma": "4.11.0",

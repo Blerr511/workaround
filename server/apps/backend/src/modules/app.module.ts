@@ -1,7 +1,7 @@
-import { ExecutionContext, Module } from '@nestjs/common';
-import { PrismaModule } from '@wr/data-source';
+import { Module, OnApplicationBootstrap } from '@nestjs/common';
+import { PrismaClient, PrismaModule } from '@wr/data-source';
 import { MyUserModule } from './my-user/my-user.module';
-import { GqlExecutionContext, GraphQLModule } from '@nestjs/graphql';
+import { GraphQLModule } from '@nestjs/graphql';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { ApolloServerPluginLandingPageLocalDefault } from '@apollo/server/plugin/landingPage/default';
 import { join } from 'path';
@@ -25,4 +25,9 @@ const internalModules = [MyUserModule];
     ...internalModules,
   ],
 })
-export class AppModule {}
+export class AppModule implements OnApplicationBootstrap {
+  constructor(private readonly prismaClient: PrismaClient) {}
+  async onApplicationBootstrap() {
+    await this.prismaClient.$connect();
+  }
+}

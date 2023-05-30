@@ -31,6 +31,7 @@ data = ["project_support_files"]
 deps = [
     ":node_modules",
     "//:node_modules/@wr/logger",
+    "//:node_modules/@wr/data-source",
 ]
 
 ts_config(
@@ -45,8 +46,8 @@ ts_project(
     declaration = False,
     incremental = False,
     source_map = True,
-    validate = True,
     tsconfig = ":tsconfig",
+    validate = True,
     deps = deps,
 )
 
@@ -60,4 +61,23 @@ js_binary(
     toolchains = [
         "//sandbox:data_source_env_vars",
     ],
+)
+
+js_binary(
+    name = "run_schema_generator",
+    data = [":ts"],
+    entry_point = ":src/cli/generate-schema.js",
+)
+
+genrule(
+    name = "schema",
+    srcs = [":ts"],
+    outs = ["schema.gql"],  # the output file
+    cmd = """
+    export BAZEL_BINDIR="."
+    $(execpath :run_schema_generator)
+    cp schema.gql $@
+    """,
+    tools = [":run_schema_generator"],
+    visibility = ["//visibility:public"],
 )
