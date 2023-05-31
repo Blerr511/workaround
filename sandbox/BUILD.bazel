@@ -1,6 +1,26 @@
 load("//tools/bazel:variables.bzl", "import_env_vars")
 
 import_env_vars(
+    name = "workspace_env_vars",
+    vars_mapping = {
+        "APP_ENV": "APP_ENV",
+    },
+    visibility = ["//visibility:public"],
+)
+
+import_env_vars(
+    name = "gcp_env_vars",
+    vars_mapping = {
+        "GCP_PROJECT_ID": "GCP_PROJECT_ID",
+        "GCP_CLOUDSDK_CONFIG": "GCP_CLOUDSDK_CONFIG",
+        "GCP_NPM_ARTIFACTS_SCOPE": "GCP_NPM_ARTIFACTS_SCOPE",
+        "GCP_NPM_ARTIFACTS_REPOSITORY": "GCP_NPM_ARTIFACTS_REPOSITORY",
+        "GCP_NPM_ARTIFACTS_LOCATION": "GCP_NPM_ARTIFACTS_LOCATION",
+    },
+    visibility = ["//visibility:public"],
+)
+
+import_env_vars(
     name = "postgres_env_vars",
     vars_mapping = {
         "POSTGRES_HOST": "POSTGRES_HOST",

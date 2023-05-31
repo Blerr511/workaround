@@ -1,0 +1,13 @@
+filegroup(
+    name = "npm_cli",
+    srcs = [":npm.sh"],
+    visibility = ["//visibility:public"],
+)
+
+sh_binary(
+    name = "npm",
+    srcs = [
+        ":npm_cli",
+    ],
+    visibility = ["//visibility:public"],
+)

@@ -1,0 +1,70 @@
+filegroup(
+    name = "gcloud_cli",
+    srcs = [":gcloud.sh"],
+    visibility = ["//visibility:public"],
+)
+
+sh_binary(
+    name = "gcloud",
+    srcs = [
+        ":gcloud_cli",
+    ],
+    env = {
+        "CLOUDSDK_CONFIG": "$(GCP_CLOUDSDK_CONFIG)",
+        "PROJECT_ID": "$(GCP_PROJECT_ID)",
+    },
+    toolchains = [
+        "//sandbox:workspace_env_vars",
+        "//sandbox:gcp_env_vars",
+    ],
+)
+
+genrule(
+    name = "access_token",
+    srcs = [
+        ":gcloud_cli",
+    ],
+    outs = [".access_token"],
+    cmd = """
+    export CLOUDSDK_CONFIG=$(GCP_CLOUDSDK_CONFIG)
+    export PROJECT_ID=$(GCP_PROJECT_ID)
+    gcloud auth print-access-token > $@
+    """,
+    tags = ["requires-network"],
+    toolchains = [
+        "//sandbox:gcp_env_vars",
+        "//sandbox:workspace_env_vars",
+    ],
+)
+
+# TODO - it's temporary solution and should be removed asap
+genrule(
+    name = "sa",
+    srcs = ["service-account.json"],
+    outs = ["sa.json"],
+    cmd = """
+    cat $(location service-account.json) > $@
+    """,
+)
+
+genrule(
+    name = "npmrc",
+    srcs = [
+        ":gcloud_cli",
+        ":sa",
+    ],
+    outs = [".npmrc"],
+    cmd = """
+    export CLOUDSDK_CONFIG=$(GCP_CLOUDSDK_CONFIG)
+    gcloud artifacts print-settings npm --json-key=$(location :sa) --scope $(GCP_NPM_ARTIFACTS_SCOPE) --repository $(GCP_NPM_ARTIFACTS_REPOSITORY) --location $(GCP_NPM_ARTIFACTS_LOCATION) --project $(GCP_PROJECT_ID) > $@
+    """,
+    tags = ["requires-network"],
+    toolchains = [
+        "//sandbox:gcp_env_vars",
+        "//sandbox:workspace_env_vars",
+    ],
+    visibility = ["//visibility:public"],
+)
+
+# REPO_URL=$(gcloud artifacts repositories describe REPO_NAME --project=PROJECT_ID --format="value(repository.format)")
+# TOKEN=$(gcloud auth print-access-token)

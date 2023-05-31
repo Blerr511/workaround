@@ -71,3 +71,23 @@ npm_package(
     include_runfiles = False,
     visibility = ["//visibility:public"],
 )
+
+sh_binary(
+    name = "npm.publish",
+    srcs = [
+        "//tools/npm:npm_cli",
+    ],
+    args = [
+        "publish",
+        "$(location :backend-api)",
+        # "--dry-run",
+    ],
+    data = [
+        ":backend-api",
+        "//tools/gcloud:npmrc",
+    ],
+    env = {
+        "NPM_CONFIG_USERCONFIG": "$(location //tools/gcloud:npmrc)",
+    },
+    tags = ["requires-network"],
+)

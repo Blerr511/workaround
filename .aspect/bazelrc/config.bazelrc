@@ -1,3 +1,16 @@
+# WORKSPACE
+build --action_env=APP_ENV=local
+
+# GCP
+build --action_env=GCP_PROJECT_ID=workaround-388416
+build --action_env=GCP_CLOUDSDK_CONFIG="/tmp/.wr/.config/gcloud/$(APP_ENV)"
+
+
+# GCP artifacts
+build --action_env=GCP_NPM_ARTIFACTS_SCOPE=@wr
+build --action_env=GCP_NPM_ARTIFACTS_REPOSITORY=internal-deps-npm
+build --action_env=GCP_NPM_ARTIFACTS_LOCATION=europe-central2
+
 # POSTGRES SERVICE
 build --action_env=POSTGRES_HOST=localhost
 build --action_env=POSTGRES_PORT=6432

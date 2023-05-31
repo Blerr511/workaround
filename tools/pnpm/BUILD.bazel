@@ -1,0 +1,21 @@
+filegroup(
+    name = "pnpm_cli",
+    srcs = [":pnpm.sh"],
+    visibility = ["//visibility:public"],
+)
+
+sh_binary(
+    name = "pnpm",
+    srcs = [
+        ":pnpm_cli",
+    ],
+)
+
+sh_binary(
+    name = "google-ar-auth",
+    srcs = [
+        ":pnpm_cli",
+        "//tools/pnpm:.npmrc",
+    ],
+    visibility = ["//visibility:public"],
+)
