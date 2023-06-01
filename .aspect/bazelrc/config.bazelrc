@@ -5,6 +5,9 @@ build --action_env=APP_ENV=local
 build --action_env=GCP_PROJECT_ID=workaround-388416
 build --action_env=GCP_CLOUDSDK_CONFIG="/tmp/.wr/.config/gcloud/$(APP_ENV)"
 
+# Dockerhub
+build --action_env=DOCKER_USERNAME=blerr
+build --action_env=DOCKER_WORKSPACE_IMAGE=wr
 
 # GCP artifacts
 build --action_env=GCP_NPM_ARTIFACTS_SCOPE=@wr

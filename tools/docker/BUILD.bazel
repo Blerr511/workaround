@@ -1,0 +1,13 @@
+filegroup(
+    name = "docker_cli",
+    srcs = [":docker.sh"],
+    visibility = ["//visibility:public"],
+)
+
+sh_binary(
+    name = "docker",
+    srcs = [
+        ":docker_cli",
+    ],
+    visibility = ["//visibility:public"],
+)
