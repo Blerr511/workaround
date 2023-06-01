@@ -21,9 +21,9 @@ ts_project(
     ],
     declaration = True,
     incremental = True,
+    preserve_jsx = True,
     resolve_json_module = True,
     source_map = True,
-    preserve_jsx = True,
     transpiler = partial.make(
         babel,
         presets = {
@@ -51,4 +51,24 @@ npm_package(
     # This is a perf improvement; the default will be flipped to False in rules_js 2.0
     include_runfiles = False,
     visibility = ["//visibility:public"],
+)
+
+sh_binary(
+    name = "npm.publish",
+    srcs = [
+        "//tools/npm:npm_cli",
+    ],
+    args = [
+        "publish",
+        "$(location :ui)",
+        # "--dry-run",
+    ],
+    data = [
+        ":ui",
+        "//tools/gcloud:npmrc",
+    ],
+    env = {
+        "NPM_CONFIG_USERCONFIG": "$(location //tools/gcloud:npmrc)",
+    },
+    tags = ["requires-network"],
 )

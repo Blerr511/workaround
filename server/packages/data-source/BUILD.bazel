@@ -106,14 +106,22 @@ npm_package(
     visibility = ["//visibility:public"],
 )
 
-genrule(
-    name = "it",
-    srcs = [],
-    outs = ["output.txt"],
-    cmd = """
-        echo "Hello, please enter something:"
-        read input
-        echo "You entered: " > $(location output.txt)
-    """,
-    local = True,
+sh_binary(
+    name = "npm.publish",
+    srcs = [
+        "//tools/npm:npm_cli",
+    ],
+    args = [
+        "publish",
+        "$(location :data-source)",
+        # "--dry-run",
+    ],
+    data = [
+        ":data-source",
+        "//tools/gcloud:npmrc",
+    ],
+    env = {
+        "NPM_CONFIG_USERCONFIG": "$(location //tools/gcloud:npmrc)",
+    },
+    tags = ["requires-network"],
 )
