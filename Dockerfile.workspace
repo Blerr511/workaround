@@ -1,0 +1,16 @@
+FROM node:16.19.0
+
+ARG NPMRC_PATH
+ARG PACKAGE_NAME
+
+WORKDIR /app
+
+RUN npm install -g pnpm
+
+COPY . /app-data/
+
+COPY ${NPMRC_PATH} /app/
+
+RUN cd /app-data
+
+RUN pnpm deploy --filter=${PACKAGE_NAME} /app

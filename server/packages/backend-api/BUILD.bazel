@@ -91,3 +91,9 @@ sh_binary(
     },
     tags = ["requires-network"],
 )
+
+filegroup(
+    name = "backend-api.json",
+    srcs = [":package.json"],
+    visibility = ["//visibility:public"],
+)

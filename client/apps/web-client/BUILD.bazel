@@ -141,3 +141,9 @@ build_test(
         # ":next_export",
     ],
 )
+
+filegroup(
+    name = "web-client.json",
+    srcs = [":package.json"],
+    visibility = ["//visibility:public"],
+)

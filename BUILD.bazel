@@ -10,3 +10,49 @@ ts_config(
     visibility = ["//visibility:public"],
     deps = ["//:node_modules/@tsconfig/node16-strictest"],
 )
+
+filegroup(
+    name = "meta",
+    srcs = [
+        "package.json",
+        "pnpm-lock.yaml",
+        "pnpm-workspace.yaml",
+        "//client/apps/web-client:web-client.json",
+        "//client/packages/ui:ui.json",
+        "//server/apps/backend:backend.json",
+        "//server/packages/backend-api:backend-api.json",
+        "//server/packages/data-source:data-source.json",
+        "//server/packages/logger:logger.json",
+    ],
+    visibility = ["//visibility:public"],
+)
+
+genrule(
+    name = "t",
+    srcs = [
+        ":meta",
+        "//tools/docker:docker_cli",
+        "Dockerfile.workspace",
+    ],
+    outs = ["test.o"],
+    cmd = """
+    TMPDIR=data
+    mkdir $$TMPDIR
+
+    for file in $(locations :meta); do
+        src_dir="$$(dirname $$file)"
+
+    if [ "$$src_dir" != "/" ] && [ "$$src_dir" != "." ]; then
+        mkdir -p "$$TMPDIR/$$src_dir"
+        fi
+        echo "$$file" "$$src_dir" "$$TMPDIR/$$src_dir"
+        cp -L "$$file" "$$TMPDIR/$$src_dir"
+    done
+
+    cp -L $(location Dockerfile.workspace) $$TMPDIR/Dockerfile.workspace
+
+    $(location //tools/docker:docker_cli) build -f Dockerfile.workspace $$TMPDIR -t blerr/wr:tag
+
+    echo "123" > $@
+    """,
+)

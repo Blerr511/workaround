@@ -30,8 +30,6 @@ data = ["project_support_files"]
 
 deps = [
     ":node_modules",
-    "//:node_modules/@wr/logger",
-    "//:node_modules/@wr/data-source",
 ]
 
 ts_config(
@@ -79,5 +77,11 @@ genrule(
     cp schema.gql $@
     """,
     tools = [":run_schema_generator"],
+    visibility = ["//visibility:public"],
+)
+
+filegroup(
+    name = "backend.json",
+    srcs = [":package.json"],
     visibility = ["//visibility:public"],
 )

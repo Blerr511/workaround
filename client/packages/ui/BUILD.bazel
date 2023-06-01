@@ -72,3 +72,9 @@ sh_binary(
     },
     tags = ["requires-network"],
 )
+
+filegroup(
+    name = "ui.json",
+    srcs = [":package.json"],
+    visibility = ["//visibility:public"],
+)

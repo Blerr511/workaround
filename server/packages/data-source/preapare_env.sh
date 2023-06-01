@@ -1,3 +1,7 @@
+#!/bin/bash
+
+# TODO - refactor this workaround to run migrations with bazel
+
 echo "Preaparing env vars for prisma data-source.."
 
 bazel build //sandbox:data_source_env_vars.env

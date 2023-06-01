@@ -125,3 +125,9 @@ sh_binary(
     },
     tags = ["requires-network"],
 )
+
+filegroup(
+    name = "data-source.json",
+    srcs = [":package.json"],
+    visibility = ["//visibility:public"],
+)
