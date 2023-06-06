@@ -40,15 +40,14 @@ filegroup(
 data = [
     "next.config.js",
     "package.json",
-    ":node_modules",
 ]
 
 deps = [
-    "//:node_modules/@wr/backend-api",
-    "//:node_modules/@wr/ui",
+    ":node_modules",
     "//:node_modules/next",
     "//:node_modules/react",
     "//:node_modules/react-dom",
+    "//:node_modules/typescript",
 ]
 
 ts_config(
@@ -89,14 +88,8 @@ next(
     data = [
         "next.config.js",
         "package.json",
-        ":node_modules",
         ":tsconfig",
-        "//:node_modules/@wr/backend-api",
-        "//:node_modules/@wr/ui",
-        "//:node_modules/next",
-        "//:node_modules/react",
-        "//:node_modules/react-dom",
-    ],
+    ] + deps,
     next_bin = "../../../node_modules/next/dist/bin/next",
     next_js_binary = ":next_js_binary",
 )

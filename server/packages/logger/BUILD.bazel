@@ -13,6 +13,7 @@ ts_project(
     validate = True,
     deps = [
         ":node_modules",
+        "//:node_modules/typescript",
     ],
 )
 

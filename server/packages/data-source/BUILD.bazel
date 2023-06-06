@@ -25,6 +25,7 @@ _prisma.prisma(
     srcs = [
         "prisma/schema.prisma",
         ":node_modules",
+        "//:node_modules/typescript",
     ],
     args = [
         "generate",
@@ -49,6 +50,7 @@ _prisma.prisma(
     srcs = [
         "prisma/schema.prisma",
         ":node_modules",
+        "//:node_modules/typescript",
     ],
     args = [
         "migrate",
@@ -76,6 +78,7 @@ js_library(
     srcs = [":generate"],
     deps = [
         ":node_modules",
+        "//:node_modules/typescript",
     ],
 )
 
