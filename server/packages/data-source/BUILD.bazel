@@ -134,3 +134,15 @@ filegroup(
     srcs = [":package.json"],
     visibility = ["//visibility:public"],
 )
+
+genrule(
+    name = "version",
+    srcs = [
+        "package.json",
+        "//tools/shell:package_version",
+    ],
+    outs = [".data_source_version"],
+    cmd = """
+    $(location //tools/shell:package_version) $(location package.json) > $@
+    """,
+)

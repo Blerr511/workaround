@@ -1,6 +1,7 @@
 load("@npm//:defs.bzl", "npm_link_all_packages")
 load("@aspect_rules_js//js:defs.bzl", "js_binary", "js_run_devserver", "js_test")
 load("@aspect_rules_ts//ts:defs.bzl", "ts_config", "ts_project")
+load("//tools/utils:js_image.bzl", "js_image")
 
 service_name = "data-backend"
 
@@ -11,8 +12,6 @@ npm_link_all_packages(name = "node_modules")
 filegroup(
     name = "project_support_files",
     srcs = glob([
-        "*.json",
-        ".*.json",
         "*.js",
         ".*.js",
     ]),
@@ -46,6 +45,7 @@ ts_project(
     source_map = True,
     tsconfig = ":tsconfig",
     validate = True,
+    visibility = ["//visibility:public"],
     deps = deps,
 )
 
@@ -80,8 +80,13 @@ genrule(
     visibility = ["//visibility:public"],
 )
 
-filegroup(
-    name = "backend.json",
-    srcs = [":package.json"],
-    visibility = ["//visibility:public"],
+js_image(
+    name = "backend",
+    srcs = [":ts"],
+    entry_point = "src/main.js",
+    package_json = "package.json",
+    deps = [
+        "//server/packages/data-source:data-source.json",
+        "//server/packages/logger:logger.json",
+    ],
 )

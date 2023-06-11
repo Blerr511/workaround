@@ -1,0 +1,17 @@
+filegroup(
+    name = "package_version",
+    srcs = [":package_version.sh"],
+    visibility = ["//visibility:public"],
+)
+
+filegroup(
+    name = "prod_deps",
+    srcs = [":prod_deps.sh"],
+    visibility = ["//visibility:public"],
+)
+
+filegroup(
+    name = "versions_json",
+    srcs = [":versions_json.sh"],
+    visibility = ["//visibility:public"],
+)

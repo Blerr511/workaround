@@ -1,5 +1,6 @@
 load("@npm//:defs.bzl", "npm_link_all_packages")
 load("@aspect_rules_ts//ts:defs.bzl", "ts_config")
+load("@io_bazel_rules_docker//container:container.bzl", "container_image", "container_layer")
 
 # link all dependencies from root package.json
 npm_link_all_packages(name = "node_modules")
@@ -11,48 +12,8 @@ ts_config(
     deps = ["//:node_modules/@tsconfig/node16-strictest"],
 )
 
-filegroup(
-    name = "meta",
-    srcs = [
-        "package.json",
-        "pnpm-lock.yaml",
-        "pnpm-workspace.yaml",
-        "//client/apps/web-client:web-client.json",
-        "//client/packages/ui:ui.json",
-        "//server/apps/backend:backend.json",
-        "//server/packages/backend-api:backend-api.json",
-        "//server/packages/data-source:data-source.json",
-        "//server/packages/logger:logger.json",
-    ],
-    visibility = ["//visibility:public"],
-)
-
-genrule(
-    name = "t",
-    srcs = [
-        ":meta",
-        "//tools/docker:docker_cli",
-        "Dockerfile.workspace",
-    ],
-    outs = ["test.o"],
-    cmd = """
-    TMPDIR=data
-    mkdir $$TMPDIR
-
-    for file in $(locations :meta); do
-        src_dir="$$(dirname $$file)"
-
-    if [ "$$src_dir" != "/" ] && [ "$$src_dir" != "." ]; then
-        mkdir -p "$$TMPDIR/$$src_dir"
-        fi
-        echo "$$file" "$$src_dir" "$$TMPDIR/$$src_dir"
-        cp -L "$$file" "$$TMPDIR/$$src_dir"
-    done
-
-    cp -L $(location Dockerfile.workspace) $$TMPDIR/Dockerfile.workspace
-
-    $(location //tools/docker:docker_cli) build -f Dockerfile.workspace $$TMPDIR -t blerr/wr:tag
-
-    echo "123" > $@
-    """,
-)
+exports_files([
+    "package.json",
+    "pnpm-lock.yaml",
+    "pnpm-workspace.yaml",
+])

@@ -5,6 +5,7 @@
   "author": "",
   "private": true,
   "license": "UNLICENSED",
+  "main": "dist/main.js",
   "scripts": {
     "ts": "ts-node -r tsconfig-paths/register ./src/main.ts",
     "dev": "nodemon --config ./nodemon.json",
@@ -26,8 +27,6 @@
     "@nestjs/core": "9.3.8",
     "@nestjs/graphql": "^11.0.6",
     "@nestjs/platform-express": "9.3.8",
-    "@wr/data-source": "workspace:^",
-    "@wr/logger": "workspace:^",
     "axios": "^1.4.0",
     "class-transformer": "^0.5.1",
     "class-validator": "^0.14.0",
@@ -36,7 +35,9 @@
     "graphql": "^16.6.0",
     "reflect-metadata": "^0.1.13",
     "rimraf": "^3.0.2",
-    "rxjs": "^7.2.0"
+    "rxjs": "^7.2.0",
+    "@wr/data-source": "workspace:^",
+    "@wr/logger": "workspace:^"
   },
   "devDependencies": {
     "@nestjs/cli": "^8.0.0",
