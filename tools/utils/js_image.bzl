@@ -85,12 +85,12 @@ def js_image(name, srcs, deps, package_json, entry_point):
         """.format(entry_point = entry_point, package = native.package_name()),
         visibility = ["//visibility:public"],
     )
-    # TODO configure image push
+
     container_push(
         name = "{name}_image_push".format(name = name),
         image = "{name}_image".format(name = name),
         format = "Docker",
-        registry = "$(GCP_DOCKER_ARTIFACTS_LOCATION).pkg.dev",
+        registry = "$(GCP_DOCKER_ARTIFACTS_LOCATION)-docker.pkg.dev",
         repository = "$(GCP_PROJECT_ID)/$(GCP_DOCKER_ARTIFACTS_REPOSITORY)/$(GCP_DOCKER_BACKEND_IMAGE)",
         toolchains = ["//sandbox:gcp_env_vars"],
     )
