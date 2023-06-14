@@ -1,0 +1,18 @@
+load("@io_bazel_rules_k8s//k8s:object.bzl", "k8s_object")
+
+k8s_object(
+    name = "deploy-backend",
+    cluster = "$(GKE_CLUSTER_NAME)",
+    image_chroot = "$(GKE_CLUSTER_LOCATION_ROOT).gcr.io/$(GCP_PROJECT_ID)",
+    images = {
+        "$(GCP_DOCKER_BACKEND_IMAGE):{commit_hash}".format(commit_hash = "inital1"): "//server/apps/backend:backend_image",
+    },
+    kind = "deployment",
+    template = ":k8s-backend.deployement.yaml",
+    substitutions = {
+        "{name}": "backend",
+        "{replicas}": "1",
+        "{image}": "$(GCP_DOCKER_BACKEND_IMAGE):{commit_hash}".format(commit_hash = "inital1"),
+    },
+    toolchains = ["//sandbox:gcp_env_vars"],
+)

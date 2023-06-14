@@ -17,3 +17,14 @@ exports_files([
     "pnpm-lock.yaml",
     "pnpm-workspace.yaml",
 ])
+
+toolchain(
+    name = "kubectl_linux_toolchain",
+    target_compatible_with = [
+        "@platforms//os:linux",
+        # If necessary, specify CPU architecture as well.
+        # "@platforms//cpu:x86_64",
+    ],
+    toolchain = ":kubectl_toolchain_impl",
+    toolchain_type = "@io_bazel_rules_k8s//toolchains/kubectl:kubectl_linux_arm64_toolchain",
+)

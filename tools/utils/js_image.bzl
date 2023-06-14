@@ -93,4 +93,5 @@ def js_image(name, srcs, deps, package_json, entry_point):
         registry = "$(GCP_DOCKER_ARTIFACTS_LOCATION)-docker.pkg.dev",
         repository = "$(GCP_PROJECT_ID)/$(GCP_DOCKER_ARTIFACTS_REPOSITORY)/$(GCP_DOCKER_BACKEND_IMAGE)",
         toolchains = ["//sandbox:gcp_env_vars"],
+        visibility = ["//visibility:public"],
     )

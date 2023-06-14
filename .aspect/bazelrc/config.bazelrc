@@ -1,5 +1,6 @@
 # WORKSPACE
 build --action_env=APP_ENV=local
+# build --workspace_status_command=./tools/git/commit_hash.sh
 
 # GCP
 build --action_env=GCP_PROJECT_ID=workaround-388416
@@ -21,6 +22,10 @@ build --action_env=GCP_DOCKER_ARTIFACTS_LOCATION=europe-central2
 # Docker image names
 build --action_env=GCP_DOCKER_BACKEND_IMAGE=wr-backend
 
+# GKE cluster config
+build --action_env=GKE_CLUSTER_NAME=wr-cluster-1
+build --action_env=GKE_CLUSTER_LOCATION=europe-central2
+build --action_env=GKE_CLUSTER_LOCATION_ROOT=eu
 
 # POSTGRES SERVICE
 build --action_env=POSTGRES_HOST=localhost
