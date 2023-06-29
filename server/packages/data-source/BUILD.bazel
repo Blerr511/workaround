@@ -146,3 +146,14 @@ genrule(
     $(location //tools/shell:package_version) $(location package.json) > $@
     """,
 )
+
+genrule(
+    name = "dump",
+    outs = ["dump.sql"],
+    cmd = """
+    export PGPASSWORD=$(POSTGRES_PASSWORD)
+    pg_dump -h $(POSTGRES_HOST) -U $(POSTGRES_USERNAME) -p $(POSTGRES_PORT) $(POSTGRES_DATABASE) > $@
+    """,
+    tags = ["requires-network"],
+    toolchains = ["//sandbox:postgres_env_vars"],
+)
