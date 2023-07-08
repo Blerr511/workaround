@@ -23,7 +23,7 @@ build --action_env=GCP_DOCKER_ARTIFACTS_LOCATION=europe-central2
 build --action_env=GCP_DOCKER_BACKEND_IMAGE=wr-backend
 
 # GKE cluster config
-build --action_env=GKE_CLUSTER_NAME=wr-cluster-1
+build --action_env=GKE_CLUSTER_NAME=gke_workaround-388416_europe-central2_wr-cluster-1
 build --action_env=GKE_CLUSTER_LOCATION=europe-central2
 build --action_env=GKE_CLUSTER_LOCATION_ROOT=eu
 
