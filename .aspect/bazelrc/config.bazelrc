@@ -5,6 +5,9 @@ build --action_env=APP_ENV=local
 # GCP
 build --action_env=GCP_PROJECT_ID=workaround-388416
 build --action_env=GCP_CLOUDSDK_CONFIG="/tmp/.wr/.config/gcloud/$(APP_ENV)"
+build --action_env=GCP_CLOUD_SQL_SA="cloud-sql-user@workaround-388416.iam.gserviceaccount.com"
+build --action_env=GCP_CLOUD_SQL_SA_SECRET="cloud_sql_sa"
+build --action_env=GCP_CLOUD_SQL_INSTANCE="workaround-388416:europe-central2:backend-postgres"
 
 # Dockerhub
 build --action_env=DOCKER_USERNAME=blerr

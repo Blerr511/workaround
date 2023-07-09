@@ -1,9 +1,10 @@
 load("@io_bazel_rules_k8s//k8s:object.bzl", "k8s_object")
+load("@io_bazel_rules_k8s//k8s:objects.bzl", "k8s_objects")
 
 # Use with inline defining config variables bazel run //.... --define _CLUSTER=... _TAG=...
 
 k8s_object(
-    name = "deploy-backend",
+    name = "backend-deployement",
     cluster = "$(_CLUSTER)",
     image_chroot = "$(GCP_DOCKER_ARTIFACTS_LOCATION)-docker.pkg.dev/$(GCP_PROJECT_ID)/$(GCP_DOCKER_ARTIFACTS_REPOSITORY)",
     images = {
@@ -11,10 +12,36 @@ k8s_object(
     },
     kind = "deployment",
     substitutions = {
-        "{name}": "backend",
-        "{replicas}": "1",
-        "{image}": "$(GCP_DOCKER_ARTIFACTS_LOCATION)-docker.pkg.dev/$(GCP_PROJECT_ID)/$(GCP_DOCKER_ARTIFACTS_REPOSITORY)/$(GCP_DOCKER_BACKEND_IMAGE):{tag}".format(tag = "$(_TAG)"),
+        "$name": "backend",
+        "$image": "$(GCP_DOCKER_ARTIFACTS_LOCATION)-docker.pkg.dev/$(GCP_PROJECT_ID)/$(GCP_DOCKER_ARTIFACTS_REPOSITORY)/$(GCP_DOCKER_BACKEND_IMAGE):{tag}".format(tag = "$(_TAG)"),
+        "$cloud_sql_instance": "$(GCP_CLOUD_SQL_INSTANCE)",
     },
     template = ":k8s-backend.deployement.yaml",
     toolchains = ["//sandbox:gcp_env_vars"],
+)
+
+genrule(
+    name = "create_backend_secret_yaml",
+    srcs = [
+        "k8s-backend.secret.yaml",
+        "//sandbox/gcp/cloud-sql:sa.base64",
+    ],
+    outs = ["k8s-backend.secret.gen.yaml"],
+    cmd = "sed 's/{sa_base64}/'\"$$(cat $(location //sandbox/gcp/cloud-sql:sa.base64))\"'/' $(location k8s-backend.secret.yaml) > $@",
+)
+
+k8s_object(
+    name = "backend-secret",
+    cluster = "$(_CLUSTER)",
+    kind = "secret",
+    template = ":create_backend_secret_yaml",
+    toolchains = ["//sandbox:gcp_env_vars"],
+)
+
+k8s_objects(
+    name = "backend",
+    objects = [
+        ":backend-deployement",
+        ":backend-secret",
+    ],
 )

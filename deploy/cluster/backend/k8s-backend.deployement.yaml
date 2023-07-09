@@ -1,19 +1,43 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: '{name}-deployment'
+  name: '$name-deployment'
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: {name}
+      app: $name
   template:
     metadata:
       labels:
-        app: {name}
+        app: $name
     spec:
       containers:
-        - name: {name}
-          image: {image}
+        - name: $name
+          image: $image
           ports:
             - containerPort: 80
+          resources:
+            requests:
+              cpu: '100m'
+              memory: '200Mi'
+        - name: cloud-sql-proxy
+          image: gcr.io/cloudsql-docker/gce-proxy:1.17
+          command:
+            [
+              '/cloud_sql_proxy',
+              '-instances=$cloud_sql_instance=tcp:6432',
+              '-credential_file=/secrets/cloudsql/credentials.json',
+            ]
+          resources:
+            requests:
+              cpu: '100m'
+              memory: '100Mi'
+          volumeMounts:
+            - name: cloudsql-instance-credentials
+              mountPath: /secrets/cloudsql
+              readOnly: true
+      volumes:
+        - name: cloudsql-instance-credentials
+          secret:
+            secretName: cloudsql-instance-credentials

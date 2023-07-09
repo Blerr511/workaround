@@ -1,0 +1,3 @@
+import %workspace%/.aspect/bazelrc/config.bazelrc
+
+

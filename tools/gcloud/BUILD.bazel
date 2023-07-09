@@ -4,6 +4,8 @@ filegroup(
     visibility = ["//visibility:public"],
 )
 
+exports_files(["gcloud.sh"])
+
 sh_binary(
     name = "gcloud",
     srcs = [

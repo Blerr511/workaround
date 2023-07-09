@@ -22,6 +22,8 @@ import_env_vars(
         "GKE_CLUSTER_NAME": "GKE_CLUSTER_NAME",
         "GKE_CLUSTER_LOCATION": "GKE_CLUSTER_LOCATION",
         "GKE_CLUSTER_LOCATION_ROOT": "GKE_CLUSTER_LOCATION_ROOT",
+        "GCP_CLOUD_SQL_SA_SECRET": "GCP_CLOUD_SQL_SA_SECRET",
+        "GCP_CLOUD_SQL_INSTANCE": "GCP_CLOUD_SQL_INSTANCE",
     },
     visibility = ["//visibility:public"],
 )
