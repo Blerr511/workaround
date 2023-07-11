@@ -8,7 +8,7 @@ def format_deps(deps):
         deps_str += "$(location {}) ".format(dep)
     return deps_str.rstrip()  # remove trailing space
 
-def js_image(name, srcs, deps, package_json, entry_point):
+def js_image(name, srcs, deps, package_json, post_install = [], start_cmd = "node"):
     native.filegroup(
         name = "{}_json".format(name),
         srcs = [package_json],
@@ -81,20 +81,20 @@ def js_image(name, srcs, deps, package_json, entry_point):
     container_run_and_commit(
         name = "{name}_install_node_modules".format(name = name),
         commands = [
-            "touch /app/yolo.xm",
             "npm install -g pnpm",
             "mv /app/{package}/prod_package.json /app/{package}/package.json".format(package = native.package_name()),
             "cd /app && pnpm install --prod",
-        ],
+        ] + post_install,
         image = ":{name}_image_base.tar".format(name = name),
     )
 
     container_image(
         name = "{name}_image".format(name = name),
-        base = "{name}_install_node_modules".format(name = name),
+        base = ":{name}_install_node_modules".format(name = name),
         cmd = """
-        node /app/{package}/{entry_point}
-        """.format(entry_point = entry_point, package = native.package_name()),
+        cd /app/{package}
+        {start}
+        """.format(package = native.package_name(), start = start_cmd),
         visibility = ["//visibility:public"],
     )
 

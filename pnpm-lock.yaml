@@ -47,6 +47,9 @@ importers:
 
   client/apps/web-client:
     dependencies:
+      '@types/react':
+        specifier: 18.0.37
+        version: 18.0.37
       '@wr/backend-api':
         specifier: workspace:^
         version: link:../../../server/packages/backend-api

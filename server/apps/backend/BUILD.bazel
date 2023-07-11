@@ -83,8 +83,8 @@ genrule(
 js_image(
     name = "backend",
     srcs = [":ts"],
-    entry_point = "src/main.js",
     package_json = "package.json",
+    start_cmd = "node src/main.js",
     deps = [
         "//server/packages/data-source:data-source.json",
         "//server/packages/logger:logger.json",

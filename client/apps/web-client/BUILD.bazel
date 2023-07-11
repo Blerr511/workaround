@@ -4,6 +4,7 @@ load("@npm//:defs.bzl", "npm_link_all_packages")
 load("//client/bazel:next.bzl", "next")
 load("@npm//:next/package_json.bzl", next_bin = "bin")
 load("@aspect_rules_ts//ts:defs.bzl", "ts_config", "ts_project")
+load("//tools/utils:js_image.bzl", "js_image")
 
 npm_link_all_packages(name = "node_modules")
 
@@ -37,10 +38,13 @@ filegroup(
     ]),
 )
 
-data = [
-    "next.config.js",
-    "package.json",
-]
+data = glob(
+    [
+        "*.json",
+        "*.js",
+    ],
+    exclude = ["nodemon.json"],
+)
 
 deps = [
     ":node_modules",
@@ -92,6 +96,21 @@ next(
     ] + deps,
     next_bin = "../../../node_modules/next/dist/bin/next",
     next_js_binary = ":next_js_binary",
+)
+
+js_image(
+    name = "web-client",
+    srcs = srcs + data,
+    package_json = "package.json",
+    post_install = [
+        "cd /app/client/apps/web-client",
+        "npm run build",
+    ],
+    start_cmd = "npm start",
+    deps = [
+        "//client/packages/ui:ui.json",
+        "//server/packages/backend-api:backend-api.json",
+    ],
 )
 
 js_run_devserver(
