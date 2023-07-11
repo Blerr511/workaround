@@ -1,5 +1,6 @@
 load("@io_bazel_rules_docker//container:container.bzl", "container_image", "container_layer", "container_push")
 load("@bazel_tools//tools/build_defs/pkg:pkg.bzl", "pkg_tar")
+load("@io_bazel_rules_docker//docker/util:run.bzl", "container_run_and_commit")
 
 def format_deps(deps):
     deps_str = ""
@@ -70,17 +71,28 @@ def js_image(name, srcs, deps, package_json, entry_point):
     )
 
     container_image(
-        name = "{name}_image".format(name = name),
+        name = "{name}_image_base".format(name = name),
         base = "@node_base//image",
         tars = ["{name}_ts_tar".format(name = name)],
         layers = ["{name}_app_layer".format(name = name), "{name}_root_layer".format(name = name)],
+        visibility = ["//visibility:public"],
+    )
+
+    container_run_and_commit(
+        name = "{name}_install_node_modules".format(name = name),
+        commands = [
+            "touch /app/yolo.xm",
+            "npm install -g pnpm",
+            "mv /app/{package}/prod_package.json /app/{package}/package.json".format(package = native.package_name()),
+            "cd /app && pnpm install --prod",
+        ],
+        image = ":{name}_image_base.tar".format(name = name),
+    )
+
+    container_image(
+        name = "{name}_image".format(name = name),
+        base = "{name}_install_node_modules".format(name = name),
         cmd = """
-        ls /app/{package}/
-        npm install -g pnpm
-        mv /app/{package}/prod_package.json /app/{package}/package.json
-        ls /app/{package}/
-        cat /app/{package}/package.json
-        cd /app && pnpm install --prod
         node /app/{package}/{entry_point}
         """.format(entry_point = entry_point, package = native.package_name()),
         visibility = ["//visibility:public"],

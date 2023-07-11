@@ -15,12 +15,20 @@ spec:
       containers:
         - name: $name
           image: $image
+          env:
+            - name: DATA_SOURCE_POSTGRES_URL
+              value: 'postgresql://postgres:tangolier8@localhost:6432/postgres'
           ports:
-            - containerPort: 80
+            - containerPort: { backend_port }
           resources:
             requests:
-              cpu: '100m'
-              memory: '200Mi'
+              cpu: 25m
+              memory: 64Mi
+              ephemeral-storage: 2Gi
+            limits:
+              cpu: 410m
+              memory: '1.5Gi'
+              ephemeral-storage: 4Gi
         - name: cloud-sql-proxy
           image: gcr.io/cloudsql-docker/gce-proxy:1.17
           command:
@@ -31,8 +39,11 @@ spec:
             ]
           resources:
             requests:
-              cpu: '100m'
-              memory: '100Mi'
+              cpu: 25m
+              memory: 64Mi
+            limits:
+              cpu: 100m
+              memory: 124Mi
           volumeMounts:
             - name: cloudsql-instance-credentials
               mountPath: /secrets/cloudsql
