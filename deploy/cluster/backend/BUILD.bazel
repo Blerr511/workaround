@@ -12,9 +12,9 @@ k8s_object(
     },
     kind = "deployment",
     substitutions = {
-        "$name": "backend",
-        "$image": "$(GCP_DOCKER_ARTIFACTS_LOCATION)-docker.pkg.dev/$(GCP_PROJECT_ID)/$(GCP_DOCKER_ARTIFACTS_REPOSITORY)/$(GCP_DOCKER_BACKEND_IMAGE):{tag}".format(tag = "$(_TAG)"),
-        "$cloud_sql_instance": "$(GCP_CLOUD_SQL_INSTANCE)",
+        "{ name }": "backend",
+        "{ image }": "$(GCP_DOCKER_ARTIFACTS_LOCATION)-docker.pkg.dev/$(GCP_PROJECT_ID)/$(GCP_DOCKER_ARTIFACTS_REPOSITORY)/$(GCP_DOCKER_BACKEND_IMAGE):{tag}".format(tag = "$(_TAG)"),
+        "{ cloud_sql_instance }": "$(GCP_CLOUD_SQL_INSTANCE)",
         "{ backend_port }": "3000",
     },
     template = ":k8s-backend.deployement.yaml",
@@ -28,7 +28,7 @@ genrule(
         "//sandbox/gcp/cloud-sql:sa.base64",
     ],
     outs = ["k8s-backend.secret.gen.yaml"],
-    cmd = "sed 's/{sa_base64}/'\"$$(cat $(location //sandbox/gcp/cloud-sql:sa.base64))\"'/' $(location k8s-backend.secret.yaml) > $@",
+    cmd = "sed 's/{ sa_base64 }/'\"$$(cat $(location //sandbox/gcp/cloud-sql:sa.base64))\"'/' $(location k8s-backend.secret.yaml) > $@",
 )
 
 k8s_object(
@@ -44,7 +44,7 @@ k8s_object(
     cluster = "$(_CLUSTER)",
     kind = "service",
     substitutions = {
-        "$name": "backend",
+        "{ name }": "backend",
         "{ backend_port }": "3000",
     },
     template = ":k8s-backend.service.yaml",

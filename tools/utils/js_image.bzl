@@ -8,7 +8,7 @@ def format_deps(deps):
         deps_str += "$(location {}) ".format(dep)
     return deps_str.rstrip()  # remove trailing space
 
-def js_image(name, srcs, deps, package_json, post_install = [], start_cmd = "node"):
+def js_image(name, srcs, deps, package_json, image, tag = "latest", post_install = [], start_cmd = "node"):
     native.filegroup(
         name = "{}_json".format(name),
         srcs = [package_json],
@@ -103,7 +103,7 @@ def js_image(name, srcs, deps, package_json, post_install = [], start_cmd = "nod
         image = "{name}_image".format(name = name),
         format = "Docker",
         registry = "$(GCP_DOCKER_ARTIFACTS_LOCATION)-docker.pkg.dev",
-        repository = "$(GCP_PROJECT_ID)/$(GCP_DOCKER_ARTIFACTS_REPOSITORY)/$(GCP_DOCKER_BACKEND_IMAGE):123",
+        repository = "$(GCP_PROJECT_ID)/$(GCP_DOCKER_ARTIFACTS_REPOSITORY)/{image}:{tag}".format(image = image, tag = tag),
         toolchains = ["//sandbox:gcp_env_vars"],
         visibility = ["//visibility:public"],
     )

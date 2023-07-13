@@ -85,6 +85,7 @@ js_image(
     srcs = [":ts"],
     package_json = "package.json",
     start_cmd = "node src/main.js",
+    image = "$(GCP_DOCKER_BACKEND_IMAGE)",
     deps = [
         "//server/packages/data-source:data-source.json",
         "//server/packages/logger:logger.json",

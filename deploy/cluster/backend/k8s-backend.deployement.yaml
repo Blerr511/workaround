@@ -1,20 +1,20 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: '$name-deployment'
+  name: '{ name }-deployment'
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: $name
+      app: { name }
   template:
     metadata:
       labels:
-        app: $name
+        app: { name }
     spec:
       containers:
-        - name: $name
-          image: $image
+        - name: { name }
+          image: { image }
           env:
             - name: DATA_SOURCE_POSTGRES_URL
               value: 'postgresql://postgres:tangolier8@localhost:6432/postgres'
@@ -34,7 +34,7 @@ spec:
           command:
             [
               '/cloud_sql_proxy',
-              '-instances=$cloud_sql_instance=tcp:6432',
+              '-instances={ cloud_sql_instance }=tcp:6432',
               '-credential_file=/secrets/cloudsql/credentials.json',
             ]
           resources:
