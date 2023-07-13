@@ -58,4 +58,5 @@ k8s_objects(
         ":secret",
         ":service",
     ],
+    visibility = ["//visibility:public"],
 )
