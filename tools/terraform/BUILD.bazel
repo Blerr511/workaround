@@ -1,0 +1,6 @@
+filegroup(
+    name = "terraform",
+    srcs = [":terraform.sh"],
+    # data = [],
+    visibility = ["//visibility:public"],
+)

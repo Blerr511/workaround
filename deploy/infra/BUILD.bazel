@@ -1,0 +1,30 @@
+load("//tools/terraform:defs.bzl", "tf")
+
+tf(
+    name = "tf",
+    data = glob([
+        "**/*.tf",
+        "**/*.tfvars",
+        "**/.*.lock.hcl",
+        "**/*.tfstate",
+        "**/*.tfplan",
+    ]) + [
+        "//sandbox/gcp/terraform:sa",
+    ],
+    env = {
+        "WORKDIR": "deploy/infra",
+        "CLOUDSDK_CONFIG": "$(GCP_CLOUDSDK_CONFIG)",
+        "GOOGLE_APPLICATION_CREDENTIALS": "$(rootpath %s)" % "//sandbox/gcp/terraform:sa",
+    },
+    toolchains = [
+        "//sandbox:gcp_env_vars",
+        "//sandbox:workspace_env_vars",
+    ],
+    vars = {
+        "gcp_project_id": "$(GCP_PROJECT_ID)",
+        "gcp_terraform_bucket": "$(GCP_TERRAFORM_BUCKET)",
+        "gcp_region": "$(GCP_REGION)",
+        "sandbox_env": "$(APP_ENV)",
+        "gcp_cloud_sql_sa": "$(GCP_CLOUD_SQL_SA)",
+    },
+)
