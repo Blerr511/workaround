@@ -3,15 +3,19 @@ build --action_env=APP_ENV=local
 # build --workspace_status_command=./tools/git/commit_hash.sh
 
 # GCP
-build --action_env=GCP_PROJECT_ID=workaround-388416
+build --action_env=GCP_PROJECT_ID=workaround-dev-392816
+build --action_env=GCP_PROJECT_NAME=workaround-dev
 build --action_env=GCP_REGION=europe-central2
 build --action_env=GCP_CLOUDSDK_CONFIG="/tmp/.wr/.config/gcloud/$(APP_ENV)"
-build --action_env=GCP_CLOUD_SQL_SA="cloud-sql-user@workaround-388416.iam.gserviceaccount.com"
+build --action_env=GCP_CLOUD_SQL_SA="cloud-sql-user"
 build --action_env=GCP_CLOUD_SQL_SA_SECRET="cloud_sql_sa"
-build --action_env=GCP_CLOUD_SQL_INSTANCE="workaround-388416:europe-central2:backend-postgres"
-build --action_env=GCP_TERRAFORM_BUCKET="workaround-388416-terraform"
-build --action_env=GCP_TERRAFORM_SA="terraform-sa@workaround-388416.iam.gserviceaccount.com"
+build --action_env=GCP_CLOUD_SQL_INSTANCE="$(GCP_PROJECT_ID):$(GCP_REGION):backend-postgres"
+build --action_env=GCP_TERRAFORM_BUCKET="$(GCP_PROJECT_NAME)-terraform"
+build --action_env=GCP_TERRAFORM_SA="terraform-sa"
 build --action_env=GCP_TERRAFORM_SA_SECRET="terraform_sa"
+build --action_env=GCP_CLOUD_BUILD_SA="cloud-build-sa"
+build --action_env=GCP_CLOUD_BUILD_SA_SECRET="cloud-build-sa"
+
 
 
 # Dockerhub
