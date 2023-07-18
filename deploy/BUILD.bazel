@@ -1,0 +1,23 @@
+sh_binary(
+    name = "deploy",
+    srcs = [
+        "//tools/gcloud:gcloud_cli",
+    ],
+    args = [
+        "builds",
+        "submit",
+        "--config=$(location cloudbuild.yaml)",
+    ],
+    data = [
+        "Dockerfile",
+        "cloudbuild.yaml",
+    ],
+    env = {
+        "CLOUDSDK_CONFIG": "$(GCP_CLOUDSDK_CONFIG)",
+        "PROJECT_ID": "$(GCP_PROJECT_ID)",
+    },
+    toolchains = [
+        "//sandbox:workspace_env_vars",
+        "//sandbox:gcp_env_vars",
+    ],
+)

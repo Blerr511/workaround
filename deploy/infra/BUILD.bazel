@@ -21,12 +21,12 @@ tf(
         "//sandbox:workspace_env_vars",
     ],
     vars = {
+        "sandbox_env": "$(APP_ENV)",
         "gcp_project_id": "$(GCP_PROJECT_ID)",
         "gcp_terraform_bucket": "$(GCP_TERRAFORM_BUCKET)",
         "gcp_region": "$(GCP_REGION)",
-        "sandbox_env": "$(APP_ENV)",
         "gcp_cloud_sql_sa": "$(GCP_CLOUD_SQL_SA)",
         "gcp_cloud_sql_sa_secret": "$(GCP_CLOUD_SQL_SA_SECRET)",
+        "gcp_cloud_build_sa": "$(GCP_CLOUD_BUILD_SA)",
     },
 )
-

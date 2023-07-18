@@ -1,7 +1,6 @@
 # Chicken/egg issue: can't assign rights for the bucket unlwess it's been already created
 terraform {
   backend "gcs" {
-    bucket = "workaround-388416-terraform"
     prefix = "state/infrastructure"
   }
   required_providers {

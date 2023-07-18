@@ -7,3 +7,10 @@ resource "google_service_account" "cloud_sql_user" {
 resource "google_service_account_key" "cloud_sql_user_key" {
   service_account_id = google_service_account.cloud_sql_user.name
 }
+
+resource "google_service_account" "cloudbuild_sa" {
+  account_id   = var.gcp_cloud_build_sa
+  display_name = "Cloud Build service account"
+  project      = var.gcp_project_id
+}
+

@@ -13,6 +13,8 @@ export GOOGLE_APPLICATION_CREDENTIALS="$(pwd)/$GOOGLE_APPLICATION_CREDENTIALS"
 
 [[ -n "$TF_VAR_gcp_project_number" ]] && TF_VAR_gcp_project_number=$(eval $TF_VAR_gcp_project_number)
 
+cat $GOOGLE_APPLICATION_CREDENTIALS
+
 echo "Terraform workdir: $WORKDIR"
 
 cd $WORKDIR
