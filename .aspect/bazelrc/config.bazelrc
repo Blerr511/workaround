@@ -6,11 +6,11 @@ build --action_env=APP_ENV=local
 build --action_env=GCP_PROJECT_ID=workaround-388416
 build --action_env=GCP_REGION=europe-central2
 build --action_env=GCP_CLOUDSDK_CONFIG="/tmp/.wr/.config/gcloud/$(APP_ENV)"
-build --action_env=GCP_CLOUD_SQL_SA="cloud-sql-user@workaround-388416.iam.gserviceaccount.com"
+build --action_env=GCP_CLOUD_SQL_SA="cloud-sql-user"
 build --action_env=GCP_CLOUD_SQL_SA_SECRET="cloud_sql_sa"
 build --action_env=GCP_CLOUD_SQL_INSTANCE="workaround-388416:europe-central2:backend-postgres"
 build --action_env=GCP_TERRAFORM_BUCKET="workaround-388416-terraform"
-build --action_env=GCP_TERRAFORM_SA="terraform-sa@workaround-388416.iam.gserviceaccount.com"
+build --action_env=GCP_TERRAFORM_SA="terraform-sa"
 build --action_env=GCP_TERRAFORM_SA_SECRET="terraform_sa"
 
 

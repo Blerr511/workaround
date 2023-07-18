@@ -30,3 +30,9 @@ variable "gcp_cloud_sql_sa" {
   type        = string
   description = "Cloud Sql User service account id"
 }
+
+variable "gcp_cloud_sql_sa_secret" {
+  type        = string
+  description = "Cloud Sql User service account id"
+}
+
