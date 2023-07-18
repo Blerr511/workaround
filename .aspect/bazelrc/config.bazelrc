@@ -3,8 +3,8 @@ build --action_env=APP_ENV=local
 # build --workspace_status_command=./tools/git/commit_hash.sh
 
 # GCP
-build --action_env=GCP_PROJECT_ID=workaround-dev-392816
-build --action_env=GCP_PROJECT_NAME=workaround-dev
+build --action_env=GCP_PROJECT_ID=workaround-388416-terraform
+build --action_env=GCP_PROJECT_NAME=workaround
 build --action_env=GCP_REGION=europe-central2
 build --action_env=GCP_CLOUDSDK_CONFIG="/tmp/.wr/.config/gcloud/$(APP_ENV)"
 build --action_env=GCP_CLOUD_SQL_SA="cloud-sql-user"
