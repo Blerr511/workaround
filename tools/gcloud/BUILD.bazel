@@ -39,14 +39,51 @@ genrule(
     ],
 )
 
-# TODO - it's temporary solution and should be removed asap
-genrule(
+load("//sandbox/gcp:defs.bzl", "secret_version")
+
+secret_version(
     name = "sa",
-    srcs = ["service-account.json"],
-    outs = ["sa.json"],
+    secret = "$(GCP_DEVELOPMENT_SA_SECRET)",
+    visibility = ["//visibility:public"],
+)
+
+genrule(
+    name = "kubeconfig",
+    srcs = [
+        ":gcloud_cli",
+    ],
+    outs = [".kubeconfig"],
     cmd = """
-    cat $(location service-account.json) > $@
+    export CLOUDSDK_CONFIG=$(GCP_CLOUDSDK_CONFIG)
+    export PROJECT_ID=$(GCP_PROJECT_ID)
+    export KUBECONFIG=$@
+    gcloud container clusters get-credentials $(GKE_CLUSTER_NAME_SHORT) --zone $(GKE_CLUSTER_LOCATION) --project $(GCP_PROJECT_ID)
     """,
+    tags = ["requires-network"],
+    toolchains = [
+        "//sandbox:gcp_env_vars",
+        "//sandbox:workspace_env_vars",
+    ],
+    visibility = ["//visibility:public"],
+)
+
+genrule(
+    name = "npm_package_versions",
+    srcs = [
+        ":gcloud_cli",
+    ],
+    outs = ["npm_package_versions.txt"],
+    cmd = """
+    export CLOUDSDK_CONFIG=$(GCP_CLOUDSDK_CONFIG)
+    export PROJECT_ID=$(GCP_PROJECT_ID)
+    gcloud artifacts versions list --repository="$(GCP_NPM_ARTIFACTS_REPOSITORY)" --location="$(GCP_NPM_ARTIFACTS_LOCATION)" --package="$(_PACKAGE)" > $@
+    """,
+    tags = ["requires-network"],
+    toolchains = [
+        "//sandbox:gcp_env_vars",
+        "//sandbox:workspace_env_vars",
+    ],
+    visibility = ["//visibility:public"],
 )
 
 genrule(
@@ -67,6 +104,7 @@ genrule(
     ],
     visibility = ["//visibility:public"],
 )
+
 
 # REPO_URL=$(gcloud artifacts repositories describe REPO_NAME --project=PROJECT_ID --format="value(repository.format)")
 # TOKEN=$(gcloud auth print-access-token)

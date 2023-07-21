@@ -45,3 +45,18 @@ variable "gcp_cloud_build_sa" {
   type        = string
   description = "Cloud Buld User service account id"
 }
+
+#
+# Development
+#
+
+variable "gcp_development_sa" {
+  type        = string
+  description = "Development and build process service account"
+}
+
+
+variable "gcp_development_sa_secret" {
+  type        = string
+  description = "Development and build process service account seceret name"
+}

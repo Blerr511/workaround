@@ -11,6 +11,7 @@ k8s_object(
         "$(GCP_DOCKER_ARTIFACTS_LOCATION)-docker.pkg.dev/$(GCP_PROJECT_ID)/$(GCP_DOCKER_ARTIFACTS_REPOSITORY)/$(GCP_DOCKER_BACKEND_IMAGE):{tag}".format(tag = "$(_TAG)"): "//server/apps/backend:backend_image",
     },
     kind = "deployment",
+    kubeconfig = "//tools/gcloud:kubeconfig",
     substitutions = {
         "{ name }": "backend",
         "{ image }": "$(GCP_DOCKER_ARTIFACTS_LOCATION)-docker.pkg.dev/$(GCP_PROJECT_ID)/$(GCP_DOCKER_ARTIFACTS_REPOSITORY)/$(GCP_DOCKER_BACKEND_IMAGE):{tag}".format(tag = "$(_TAG)"),
@@ -35,6 +36,7 @@ k8s_object(
     name = "secret",
     cluster = "$(_CLUSTER)",
     kind = "secret",
+    kubeconfig = "//tools/gcloud:kubeconfig",
     template = ":create_backend_secret_yaml",
     toolchains = ["//sandbox:gcp_env_vars"],
 )
@@ -43,6 +45,7 @@ k8s_object(
     name = "service",
     cluster = "$(_CLUSTER)",
     kind = "service",
+    kubeconfig = "//tools/gcloud:kubeconfig",
     substitutions = {
         "{ name }": "backend",
         "{ backend_port }": "3000",

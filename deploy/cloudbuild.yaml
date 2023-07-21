@@ -1,5 +1,108 @@
+# Access the id_github file from Secret Manager, and setup SSH
 steps:
+  # - name: 'gcr.io/cloud-builders/git'
+  #   secretEnv: ['SSH_KEY']
+  #   entrypoint: 'bash'
+  #   args:
+  #     - -c
+  #     - |
+  #       echo "$$SSH_KEY" >> /root/.ssh/id_rsa
+  #       chmod 400 /root/.ssh/id_rsa
+  #       ssh-keyscan -t rsa github.com > known_hosts.github
+  #       cp known_hosts.github /root/.ssh/known_hosts
+  #   volumes:
+  #     - name: 'ssh'
+  #       path: /root/.ssh
+
+  # - name: 'gcr.io/cloud-builders/git'
+  #   args:
+  #     - clone
+  #     - git@github.com:Blerr511/workaround.git
+  #   volumes:
+  #     - name: 'ssh'
+  #       path: /root/.ssh
+
   - name: 'gcr.io/cloud-builders/docker'
-    args: ['build', '-t', 'gcr.io/$PROJECT_ID/my-image', '.']
+    args: ['build', '-t', 'gcr.io/$PROJECT_ID/wr-cloud_sdk', './deploy']
+
+  - name: 'gcr.io/cloud-builders/gcloud'
+    entrypoint: 'bash'
+    args:
+      - '-c'
+      - |
+        gcloud auth print-access-token > /workspace/gcp_token.txt
+
+  - name: 'gcr.io/$PROJECT_ID/wr-cloud_sdk'
+    id: prepare-build-system
+    entrypoint: 'bash'
+    env:
+      - 'BRANCH_NAME=${BRANCH_NAME}'
+      - 'BUILD_ID=${BUILD_ID}'
+      - 'COMMIT_SHA=${COMMIT_SHA}'
+      - 'PROJECT_ID=${PROJECT_ID}'
+      - 'SHORT_SHA=${SHORT_SHA}'
+      - '_TAG=${SHORT_SHA}'
+      - '_CLUSTER=${_CLUSTER}'
+    args:
+      - '-c'
+      - |
+        printenv > /workspace/.env;
+        cp -pf ./deploy/shell/apply-k8s.sh /workspace/apply-k8s.sh; chmod +x /workspace/apply-k8s.sh;
+        cp -pf ./deploy/shell/release-npm-package.sh /workspace/release-npm-package.sh; chmod +x /workspace/release-npm-package.sh;
+        bazel run //tools/gcloud:gcloud -- auth activate-service-account --key-file=/workspace/gcp_token.txt;
+        rm gcp_token.txt;
+
+  - name: 'gcr.io/$PROJECT_ID/wr-cloud_sdk'
+    id: release-wr-logger
+    entrypoint: 'bash'
+    args:
+      - '-c'
+      - |
+        /workspace/release-npm-package.sh server/packages/logger npm.publish
+
+  - name: 'gcr.io/$PROJECT_ID/wr-cloud_sdk'
+    id: release-backend-api
+    entrypoint: 'bash'
+    args:
+      - '-c'
+      - |
+        /workspace/release-npm-package.sh server/packages/backend-api npm.publish
+
+  - name: 'gcr.io/$PROJECT_ID/wr-cloud_sdk'
+    id: release-data-source
+    entrypoint: 'bash'
+    args:
+      - '-c'
+      - |
+        /workspace/release-npm-package.sh server/packages/data-source npm.publish
+
+  - name: 'gcr.io/$PROJECT_ID/wr-cloud_sdk'
+    id: release-wr-ui
+    entrypoint: 'bash'
+    args:
+      - '-c'
+      - |
+        /workspace/release-npm-package.sh client/packages/ui npm.publish
+
+  - name: 'gcr.io/$PROJECT_ID/wr-cloud_sdk'
+    id: deploy-backend
+    entrypoint: 'bash'
+    args:
+      - '-c'
+      - |
+        /workspace/apply-k8s.sh deploy/cluster/backend:backend.apply
+
+  - name: 'gcr.io/$PROJECT_ID/wr-cloud_sdk'
+    id: deploy-web-client
+    entrypoint: 'bash'
+    args:
+      - '-c'
+      - |
+        /workspace/apply-k8s.sh deploy/cluster/web-client:web-client.apply
+
+# availableSecrets:
+#   secretManager:
+#     - versionName: projects/$PROJECT_ID/secrets/git_repo_ssh_key/versions/latest
+#       env: 'SSH_KEY'
 images:
-  - 'gcr.io/$PROJECT_ID/my-image'
+  - 'gcr.io/$PROJECT_ID/wr-cloud_sdk'

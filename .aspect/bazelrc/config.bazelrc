@@ -3,7 +3,7 @@ build --action_env=APP_ENV=local
 # build --workspace_status_command=./tools/git/commit_hash.sh
 
 # GCP
-build --action_env=GCP_PROJECT_ID=workaround-388416-terraform
+build --action_env=GCP_PROJECT_ID=workaround-388416
 build --action_env=GCP_PROJECT_NAME=workaround
 build --action_env=GCP_REGION=europe-central2
 build --action_env=GCP_CLOUDSDK_CONFIG="/tmp/.wr/.config/gcloud/$(APP_ENV)"
@@ -15,6 +15,8 @@ build --action_env=GCP_TERRAFORM_SA="terraform-sa"
 build --action_env=GCP_TERRAFORM_SA_SECRET="terraform_sa"
 build --action_env=GCP_CLOUD_BUILD_SA="cloud-build-sa"
 build --action_env=GCP_CLOUD_BUILD_SA_SECRET="cloud-build-sa"
+build --action_env=GCP_DEVELOPMENT_SA="development-sa"
+build --action_env=GCP_DEVELOPMENT_SA_SECRET="development-sa"
 
 # Dockerhub
 build --action_env=DOCKER_USERNAME=blerr
@@ -34,8 +36,9 @@ build --action_env=GCP_DOCKER_BACKEND_IMAGE=wr-backend
 build --action_env=GCP_DOCKER_WEB_CLIENT_IMAGE=wr-client
 
 # GKE cluster config
-build --action_env=GKE_CLUSTER_NAME=gke_workaround-388416_europe-central2_wr-cluster-1
+build --action_env=GKE_CLUSTER_NAME_SHORT=wr-cluster-1
 build --action_env=GKE_CLUSTER_LOCATION=europe-central2
+build --action_env=GKE_CLUSTER_NAME=gke_$(GCP_PROJECT_ID)_$(GKE_CLUSTER_LOCATION)_$(GKE_CLUSTER_NAME_SHORT)
 build --action_env=GKE_CLUSTER_LOCATION_ROOT=eu
 
 # POSTGRES SERVICE

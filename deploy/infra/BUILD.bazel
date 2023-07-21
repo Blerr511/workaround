@@ -28,5 +28,7 @@ tf(
         "gcp_cloud_sql_sa": "$(GCP_CLOUD_SQL_SA)",
         "gcp_cloud_sql_sa_secret": "$(GCP_CLOUD_SQL_SA_SECRET)",
         "gcp_cloud_build_sa": "$(GCP_CLOUD_BUILD_SA)",
+        "gcp_development_sa": "$(GCP_DEVELOPMENT_SA)",
+        "gcp_development_sa_secret": "$(GCP_DEVELOPMENT_SA_SECRET)",
     },
 )
