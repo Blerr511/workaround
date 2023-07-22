@@ -27,6 +27,11 @@ build --action_env=GCP_NPM_ARTIFACTS_LOCATION=
 build --action_env=GCP_DOCKER_ARTIFACTS_REPOSITORY=
 build --action_env=GCP_DOCKER_ARTIFACTS_LOCATION=
 
+# Docker image names
+build --action_env=GCP_DOCKER_BACKEND_IMAGE=
+build --action_env=GCP_DOCKER_WEB_CLIENT_IMAGE=
+
+
 # GKE cluster config
 build --action_env=GKE_CLUSTER_NAME_SHORT=
 build --action_env=GKE_CLUSTER_LOCATION=
