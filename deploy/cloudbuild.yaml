@@ -53,7 +53,7 @@ steps:
         cp -pf ./deploy/shell/release-npm-package.sh /workspace/release-npm-package.sh; chmod +x /workspace/release-npm-package.sh;
         cp -pf ./deploy/shell/bzl.sh /workspace/bzl.sh; chmod +x /workspace/bzl.sh;
         cat /workspace/gcp_token.txt;
-        /workspace/bzl.sh run //tools/gcloud:gcloud -- auth activate-service-account --key-file=/workspace/gcp_token.txt;
+        /workspace/bzl.sh run //tools/gcloud:gcloud -- auth activate-service-account --key-file="/workspace/gcp_token.txt";
         rm gcp_token.txt;
 
   - name: 'gcr.io/$PROJECT_ID/wr-cloud_sdk'
