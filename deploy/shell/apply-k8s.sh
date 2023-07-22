@@ -13,4 +13,4 @@ fi
 [[ -z "$_CLUSTER" ]] && echo "Error: _CLUSTER is not set" && exit 1
 [[ -z "$_TAG" ]] && echo "Error: _TAG is not set" && exit 1
 
-bzl run //$CLUSTER_PATH --define _CLUSTER=${_CLUSTER} --define _TAG=${_TAG}
+/workspace/bzl.sh run //$CLUSTER_PATH --define _CLUSTER=${_CLUSTER} --define _TAG=${_TAG}
