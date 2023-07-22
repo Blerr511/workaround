@@ -17,7 +17,7 @@ PACKAGE_NAME=$(cat $PACKAGE_PATH/package.json | jq -r ".name")
 
 echo "Starting release of package $PACKAGE_NAME"
 
-VERSIONS_PATH=$(bazel build //tools/gcloud:npm_package_versions --define _PACKAGE=$PACKAGE_NAME 2>&1 | grep "npm_package_versions.txt" | awk '{ print $1 }')
+VERSIONS_PATH=$(bzl build //tools/gcloud:npm_package_versions --define _PACKAGE=$PACKAGE_NAME 2>&1 | grep "npm_package_versions.txt" | awk '{ print $1 }')
 
 VERSIONS=$(cat $VERSIONS_PATH)
 
@@ -30,6 +30,6 @@ fi
 
 echo "Package $PACKAGE_NAME@$VERSION_TO_CHECK not found in repo, publishing..."
 
-bazel run //$PACKAGE_PATH:$PACKAGE_TARGET
+bzl run //$PACKAGE_PATH:$PACKAGE_TARGET
 
 echo "Package $PACKAGE_NAME@$VERSION_TO_CHECK successfully published to artifacts repo"
