@@ -41,15 +41,6 @@ import_env_vars(
 )
 
 import_env_vars(
-    name = "docker_env_vars",
-    vars_mapping = {
-        "DOCKER_USERNAME": "DOCKER_USERNAME",
-        "DOCKER_WORKSPACE_IMAGE": "DOCKER_WORKSPACE_IMAGE",
-    },
-    visibility = ["//visibility:public"],
-)
-
-import_env_vars(
     name = "postgres_env_vars",
     vars_mapping = {
         "POSTGRES_HOST": "POSTGRES_HOST",

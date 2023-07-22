@@ -1,0 +1,7 @@
+# WORKSPACE
+build --action_env=APP_ENV=dev
+
+build --action_env=GCP_PROJECT_ID=workaround-388416
+build --action_env=GCP_PROJECT_NAME=workaround
+
+import %workspace%/.aspect/bazelrc/cloud/.bazelrc

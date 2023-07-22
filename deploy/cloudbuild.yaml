@@ -43,12 +43,15 @@ steps:
       - 'SHORT_SHA=${SHORT_SHA}'
       - '_TAG=${SHORT_SHA}'
       - '_CLUSTER=${_CLUSTER}'
+      - '_ENV=${_ENV}'
+      - 'BAZEL_RC_PATH=.aspect/bazelrc/${_ENV}/.bazelrc'
     args:
       - '-c'
       - |
         printenv > /workspace/.env;
         cp -pf ./deploy/shell/apply-k8s.sh /workspace/apply-k8s.sh; chmod +x /workspace/apply-k8s.sh;
         cp -pf ./deploy/shell/release-npm-package.sh /workspace/release-npm-package.sh; chmod +x /workspace/release-npm-package.sh;
+        cp -pf ./deploy/shell/bzl.sh /workspace/bzl.sh; chmod +x /workspace/bzl.sh; alias bazel="/workspace/bzl.sh";
         bazel run //tools/gcloud:gcloud -- auth activate-service-account --key-file=/workspace/gcp_token.txt;
         rm gcp_token.txt;
 
