@@ -54,25 +54,6 @@ js_binary(
     entry_point = ":src/main.js",
 )
 
-js_binary(
-    name = "run_schema_generator",
-    data = [":ts"],
-    entry_point = ":src/cli/generate-schema.js",
-)
-
-genrule(
-    name = "schema",
-    srcs = [":ts"],
-    outs = ["schema.gql"],  # the output file
-    cmd = """
-    export BAZEL_BINDIR="."
-    $(execpath :run_schema_generator)
-    cp schema.gql $@
-    """,
-    tools = [":run_schema_generator"],
-    visibility = ["//visibility:public"],
-)
-
 js_image(
     name = "auth",
     srcs = [":ts"],
