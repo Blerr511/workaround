@@ -80,8 +80,22 @@ import_env_vars(
     vars_mapping = {
         "BACKEND_POSTGRES_HOST": "BACKEND_POSTGRES_HOST",
         "BACKEND_POSTGRES_PORT": "BACKEND_POSTGRES_PORT",
+        "BACKEND_WEB_EXPOSE_HOST": "BACKEND_WEB_EXPOSE_HOST",
+        "BACKEND_WEB_EXPOSE_PORT": "BACKEND_WEB_EXPOSE_PORT",
+        "BACKEND_AUTH_API_HOST": "BACKEND_AUTH_API_HOST",
+        "BACKEND_AUTH_API_PORT": "BACKEND_AUTH_API_PORT",
         "BACKEND_POSTGRES_USERNAME": "BACKEND_POSTGRES_USERNAME",
         "BACKEND_POSTGRES_PASSWORD": "BACKEND_POSTGRES_PASSWORD",
         "BACKEND_POSTGRES_DATABASE": "BACKEND_POSTGRES_DATABASE",
     },
+    visibility = ["//visibility:public"],
+)
+
+import_env_vars(
+    name = "auth_env_vars",
+    vars_mapping = {
+        "AUTH_WEB_EXPOSE_HOST": "AUTH_WEB_EXPOSE_HOST",
+        "AUTH_WEB_EXPOSE_PORT": "AUTH_WEB_EXPOSE_PORT",
+    },
+    visibility = ["//visibility:public"],
 )

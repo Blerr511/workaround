@@ -31,7 +31,6 @@ build --action_env=GCP_DOCKER_ARTIFACTS_LOCATION=
 build --action_env=GCP_DOCKER_BACKEND_IMAGE=
 build --action_env=GCP_DOCKER_WEB_CLIENT_IMAGE=
 
-
 # GKE cluster config
 build --action_env=GKE_CLUSTER_NAME_SHORT=
 build --action_env=GKE_CLUSTER_LOCATION=
@@ -49,7 +48,15 @@ build --action_env=POSTGRES_URL="postgresql://$(POSTGRES_USERNAME):$(POSTGRES_PA
 # DATA-SOURCE
 build --action_env=DATA_SOURCE_POSTGRES_URL="postgresql://$(POSTGRES_USERNAME):$(POSTGRES_PASSWORD)@$(POSTGRES_HOST):$(POSTGRES_PORT)/$(POSTGRES_DATABASE)"
 
+# AUTH
+build --action_env=AUTH_WEB_EXPOSE_HOST=localhost
+build --action_env=AUTH_WEB_EXPOSE_PORT=3002
+
 # BACKEND
+build --action_env=BACKEND_WEB_EXPOSE_HOST=localhost
+build --action_env=BACKEND_WEB_EXPOSE_PORT=3001
+build --action_env=BACKEND_AUTH_API_HOST=$(AUTH_WEB_EXPOSE_HOST)
+build --action_env=BACKEND_AUTH_API_PORT=$(AUTH_WEB_EXPOSE_PORT)
 build --action_env=BACKEND_POSTGRES_HOST=$(POSTGRES_HOST)
 build --action_env=BACKEND_POSTGRES_PORT=$(POSTGRES_PORT)
 build --action_env=BACKEND_POSTGRES_USERNAME=$(POSTGRES_USERNAME)

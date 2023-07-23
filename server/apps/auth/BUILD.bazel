@@ -52,6 +52,11 @@ js_binary(
         ":ts",
     ],
     entry_point = ":src/main.js",
+    env = {
+        "WEB_EXPOSE_HOST": "$(AUTH_WEB_EXPOSE_HOST)",
+        "WEB_EXPOSE_PORT": "$(AUTH_WEB_EXPOSE_PORT)",
+    },
+    toolchains = ["//sandbox:auth_env_vars"],
 )
 
 js_image(
