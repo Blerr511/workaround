@@ -23,6 +23,7 @@ build --action_env=GCP_DOCKER_ARTIFACTS_LOCATION=europe-central2
 
 # Docker image names
 build --action_env=GCP_DOCKER_BACKEND_IMAGE=wr-backend
+build --action_env=GCP_DOCKER_AUTH_IMAGE=wr-auth
 build --action_env=GCP_DOCKER_WEB_CLIENT_IMAGE=wr-client
 
 # GKE cluster config

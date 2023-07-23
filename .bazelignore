@@ -6,3 +6,4 @@ server/packages/data-source/prisma/prisma-client/node_modules
 client/apps/web-client/node_modules
 client/packages/ui/node_modules
 server/packages/backend-api/node_modules
+server/apps/auth/node_modules

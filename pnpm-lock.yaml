@@ -109,6 +109,9 @@ importers:
       '@nestjs/platform-express':
         specifier: ^9.0.0
         version: 9.3.8(@nestjs/common@9.3.8)(@nestjs/core@9.3.8)
+      '@wr/logger':
+        specifier: workspace:^
+        version: link:../../packages/logger
       reflect-metadata:
         specifier: ^0.1.13
         version: 0.1.13
