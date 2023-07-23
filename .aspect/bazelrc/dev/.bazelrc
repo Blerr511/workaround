@@ -1,7 +1,10 @@
 # WORKSPACE
 build --action_env=APP_ENV=dev
 
-build --action_env=GCP_PROJECT_ID=workaround-388416
-build --action_env=GCP_PROJECT_NAME=workaround
+build --action_env=GCP_PROJECT_ID=wr-dev-393622
+build --action_env=GCP_PROJECT_NAME=wr-dev
+build --action_env=GCP_REGION=europe-central2
 
 import %workspace%/.aspect/bazelrc/cloud/.bazelrc
+
+build --action_env=GCP_TERRAFORM_SA_SECRET="terraform-sa"

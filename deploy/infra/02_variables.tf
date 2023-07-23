@@ -36,6 +36,11 @@ variable "gcp_cloud_sql_sa_secret" {
   description = "Cloud Sql User service account id"
 }
 
+variable "gcp_cloud_sql_name" {
+  type = string
+  description = "Cloud Sql Instance Name"
+}
+
 
 #
 # Cloud Build
@@ -44,6 +49,20 @@ variable "gcp_cloud_sql_sa_secret" {
 variable "gcp_cloud_build_sa" {
   type        = string
   description = "Cloud Buld User service account id"
+}
+
+#
+# GKE Cluster
+#
+
+variable gke_cluster_name_short {
+  type        = string
+  description = "GKE cluster name"
+}
+
+variable gke_cluster_location {
+  type = string
+  description = "GKE cluster location"
 }
 
 #

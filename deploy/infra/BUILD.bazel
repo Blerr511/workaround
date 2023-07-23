@@ -30,5 +30,28 @@ tf(
         "gcp_cloud_build_sa": "$(GCP_CLOUD_BUILD_SA)",
         "gcp_development_sa": "$(GCP_DEVELOPMENT_SA)",
         "gcp_development_sa_secret": "$(GCP_DEVELOPMENT_SA_SECRET)",
+        "gke_cluster_name_short": "$(GKE_CLUSTER_NAME_SHORT)",
+        "gke_cluster_location": "$(GKE_CLUSTER_LOCATION)",
+        "gcp_cloud_sql_name": "$(GCP_CLOUD_SQL_NAME)",
     },
+)
+
+sh_binary(
+    name = "setup",
+    srcs = ["setup.sh"],
+    args = [
+        "-sa",
+        "$(GCP_TERRAFORM_SA)",
+        "-bucket",
+        "$(GCP_TERRAFORM_BUCKET)",
+        "-secret",
+        "$(GCP_TERRAFORM_SA_SECRET)",
+    ],
+    env = {
+        "PROJECT_ID": "$(GCP_PROJECT_ID)",
+    },
+    toolchains = [
+        "//sandbox:gcp_env_vars",
+        "//sandbox:workspace_env_vars",
+    ],
 )

@@ -2,7 +2,8 @@
 # GCP
 build --action_env=GCP_CLOUD_SQL_SA="cloud-sql-user"
 build --action_env=GCP_CLOUD_SQL_SA_SECRET="cloud_sql_sa"
-build --action_env=GCP_CLOUD_SQL_INSTANCE="$(GCP_PROJECT_ID):$(GCP_REGION):backend-postgres"
+build --action_env=GCP_CLOUD_SQL_NAME=backend-postgres
+build --action_env=GCP_CLOUD_SQL_INSTANCE="$(GCP_PROJECT_ID):$(GCP_REGION):$(GCP_CLOUD_SQL_NAME)"
 build --action_env=GCP_TERRAFORM_BUCKET="$(GCP_PROJECT_NAME)-terraform"
 build --action_env=GCP_TERRAFORM_SA="terraform-sa"
 build --action_env=GCP_TERRAFORM_SA_SECRET="terraform_sa"
@@ -29,5 +30,3 @@ build --action_env=GKE_CLUSTER_NAME_SHORT=wr-cluster-1
 build --action_env=GKE_CLUSTER_LOCATION=europe-central2
 build --action_env=GKE_CLUSTER_NAME=gke_$(GCP_PROJECT_ID)_$(GKE_CLUSTER_LOCATION)_$(GKE_CLUSTER_NAME_SHORT)
 build --action_env=GKE_CLUSTER_LOCATION_ROOT=eu
-
-try-import %workspace%/.aspect/bazelrc/cloud/cloud-$(APP_ENV).bazelrc

@@ -11,10 +11,18 @@ command -v terraform >/dev/null 2>&1 || {
 export GOOGLE_APPLICATION_CREDENTIALS="$(pwd)/$GOOGLE_APPLICATION_CREDENTIALS"
 [[ -f "$GOOGLE_APPLICATION_CREDENTIALS" ]] || (echo "ERROR: GOOGLE_APPLICATION_CREDENTIALS referencing non existing file" && exit 1)
 
-[[ -n "$TF_VAR_gcp_project_number" ]] && TF_VAR_gcp_project_number=$(eval $TF_VAR_gcp_project_number)
+[[ -z "$TF_VAR_gcp_terraform_bucket" ]] && echo "Error: TF var gcp_terraform_bucket is not set" && exit 1
 
 echo "Terraform workdir: $WORKDIR"
 
 cd $WORKDIR
+
+case $@ in
+*"init"*)
+  echo "Running terraform with buckend config 'bucket=$TF_VAR_gcp_terraform_bucket'"
+  terraform $@ -backend-config="bucket=$TF_VAR_gcp_terraform_bucket"
+  exit 0
+  ;;
+esac
 
 terraform $@
