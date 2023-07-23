@@ -55,6 +55,12 @@ js_binary(
     env = {
         "WEB_EXPOSE_HOST": "$(AUTH_WEB_EXPOSE_HOST)",
         "WEB_EXPOSE_PORT": "$(AUTH_WEB_EXPOSE_PORT)",
+        "POSTGRES_HOST": "$(AUTH_POSTGRES_HOST)",
+        "POSTGRES_PORT": "$(AUTH_POSTGRES_PORT)",
+        "POSTGRES_USERNAME": "$(AUTH_POSTGRES_USERNAME)",
+        "POSTGRES_PASSWORD": "$(AUTH_POSTGRES_PASSWORD)",
+        "POSTGRES_DATABASE": "$(AUTH_POSTGRES_DATABASE)",
+        "POSTGRES_SCHEMA": "$(AUTH_POSTGRES_SCHEMA)",
     },
     toolchains = ["//sandbox:auth_env_vars"],
 )

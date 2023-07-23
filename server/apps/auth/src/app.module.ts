@@ -2,12 +2,33 @@ import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { ConfigModule } from './configuration/config.module';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { ConfigService } from './configuration/config.service';
 
 @Module({
   imports: [
     ConfigModule.forRoot({
       prefix: process.env.BAZEL_CONFIG_PREFIX,
       ignoreValidation: false,
+    }),
+
+    TypeOrmModule.forRootAsync({
+      inject: [ConfigService],
+      useFactory(configService: ConfigService) {
+        const { database, host, password, port, schema, username } =
+          configService.safeGet('postgres');
+
+        return {
+          type: 'postgres',
+          host,
+          port,
+          database,
+          username,
+          password,
+          schema,
+          autoLoadEntities: true,
+        };
+      },
     }),
   ],
   controllers: [AppController],
