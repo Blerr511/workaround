@@ -1,4 +1,4 @@
-import { Inject, Injectable, OnApplicationBootstrap } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import {
   CONFIG_OPTIONS_TOKEN,
   CONFIG_STORAGE_TOKEN,
@@ -8,7 +8,7 @@ import { ConfigSchema } from './config.schema';
 import { validate } from 'class-validator';
 
 @Injectable()
-export class ConfigService implements OnApplicationBootstrap {
+export class ConfigService {
   constructor(
     @Inject(CONFIG_OPTIONS_TOKEN) private readonly options: ConfigModuleOptions,
     @Inject(CONFIG_STORAGE_TOKEN) private readonly config: ConfigSchema,
@@ -20,7 +20,7 @@ export class ConfigService implements OnApplicationBootstrap {
     return value;
   }
 
-  async onApplicationBootstrap() {
+  protected async onApplicationBootstrap() {
     if (!this.options.ignoreValidation) {
       const errors = await validate(this.config);
       if (errors.length)

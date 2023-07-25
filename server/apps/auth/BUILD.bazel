@@ -2,6 +2,8 @@ load("@npm//:defs.bzl", "npm_link_all_packages")
 load("@aspect_rules_js//js:defs.bzl", "js_binary")
 load("@aspect_rules_ts//ts:defs.bzl", "ts_config", "ts_project")
 load("//tools/utils:js_image.bzl", "js_image")
+load("@npm//server/apps/auth:typeorm/package_json.bzl", typeorm = "bin")
+load("@npm//server/apps/auth:ts-node/package_json.bzl", ts_node = "bin")
 
 npm_link_all_packages(name = "node_modules")
 
@@ -19,8 +21,11 @@ srcs = glob(
     [
         "src/**/*.ts",
         "test/**/*.ts",
+        "datasource.ts",
     ],
 )
+
+migrations = glob(["migrations/**"])
 
 data = ["project_support_files"]
 
@@ -74,4 +79,53 @@ js_image(
     deps = [
         "//server/packages/logger:logger.json",
     ],
+)
+
+ts_project(
+    name = "ts_migrations",
+    srcs = migrations,
+    tsconfig = ":tsconfig",
+    validate = False,
+    deps = deps,
+)
+
+typeorm.typeorm_binary(
+    name = "migration.apply",
+    args = [
+        "migration:run",
+        "-d $(location :ts_datasource)",
+    ],
+    data = [
+        ":ts_migrations",
+    ],
+    env = {
+        "POSTGRES_HOST": "$(AUTH_POSTGRES_HOST)",
+        "POSTGRES_PORT": "$(AUTH_POSTGRES_PORT)",
+        "POSTGRES_USERNAME": "$(AUTH_POSTGRES_USERNAME)",
+        "POSTGRES_PASSWORD": "$(AUTH_POSTGRES_PASSWORD)",
+        "POSTGRES_DATABASE": "$(AUTH_POSTGRES_DATABASE)",
+        "POSTGRES_SCHEMA": "$(AUTH_POSTGRES_SCHEMA)",
+    },
+    toolchains = ["//sandbox:auth_env_vars"],
+)
+
+typeorm.typeorm_binary(
+    name = "migration.generate",
+    args = [
+        "migration:generate",
+        "-d server/apps/auth/datasource.js",
+        "$$(pwd)/server/apps/migrations/name",
+    ],
+    data = [
+        ":ts",
+    ],
+    env = {
+        "POSTGRES_HOST": "$(AUTH_POSTGRES_HOST)",
+        "POSTGRES_PORT": "$(AUTH_POSTGRES_PORT)",
+        "POSTGRES_USERNAME": "$(AUTH_POSTGRES_USERNAME)",
+        "POSTGRES_PASSWORD": "$(AUTH_POSTGRES_PASSWORD)",
+        "POSTGRES_DATABASE": "$(AUTH_POSTGRES_DATABASE)",
+        "POSTGRES_SCHEMA": "$(AUTH_POSTGRES_SCHEMA)",
+    },
+    toolchains = ["//sandbox:auth_env_vars"],
 )

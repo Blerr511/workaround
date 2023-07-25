@@ -1,7 +1,15 @@
-import { Expose } from 'class-transformer';
+import { Expose, plainToInstance } from 'class-transformer';
 import { IsNotEmpty, IsNumber, IsString } from 'class-validator';
 
 export class ConfigSchema {
+  static _create(config: unknown) {
+    return plainToInstance(ConfigSchema, config, {
+      exposeDefaultValues: true,
+      enableImplicitConversion: true,
+      excludeExtraneousValues: true,
+    });
+  }
+
   @IsString()
   @IsNotEmpty()
   @Expose()
@@ -57,6 +65,12 @@ export class ConfigSchema {
       password: this.POSTGRES_PASSWORD,
       database: this.POSTGRES_DATABASE,
       schema: this.POSTGRES_SCHEMA,
+    };
+  }
+
+  get crypto() {
+    return {
+      salt: 10,
     };
   }
 }

@@ -4,6 +4,10 @@ import { AppService } from './app.service';
 import { ConfigModule } from './configuration/config.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigService } from './configuration/config.service';
+import { AuthenticationModule } from './modules/authentication/authentication.module';
+import { RegistrationModule } from './modules/registration/registration.module';
+
+const INTERNAL = [AuthenticationModule, RegistrationModule];
 
 @Module({
   imports: [
@@ -26,10 +30,11 @@ import { ConfigService } from './configuration/config.service';
           username,
           password,
           schema,
-          autoLoadEntities: true,
+          synchronize: false,
         };
       },
     }),
+    ...INTERNAL,
   ],
   controllers: [AppController],
   providers: [AppService],
