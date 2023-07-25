@@ -1,0 +1,15 @@
+#!/bin/bash
+
+b=$0
+
+INPUT=$1
+OUTPUT=$2
+
+echo $1 $2 $3 $4
+
+echo $INPUT $OUTPUT
+echo $BUILD_WORKSPACE_DIRECTORY
+
+cat $INPUT
+
+# cp -fvr $INPUT $BUILD_WORKSPACE_DIRECTORY/$OUTPUT

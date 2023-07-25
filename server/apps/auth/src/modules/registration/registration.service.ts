@@ -28,6 +28,6 @@ export class RegistrationService {
       providers: [new EmailProvider(params.email, passwordHash)],
     });
 
-    return newUser;
+    return await this.userDao.getByUid(newUser.uid, { providers: true });
   }
 }

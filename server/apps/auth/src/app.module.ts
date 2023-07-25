@@ -30,6 +30,8 @@ const INTERNAL = [AuthenticationModule, RegistrationModule];
           username,
           password,
           schema,
+          autoLoadEntities: true,
+          entities: ['*.entity.{ts,js}'],
           synchronize: false,
         };
       },

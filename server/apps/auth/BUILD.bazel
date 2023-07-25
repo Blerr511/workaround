@@ -1,9 +1,10 @@
 load("@npm//:defs.bzl", "npm_link_all_packages")
-load("@aspect_rules_js//js:defs.bzl", "js_binary")
+load("@aspect_rules_js//js:defs.bzl", "js_binary", "js_run_binary")
 load("@aspect_rules_ts//ts:defs.bzl", "ts_config", "ts_project")
 load("//tools/utils:js_image.bzl", "js_image")
 load("@npm//server/apps/auth:typeorm/package_json.bzl", typeorm = "bin")
 load("@npm//server/apps/auth:ts-node/package_json.bzl", ts_node = "bin")
+load("@bazel_skylib//rules:write_file.bzl", "write_file")
 
 npm_link_all_packages(name = "node_modules")
 
@@ -110,14 +111,16 @@ typeorm.typeorm_binary(
 )
 
 typeorm.typeorm_binary(
-    name = "migration.generate",
+    name = "typeorm",
+)
+
+js_run_binary(
+    name = "generate_migration_file",
+    srcs = [":ts"],
     args = [
         "migration:generate",
         "-d server/apps/auth/datasource.js",
-        "$$(pwd)/server/apps/migrations/name",
-    ],
-    data = [
-        ":ts",
+        "{}/migrations/$(NAME)".format(package_name()),
     ],
     env = {
         "POSTGRES_HOST": "$(AUTH_POSTGRES_HOST)",
@@ -127,5 +130,29 @@ typeorm.typeorm_binary(
         "POSTGRES_DATABASE": "$(AUTH_POSTGRES_DATABASE)",
         "POSTGRES_SCHEMA": "$(AUTH_POSTGRES_SCHEMA)",
     },
+    out_dirs = ["migrations"],
+    tags = ["requires-network"],
+    tool = ":typeorm",
     toolchains = ["//sandbox:auth_env_vars"],
+)
+
+genrule(
+    name = "a",
+    srcs = [":generate_migration_file"],
+    outs = ["generated-mig.ts"],
+    cmd = """
+    FILE=$$(ls $(locations :generate_migration_file))
+    cp $(locations :generate_migration_file)/$$FILE $@
+    """,
+)
+
+# This is what you can `bazel run` and it can write to the source folder
+sh_binary(
+    name = "m.g",
+    srcs = ["update.sh"],
+    args = [
+        "$(location :a)",
+        "{}/migrations".format(package_name()),
+    ],
+    data = [":a"],
 )
