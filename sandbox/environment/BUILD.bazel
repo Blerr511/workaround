@@ -10,6 +10,7 @@ sh_binary(
         "--file={package}/docker-compose.development.yml".format(package = package_name),
     ],
     data = [
+        "init-db.sh",
         ":docker-compose.development.yml",
         "//sandbox:local_dc_env_vars",
     ],
