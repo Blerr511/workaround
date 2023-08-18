@@ -1,0 +1,6 @@
+{
+  "$schema": "https://raw.githubusercontent.com/SchemaStore/schemastore/master/src/schemas/json/nodemon.json",
+  "exec": "bazel run //server/apps/image-gen:start",
+  "watch": ["./src", "requirements.txt"],
+  "ext": ".py"
+}

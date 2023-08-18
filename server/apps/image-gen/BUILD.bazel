@@ -1,0 +1,22 @@
+
+load("@rules_python//python:defs.bzl", "py_binary")
+load("@image_gen_deps//:requirements.bzl", "all_requirements")
+
+srcs = glob(["**/*.py"])
+
+deps = all_requirements
+
+env = {
+    "OPENAI_API_KEY": "$(IMAGE_GEN_OPENAI_API_KEY)"
+}
+
+py_binary(
+    name = "start",
+    srcs = srcs,
+    main = ":src/main.py",
+    deps = deps,
+    toolchains = ["//sandbox:image_gen_env_vars"],
+    env = env,
+)
+
+exports_files(["requirements.txt"])

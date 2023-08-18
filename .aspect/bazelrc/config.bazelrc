@@ -58,7 +58,6 @@ build --action_env=AUTH_POSTGRES_PASSWORD=$(POSTGRES_PASSWORD)
 build --action_env=AUTH_POSTGRES_DATABASE=$(POSTGRES_DATABASE)
 build --action_env=AUTH_POSTGRES_SCHEMA=auth
 
-
 # BACKEND
 build --action_env=BACKEND_WEB_EXPOSE_HOST=localhost
 build --action_env=BACKEND_WEB_EXPOSE_PORT=3001
@@ -69,3 +68,7 @@ build --action_env=BACKEND_POSTGRES_PORT=$(POSTGRES_PORT)
 build --action_env=BACKEND_POSTGRES_USERNAME=$(POSTGRES_USERNAME)
 build --action_env=BACKEND_POSTGRES_PASSWORD=$(POSTGRES_PASSWORD)
 build --action_env=BACKEND_POSTGRES_DATABASE=$(POSTGRES_DATABASE)
+
+# Image Gen service
+# Fill it in your local.bazelrc file
+build --action_env=IMAGE_GEN_OPENAI_API_KEY=

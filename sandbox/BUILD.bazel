@@ -105,3 +105,12 @@ import_env_vars(
     },
     visibility = ["//visibility:public"],
 )
+
+
+import_env_vars(
+    name = "image_gen_env_vars",
+    vars_mapping = {
+        "IMAGE_GEN_OPENAI_API_KEY": "IMAGE_GEN_OPENAI_API_KEY",
+    },
+    visibility = ["//visibility:public"],
+)
