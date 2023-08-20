@@ -5,7 +5,7 @@ import { PrismaClient } from '@wr/data-source';
 export class MyUserDao {
   constructor(private readonly prisma: PrismaClient) {}
 
-  dummy() {
+  async dummy() {
     return this.prisma.myUser.findFirst();
   }
 }

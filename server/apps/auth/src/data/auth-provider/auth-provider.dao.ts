@@ -16,4 +16,21 @@ export class AuthProviderDao {
 
     return provider;
   }
+
+  async findByProvider(
+    providerId: string,
+    identifier: string,
+  ): Promise<AuthProvider | null> {
+    const provider = await this.authProviderRepo.findOne({
+      where: {
+        identifier,
+        providerId,
+      },
+      relations: {
+        user: true,
+      },
+    });
+
+    return provider;
+  }
 }

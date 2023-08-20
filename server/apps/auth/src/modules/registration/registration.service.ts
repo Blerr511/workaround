@@ -1,5 +1,5 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
-import { User, UserDao } from '../../data/user';
+import { WrUser, UserDao } from '../../data/user';
 import { CryptoService } from '../crypto/crypto.service';
 import { EmailPassSignUpParams } from './registration.type';
 import { AuthProviderDao } from '../../data/auth-provider/auth-provider.dao';
@@ -13,7 +13,7 @@ export class RegistrationService {
     private readonly cryptoService: CryptoService,
   ) {}
 
-  async emailPassSignUp(params: EmailPassSignUpParams): Promise<User> {
+  async emailPassSignUp(params: EmailPassSignUpParams): Promise<WrUser> {
     const existing = await this.authProviderDao.findByEmailProvider(
       params.email,
     );

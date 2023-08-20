@@ -4,6 +4,7 @@ load("@aspect_rules_ts//ts:defs.bzl", "ts_config", "ts_project")
 load("//tools/utils:js_image.bzl", "js_image")
 load("@npm//server/apps/auth:typeorm/package_json.bzl", typeorm = "bin")
 load("@npm//server/apps/auth:ts-node/package_json.bzl", ts_node = "bin")
+load("//tools/bazel/copy-to-source:defs.bzl", "copy_to_source")
 
 npm_link_all_packages(name = "node_modules")
 
@@ -21,9 +22,8 @@ srcs = glob(
     [
         "src/**/*.ts",
         "test/**/*.ts",
-        "datasource.ts",
     ],
-)
+) + ["datasource.ts"]
 
 migrations = glob(["migrations/**"])
 
@@ -40,7 +40,7 @@ ts_config(
 
 ts_project(
     name = "ts",
-    srcs = srcs,
+    srcs = srcs + migrations,
     data = data,
     declaration = True,
     incremental = True,
@@ -66,6 +66,8 @@ js_binary(
         "POSTGRES_PASSWORD": "$(AUTH_POSTGRES_PASSWORD)",
         "POSTGRES_DATABASE": "$(AUTH_POSTGRES_DATABASE)",
         "POSTGRES_SCHEMA": "$(AUTH_POSTGRES_SCHEMA)",
+        "JWT_SECRET": "$(AUTH_JWT_SECRET)",
+        "JWT_LIFE_SECONDS": "$(AUTH_JWT_LIFE_SECONDS)",
     },
     toolchains = ["//sandbox:auth_env_vars"],
 )
@@ -81,46 +83,74 @@ js_image(
     ],
 )
 
-ts_project(
-    name = "ts_migrations",
-    srcs = migrations,
-    tsconfig = ":tsconfig",
-    validate = False,
-    deps = deps,
+typeorm.typeorm_binary(
+    name = "typeorm",
+)
+
+js_run_binary(
+    name = "migration.generate.file",
+    srcs = [":ts"],
+    args = [
+        "migration:generate",
+        "-d server/apps/auth/datasource.js",
+        "{}/migrations_data/$(NAME)".format(package_name()),
+    ],
+    env = {
+        "POSTGRES_HOST": "$(AUTH_POSTGRES_HOST)",
+        "POSTGRES_PORT": "$(AUTH_POSTGRES_PORT)",
+        "POSTGRES_USERNAME": "$(AUTH_POSTGRES_USERNAME)",
+        "POSTGRES_PASSWORD": "$(AUTH_POSTGRES_PASSWORD)",
+        "POSTGRES_DATABASE": "$(AUTH_POSTGRES_DATABASE)",
+        "POSTGRES_SCHEMA": "$(AUTH_POSTGRES_SCHEMA)",
+    },
+    out_dirs = ["migrations_data"],
+    tags = ["requires-network"],
+    tool = ":typeorm",
+    toolchains = ["//sandbox:auth_env_vars"],
+)
+
+js_run_binary(
+    name = "migration.create.file",
+    srcs = [":ts"],
+    args = [
+        "migration:create",
+        "{}/migrations_data/$(NAME)".format(package_name()),
+    ],
+    env = {
+        "POSTGRES_HOST": "$(AUTH_POSTGRES_HOST)",
+        "POSTGRES_PORT": "$(AUTH_POSTGRES_PORT)",
+        "POSTGRES_USERNAME": "$(AUTH_POSTGRES_USERNAME)",
+        "POSTGRES_PASSWORD": "$(AUTH_POSTGRES_PASSWORD)",
+        "POSTGRES_DATABASE": "$(AUTH_POSTGRES_DATABASE)",
+        "POSTGRES_SCHEMA": "$(AUTH_POSTGRES_SCHEMA)",
+    },
+    out_dirs = ["migrations_data"],
+    tags = ["requires-network"],
+    tool = ":typeorm",
+    toolchains = ["//sandbox:auth_env_vars"],
+)
+
+copy_to_source(
+    name = "migration.generate",
+    data = [":migration.generate.file"],
+    destionation = "{}/migrations".format(package_name()),
+    source = "$(location :migration.generate.file)",
+)
+
+copy_to_source(
+    name = "migration.create",
+    data = [":migration.create.file"],
+    destionation = "{}/migrations".format(package_name()),
+    source = "$(location :migration.create.file)",
 )
 
 typeorm.typeorm_binary(
     name = "migration.apply",
     args = [
         "migration:run",
-        "-d $(location :ts_datasource)",
-    ],
-    data = [
-        ":ts_migrations",
-    ],
-    env = {
-        "POSTGRES_HOST": "$(AUTH_POSTGRES_HOST)",
-        "POSTGRES_PORT": "$(AUTH_POSTGRES_PORT)",
-        "POSTGRES_USERNAME": "$(AUTH_POSTGRES_USERNAME)",
-        "POSTGRES_PASSWORD": "$(AUTH_POSTGRES_PASSWORD)",
-        "POSTGRES_DATABASE": "$(AUTH_POSTGRES_DATABASE)",
-        "POSTGRES_SCHEMA": "$(AUTH_POSTGRES_SCHEMA)",
-    },
-    toolchains = ["//sandbox:auth_env_vars"],
-)
-
-typeorm.typeorm_binary(
-    name = "typeorm",
-)
-
-js_run_binary(
-    name = "generate_migration_file",
-    srcs = [":ts"],
-    args = [
-        "migration:generate",
         "-d server/apps/auth/datasource.js",
-        "{}/migrations/$(NAME)".format(package_name()),
     ],
+    data = [":ts"],
     env = {
         "POSTGRES_HOST": "$(AUTH_POSTGRES_HOST)",
         "POSTGRES_PORT": "$(AUTH_POSTGRES_PORT)",
@@ -129,29 +159,6 @@ js_run_binary(
         "POSTGRES_DATABASE": "$(AUTH_POSTGRES_DATABASE)",
         "POSTGRES_SCHEMA": "$(AUTH_POSTGRES_SCHEMA)",
     },
-    out_dirs = ["migrations"],
     tags = ["requires-network"],
-    tool = ":typeorm",
     toolchains = ["//sandbox:auth_env_vars"],
-)
-
-genrule(
-    name = "a",
-    srcs = [":generate_migration_file"],
-    outs = ["generated-mig.ts"],
-    cmd = """
-    FILE=$$(ls $(locations :generate_migration_file))
-    cp $(locations :generate_migration_file)/$$FILE $@
-    """,
-)
-
-# This is what you can `bazel run` and it can write to the source folder
-sh_binary(
-    name = "m.g",
-    srcs = ["update.sh"],
-    args = [
-        "$(location :a)",
-        "{}/migrations".format(package_name()),
-    ],
-    data = [":a"],
 )

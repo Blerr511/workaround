@@ -1,4 +1,4 @@
-import { Expose, plainToInstance } from 'class-transformer';
+import { Expose, Transform, plainToInstance } from 'class-transformer';
 import { IsNotEmpty, IsNumber, IsString } from 'class-validator';
 
 export class ConfigSchema {
@@ -50,6 +50,17 @@ export class ConfigSchema {
   @Expose()
   POSTGRES_SCHEMA: string;
 
+  @IsString()
+  @IsNotEmpty()
+  @Expose()
+  JWT_SECRET: string;
+
+  @Transform(({ value }) => parseInt(String(value)))
+  @IsNotEmpty()
+  @IsNumber()
+  @Expose()
+  JWT_LIFE_SECONDS: number;
+
   get web() {
     return {
       host: this.WEB_EXPOSE_HOST,
@@ -71,6 +82,8 @@ export class ConfigSchema {
   get crypto() {
     return {
       salt: 10,
+      jwtSecret: this.JWT_SECRET,
+      jwtLifeSeconds: this.JWT_LIFE_SECONDS,
     };
   }
 }

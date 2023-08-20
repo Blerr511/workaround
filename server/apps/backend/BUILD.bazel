@@ -55,9 +55,13 @@ js_binary(
         ":ts",
     ],
     entry_point = ":src/main.js",
-    env = {"DATA_SOURCE_POSTGRES_URL": "$(DATA_SOURCE_POSTGRES_URL)"},
+    env = {
+        "DATA_SOURCE_POSTGRES_URL": "$(DATA_SOURCE_POSTGRES_URL)",
+        "AUTH_VERIFY_WEBHOOK_URL": "$(BACKEND_AUTH_VERIFY_WEBHOOK_URL)",
+    },
     toolchains = [
         "//sandbox:data_source_env_vars",
+        "//sandbox:backend_env_vars",
     ],
 )
 
@@ -83,9 +87,9 @@ genrule(
 js_image(
     name = "backend",
     srcs = [":ts"],
+    image = "$(GCP_DOCKER_BACKEND_IMAGE)",
     package_json = "package.json",
     start_cmd = "node src/main.js",
-    image = "$(GCP_DOCKER_BACKEND_IMAGE)",
     deps = [
         "//server/packages/data-source:data-source.json",
         "//server/packages/logger:logger.json",

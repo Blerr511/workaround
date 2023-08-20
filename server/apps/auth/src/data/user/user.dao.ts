@@ -1,19 +1,32 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { User } from './user.entity';
+import { WrUser } from './user.entity';
 import { DeepPartial, FindOptionsRelations, Repository } from 'typeorm';
 
 @Injectable()
 export class UserDao {
-  @InjectRepository(User) private readonly userRepo: Repository<User>;
+  @InjectRepository(WrUser) private readonly userRepo: Repository<WrUser>;
 
-  async getByUid(uid: string, relations: FindOptionsRelations<User>) {
+  async getByUid(uid: string, relations: FindOptionsRelations<WrUser>) {
     return await this.userRepo.findOne({ where: { uid }, relations });
   }
 
+  async getByIdentifier(identifier: string) {
+    return await this.userRepo.findOne({
+      where: {
+        providers: {
+          identifier,
+        },
+      },
+      relations: {
+        providers: true,
+      },
+    });
+  }
+
   async createNewUserWithProvider(
-    data: Pick<DeepPartial<User>, 'providers'>,
-  ): Promise<User> {
+    data: Pick<DeepPartial<WrUser>, 'providers'>,
+  ): Promise<WrUser> {
     const newUser = this.userRepo.create(data);
 
     return await this.userRepo.save(newUser);

@@ -1,4 +1,4 @@
 import { AuthProvider } from './auth-provider';
-import { User } from './user';
+import { WrUser } from './user';
 
-export const entities = [User, AuthProvider];
+export const entities = [WrUser, AuthProvider];

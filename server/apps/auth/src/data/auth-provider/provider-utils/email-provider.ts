@@ -1,4 +1,4 @@
-import { User } from '../../user';
+import { WrUser } from '../../user';
 import { AuthProvider } from '../auth-provider.entity';
 
 export class EmailProvider implements AuthProvider {
@@ -7,7 +7,7 @@ export class EmailProvider implements AuthProvider {
   providerId = 'email';
   identifier: string;
   password: string;
-  user: User;
+  user: WrUser;
 
   constructor(email: string, hash: string) {
     this.identifier = email;

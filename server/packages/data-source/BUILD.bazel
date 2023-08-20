@@ -73,6 +73,28 @@ _prisma.prisma(
     tags = ["requires-network"],
 )
 
+_prisma.prisma_binary(
+    name = "migrate",
+    data = [
+        "prisma/schema.prisma",
+        ":node_modules",
+        "//:node_modules/typescript",
+    ],
+    args = [
+        "db",
+        "push",
+        "--schema",
+        "$(location prisma/schema.prisma)",
+        "--skip-generate"
+    ],
+    env = {
+        "DATA_SOURCE_POSTGRES_URL": "$(DATA_SOURCE_POSTGRES_URL)"
+    },
+    toolchains = ["//sandbox:data_source_env_vars"],
+    tags = ["requires-network"],
+)
+
+
 js_library(
     name = "prisma-client",
     srcs = [":generate"],

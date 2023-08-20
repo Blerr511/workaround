@@ -60,8 +60,10 @@ build --action_env=AUTH_POSTGRES_HOST=$(POSTGRES_HOST)
 build --action_env=AUTH_POSTGRES_PORT=$(POSTGRES_PORT)
 build --action_env=AUTH_POSTGRES_USERNAME=$(POSTGRES_USERNAME)
 build --action_env=AUTH_POSTGRES_PASSWORD=$(POSTGRES_PASSWORD)
-build --action_env=AUTH_POSTGRES_DATABASE=$(POSTGRES_DATABASE)
-build --action_env=AUTH_POSTGRES_SCHEMA=auth
+build --action_env=AUTH_POSTGRES_DATABASE=wrauth
+build --action_env=AUTH_POSTGRES_SCHEMA=public
+build --action_env=AUTH_JWT_SECRET=qazedfrtgb4567
+build --action_env=AUTH_JWT_LIFE_SECONDS=3600
 
 # BACKEND
 build --action_env=BACKEND_WEB_EXPOSE_HOST=localhost
@@ -73,6 +75,7 @@ build --action_env=BACKEND_POSTGRES_PORT=$(POSTGRES_PORT)
 build --action_env=BACKEND_POSTGRES_USERNAME=$(POSTGRES_USERNAME)
 build --action_env=BACKEND_POSTGRES_PASSWORD=$(POSTGRES_PASSWORD)
 build --action_env=BACKEND_POSTGRES_DATABASE=$(POSTGRES_DATABASE)
+build --action_env=BACKEND_AUTH_VERIFY_WEBHOOK_URL=http://$(AUTH_WEB_EXPOSE_HOST):$(AUTH_WEB_EXPOSE_PORT)/api/authentication/verify
 
 # Image Gen service
 

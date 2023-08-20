@@ -7,5 +7,6 @@ import { MyUserDao } from './my-user.dao';
   imports: [],
   providers: [MyUserResolver, MyUserDao, MyUserService],
   controllers: [],
+  exports: [MyUserService, MyUserDao],
 })
 export class MyUserModule {}

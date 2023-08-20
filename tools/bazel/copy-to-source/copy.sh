@@ -1,0 +1,7 @@
+#!/bin/bash
+INPUT=$1
+OUTPUT=$2
+
+echo "Copying to $(ls $INPUT) $BUILD_WORKSPACE_DIRECTORY/$OUTPUT"
+
+cp -L -r $INPUT/* $BUILD_WORKSPACE_DIRECTORY/$OUTPUT

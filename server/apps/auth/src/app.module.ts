@@ -6,6 +6,8 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigService } from './configuration/config.service';
 import { AuthenticationModule } from './modules/authentication/authentication.module';
 import { RegistrationModule } from './modules/registration/registration.module';
+import { APP_GUARD } from '@nestjs/core';
+import { AuthGuard } from './app/auth';
 
 const INTERNAL = [AuthenticationModule, RegistrationModule];
 
@@ -39,6 +41,12 @@ const INTERNAL = [AuthenticationModule, RegistrationModule];
     ...INTERNAL,
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [
+    AppService,
+    {
+      provide: APP_GUARD,
+      useClass: AuthGuard,
+    },
+  ],
 })
 export class AppModule {}

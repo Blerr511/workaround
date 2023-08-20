@@ -5,7 +5,7 @@ import {
   PrimaryGeneratedColumn,
   Unique,
 } from 'typeorm';
-import { User } from '../user/user.entity';
+import { WrUser } from '../user/user.entity';
 import { Constraint } from '../constraint';
 
 @Entity()
@@ -26,9 +26,9 @@ export class AuthProvider {
   @Column({ nullable: true })
   password: string;
 
-  @ManyToOne(() => User, (user) => user.providers, {
+  @ManyToOne(() => WrUser, (user) => user.providers, {
     onDelete: 'CASCADE',
     onUpdate: 'CASCADE',
   })
-  user: User;
+  user: WrUser;
 }

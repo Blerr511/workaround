@@ -99,6 +99,7 @@ import_env_vars(
         "BACKEND_POSTGRES_USERNAME": "BACKEND_POSTGRES_USERNAME",
         "BACKEND_POSTGRES_PASSWORD": "BACKEND_POSTGRES_PASSWORD",
         "BACKEND_POSTGRES_DATABASE": "BACKEND_POSTGRES_DATABASE",
+        "BACKEND_AUTH_VERIFY_WEBHOOK_URL": "BACKEND_AUTH_VERIFY_WEBHOOK_URL",
     },
     visibility = ["//visibility:public"],
 )
@@ -114,10 +115,11 @@ import_env_vars(
         "AUTH_POSTGRES_PASSWORD": "AUTH_POSTGRES_PASSWORD",
         "AUTH_POSTGRES_DATABASE": "AUTH_POSTGRES_DATABASE",
         "AUTH_POSTGRES_SCHEMA": "AUTH_POSTGRES_SCHEMA",
+        "AUTH_JWT_SECRET": "AUTH_JWT_SECRET",
+        "AUTH_JWT_LIFE_SECONDS": "AUTH_JWT_LIFE_SECONDS",
     },
     visibility = ["//visibility:public"],
 )
-
 
 import_env_vars(
     name = "image_gen_env_vars",
