@@ -4,6 +4,7 @@ import_env_vars(
     name = "workspace_env_vars",
     vars_mapping = {
         "APP_ENV": "APP_ENV",
+        "PY_VENV": "PY_VENV",
     },
     visibility = ["//visibility:public"],
 )
@@ -56,6 +57,15 @@ import_env_vars(
 )
 
 import_env_vars(
+    name = "redis_env_vars",
+    vars_mapping = {
+        "REDIS_HOST": "REDIS_HOST",
+        "REDIS_PORT": "REDIS_PORT",
+    },
+    visibility = ["//visibility:public"],
+)
+
+import_env_vars(
     name = "local_dc_env_vars",
     vars_mapping = {
         "POSTGRES_HOST": "POSTGRES_HOST",
@@ -63,6 +73,8 @@ import_env_vars(
         "POSTGRES_USERNAME": "POSTGRES_USERNAME",
         "POSTGRES_PASSWORD": "POSTGRES_PASSWORD",
         "POSTGRES_DATABASE": "POSTGRES_DATABASE",
+        "REDIS_HOST": "REDIS_HOST",
+        "REDIS_PORT": "REDIS_PORT",
     },
     visibility = ["//visibility:public"],
 )
@@ -111,6 +123,17 @@ import_env_vars(
     name = "image_gen_env_vars",
     vars_mapping = {
         "IMAGE_GEN_OPENAI_API_KEY": "IMAGE_GEN_OPENAI_API_KEY",
+    },
+    visibility = ["//visibility:public"],
+)
+
+import_env_vars(
+    name = "prompt_env_vars",
+    vars_mapping = {
+        "PROMPT_OPENAI_API_KEY": "PROMPT_OPENAI_API_KEY",
+        "PROMPT_REDIS_HOST": "PROMPT_REDIS_HOST",
+        "PROMPT_REDIS_PORT": "PROMPT_REDIS_PORT",
+        "PROMPT_REDIS_DB": "PROMPT_REDIS_DB",
     },
     visibility = ["//visibility:public"],
 )

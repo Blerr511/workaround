@@ -28,3 +28,8 @@ toolchain(
     toolchain = ":kubectl_toolchain_impl",
     toolchain_type = "@io_bazel_rules_k8s//toolchains/kubectl:kubectl_linux_arm64_toolchain",
 )
+
+alias(
+    name = 'dc',
+    actual = "//sandbox/environment:dc"
+)

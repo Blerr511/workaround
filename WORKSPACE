@@ -39,9 +39,19 @@ pip_parse(
     requirements_lock = "//server/apps/image-gen:requirements.txt",
 )
 
-load("@image_gen_deps//:requirements.bzl", "install_deps")
+load("@image_gen_deps//:requirements.bzl", install_image_gen_deps = "install_deps")
 
-install_deps()
+install_image_gen_deps()
+
+pip_parse(
+    name = "prompt_deps",
+    python_interpreter_target = interpreter,
+    requirements_lock = "//server/apps/prompt:requirements.txt",
+)
+
+load("@prompt_deps//:requirements.bzl", install_prompt_deps = "install_deps")
+
+install_prompt_deps()
 
 http_archive(
     name = "aspect_rules_js",

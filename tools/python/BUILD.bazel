@@ -1,0 +1,9 @@
+
+sh_binary(
+    name = "venv",
+    srcs = ["setup_venv.sh"],
+    env = {
+        "VENV_DIR":"$(PY_VENV)",
+    },
+    toolchains = ["//sandbox:workspace_env_vars"]
+)

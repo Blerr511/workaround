@@ -1,0 +1,25 @@
+
+load("@rules_python//python:defs.bzl", "py_binary")
+load("@prompt_deps//:requirements.bzl", "all_requirements")
+
+srcs = glob(["**/*.py"])
+
+deps = all_requirements
+
+env = {
+    "OPENAI_API_KEY": "$(PROMPT_OPENAI_API_KEY)",
+    "REDIS_HOST": "$(PROMPT_REDIS_HOST)",
+    "REDIS_PORT": "$(PROMPT_REDIS_PORT)",
+    "REDIS_DB": "$(PROMPT_REDIS_DB)",
+}
+
+py_binary(
+    name = "start",
+    srcs = srcs,
+    main = ":src/main.py",
+    deps = deps,
+    toolchains = ["//sandbox:prompt_env_vars"],
+    env = env,
+)
+
+exports_files(["requirements.txt"])

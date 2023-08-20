@@ -17,4 +17,5 @@ sh_binary(
     toolchains = [
         "//sandbox:local_dc_env_vars",
     ],
+    visibility = ["//visibility:public"],
 )
