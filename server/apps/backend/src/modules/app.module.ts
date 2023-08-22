@@ -13,8 +13,9 @@ import {
   verifyAccessToken,
 } from '../app/authorization/verify-token.service';
 import { Request } from 'express';
+import { AuthModule } from './auth/auth.module';
 
-const internalModules = [AppUserModule, MyUserModule];
+const internalModules = [AppUserModule, MyUserModule, AuthModule];
 
 @Module({
   imports: [

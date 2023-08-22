@@ -54,10 +54,12 @@ js_binary(
     data = [
         ":ts",
     ],
+    args = ["-r tsconfig-paths/register"],
     entry_point = ":src/main.js",
     env = {
         "DATA_SOURCE_POSTGRES_URL": "$(DATA_SOURCE_POSTGRES_URL)",
         "AUTH_VERIFY_WEBHOOK_URL": "$(BACKEND_AUTH_VERIFY_WEBHOOK_URL)",
+        "AUTH_API_URL": "$(BACKEND_AUTH_API_URL)",
     },
     toolchains = [
         "//sandbox:data_source_env_vars",

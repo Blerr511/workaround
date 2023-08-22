@@ -20,8 +20,14 @@ export class ConfigSchema {
   @Expose()
   AUTH_VERIFY_WEBHOOK_URL: string;
 
+  @IsString()
+  @IsNotEmpty()
+  @Expose()
+  AUTH_API_URL: string;
+
   get auth() {
     return {
+      apiUrl: this.AUTH_API_URL,
       verifyUrl: this.AUTH_VERIFY_WEBHOOK_URL,
     };
   }
