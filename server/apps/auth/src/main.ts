@@ -4,6 +4,7 @@ import { ConfigService } from './configuration/config.service';
 import { Logger } from '@wr/logger';
 import { ValidationPipe } from '@nestjs/common';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
+import * as session from 'express-session';
 
 async function bootstrap() {
   const mainLogger = new Logger('APP');
@@ -13,6 +14,14 @@ async function bootstrap() {
   app.setGlobalPrefix('api');
 
   app.useGlobalPipes(new ValidationPipe({ transform: true }));
+
+  app.use(
+    session({
+      secret: 'my-secret',
+      resave: false,
+      saveUninitialized: false,
+    }),
+  );
 
   const config = app.get(ConfigService);
 

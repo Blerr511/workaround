@@ -61,6 +61,30 @@ export class ConfigSchema {
   @Expose()
   JWT_LIFE_SECONDS: number;
 
+  @IsNotEmpty()
+  @IsString()
+  @Expose()
+  AUTHZ_DOMAIN: string;
+
+  @IsNotEmpty()
+  @IsString()
+  @Expose()
+  AUTHZ_CLIENT_ID: string;
+
+  @IsNotEmpty()
+  @IsString()
+  @Expose()
+  AUTHZ_CLIENT_SECRET: string;
+
+  get authz() {
+    return {
+      domain: this.AUTHZ_DOMAIN,
+      clientId: this.AUTHZ_CLIENT_ID,
+      secret: this.AUTHZ_CLIENT_SECRET,
+      callbackUrl: 'http://localhost:3002/api/authentication/callback',
+    };
+  }
+
   get web() {
     return {
       host: this.WEB_EXPOSE_HOST,

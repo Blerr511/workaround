@@ -19,10 +19,6 @@ src_data = glob(
     [
         "src/**",
     ],
-    exclude = [
-        "**/*.ts",
-        "**/*.tsx",
-    ],
 )
 
 filegroup(
@@ -93,9 +89,7 @@ js_run_devserver(
     args = ["dev"],
     chdir = "client/apps/web-client",
     command = "../../../node_modules/next/dist/bin/next",
-    data = [
-        ":ts",
-    ] + deps + data + src_data,
+    data = deps + data + src_data,
 )
 
 # A smoke test on the artifact produced by the :next target

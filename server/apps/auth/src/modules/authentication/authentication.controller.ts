@@ -1,4 +1,11 @@
-import { Body, Controller, Post, UnauthorizedException } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Post,
+  UnauthorizedException,
+  UseGuards,
+} from '@nestjs/common';
 import { ApiResponse, ApiTags } from '@nestjs/swagger';
 
 import { ApiAuth, AuthContext } from '../../app/auth';
@@ -7,11 +14,25 @@ import { UserWithProvidersDto } from '../../dto/user-with-providers.dto';
 import { AuthenticationService } from './authentication.service';
 import { SignInDto } from './dto/request/sign-in.dto';
 import { TokenDataResponseDto } from './dto/response/token-data-response.dto';
+import { AuthGuard } from '@nestjs/passport';
 
 @ApiTags('authentication')
 @Controller('authentication')
 export class AuthenticationController {
   constructor(private readonly authenticationService: AuthenticationService) {}
+
+  @Get('login')
+  @UseGuards(AuthGuard('auth0'))
+  async login() {
+    //
+  }
+
+  @Get('callback')
+  @UseGuards(AuthGuard('auth0'))
+  callback() {
+    // Handles the Auth0 callback.
+    return 'Logged in';
+  }
 
   @Post('sign-in')
   @ApiResponse({
@@ -30,6 +51,7 @@ export class AuthenticationController {
   @Post('verify')
   @ApiAuth()
   @ApiResponse({ type: UserWithProvidersDto })
+  @UseGuards(AuthGuard('jwt'))
   async verify(@AuthContext() auth: AuthContext) {
     if (!auth) throw new UnauthorizedException();
 

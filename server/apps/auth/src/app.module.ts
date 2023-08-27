@@ -8,6 +8,7 @@ import { AuthenticationModule } from './modules/authentication/authentication.mo
 import { RegistrationModule } from './modules/registration/registration.module';
 import { APP_GUARD } from '@nestjs/core';
 import { AuthGuard } from './app/auth';
+import { AuthzModule } from './app/authz/authz.module';
 
 const INTERNAL = [AuthenticationModule, RegistrationModule];
 
@@ -17,7 +18,7 @@ const INTERNAL = [AuthenticationModule, RegistrationModule];
       prefix: process.env.BAZEL_CONFIG_PREFIX,
       ignoreValidation: false,
     }),
-
+    AuthzModule,
     TypeOrmModule.forRootAsync({
       inject: [ConfigService],
       useFactory(configService: ConfigService) {

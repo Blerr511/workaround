@@ -68,6 +68,11 @@ js_binary(
         "POSTGRES_SCHEMA": "$(AUTH_POSTGRES_SCHEMA)",
         "JWT_SECRET": "$(AUTH_JWT_SECRET)",
         "JWT_LIFE_SECONDS": "$(AUTH_JWT_LIFE_SECONDS)",
+        "AUTHZ_DOMAIN": "$(AUTH_AUTHZ_DOMAIN)",
+        "AUTHZ_ISSUER_URL": "$(AUTH_AUTHZ_ISSUER_URL)",
+        "AUTHZ_AUDIENCE": "$(AUTH_AUTHZ_AUDIENCE)",
+        "AUTHZ_CLIENT_ID": "$(AUTH_AUTHZ_CLIENT_ID)",
+        "AUTHZ_CLIENT_SECRET": "$(AUTH_AUTHZ_CLIENT_SECRET)",
     },
     toolchains = ["//sandbox:auth_env_vars"],
 )

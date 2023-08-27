@@ -118,6 +118,9 @@ import_env_vars(
         "AUTH_POSTGRES_SCHEMA": "AUTH_POSTGRES_SCHEMA",
         "AUTH_JWT_SECRET": "AUTH_JWT_SECRET",
         "AUTH_JWT_LIFE_SECONDS": "AUTH_JWT_LIFE_SECONDS",
+        "AUTH_AUTHZ_DOMAIN": "AUTH_AUTHZ_DOMAIN",
+        "AUTH_AUTHZ_CLIENT_ID": "AUTH_AUTHZ_CLIENT_ID",
+        "AUTH_AUTHZ_CLIENT_SECRET": "AUTH_AUTHZ_CLIENT_SECRET",
     },
     visibility = ["//visibility:public"],
 )
