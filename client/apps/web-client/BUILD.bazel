@@ -15,12 +15,6 @@ srcs = glob([
     "src/**",
 ])
 
-src_data = glob(
-    [
-        "src/**",
-    ],
-)
-
 filegroup(
     name = "project_support_files",
     srcs = glob([
@@ -43,53 +37,34 @@ data = glob(
 deps = [
     ":node_modules",
     "//:node_modules/next",
-    "//:node_modules/react",
-    "//:node_modules/react-dom",
-    "//:node_modules/typescript",
+    # "//:node_modules/react",
+    # "//:node_modules/react-dom",
+    # "//:node_modules/typescript",
 ]
 
-ts_config(
-    name = "tsconfig",
-    src = "tsconfig.json",
-)
 
-ts_project(
-    name = "ts",
-    srcs = srcs,
-    allow_js = True,
-    data = data + ["project_support_files"],
-    declaration = False,
-    incremental = True,
-    preserve_jsx = True,
-    resolve_json_module = True,
-    source_map = False,
-    tsconfig = ":tsconfig",
-    validate = True,
-    deps = deps,
-)
-
-js_image(
-    name = "web-client",
-    srcs = srcs + data,
-    image = "$(GCP_DOCKER_WEB_CLIENT_IMAGE)",
-    package_json = "package.json",
-    post_install = [
-        "cd /app/client/apps/web-client",
-        "npm run build",
-    ],
-    start_cmd = "npm start",
-    deps = [
-        "//client/packages/ui:ui.json",
-        "//server/packages/backend-api:backend-api.json",
-    ],
-)
+# js_image(
+#     name = "web-client",
+#     srcs = srcs + data,
+#     image = "$(GCP_DOCKER_WEB_CLIENT_IMAGE)",
+#     package_json = "package.json",
+#     post_install = [
+#         "cd /app/client/apps/web-client",
+#         "npm run build",
+#     ],
+#     start_cmd = "npm start",
+#     deps = [
+#         "//client/packages/ui:ui.json",
+#         "//server/packages/backend-api:backend-api.json",
+#     ],
+# )
 
 js_run_devserver(
     name = "dev",
     args = ["dev"],
     chdir = "client/apps/web-client",
     command = "../../../node_modules/next/dist/bin/next",
-    data = deps + data + src_data,
+    data = deps + data + srcs,
 )
 
 # A smoke test on the artifact produced by the :next target

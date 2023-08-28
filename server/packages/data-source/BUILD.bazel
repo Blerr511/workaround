@@ -45,55 +45,26 @@ _prisma.prisma(
     tags = ["requires-network"],
 )
 
-_prisma.prisma(
-    name = "create_migration",
-    srcs = [
-        "prisma/schema.prisma",
-        ":node_modules",
-        "//:node_modules/typescript",
-    ],
-    args = [
-        "migrate",
-        "dev",
-        "--schema",
-        "$(location prisma/schema.prisma)",
-        "--name",
-        "init",
-    ],
-    env = {
-        #
-        # Trigger:
-        # https://github.com/prisma/engines-wrapper/blob/850bb6fe48c4b9a05ab17e73dbbdf8caacdc6e41/packages/fetch-engine/src/util.ts#L23
-        # TODO: This downloads stuff, that's bad! We should properly load this.
-        "AWS_LAMBDA_FUNCTION_VERSION": "True",
-        # do not install @prisma/client
-        "PRISMA_GENERATE_SKIP_AUTOINSTALL": "True",
-    },
-    out_dirs = ["prisma/migrations"],
-    tags = ["requires-network"],
-)
-
 _prisma.prisma_binary(
     name = "migrate",
-    data = [
-        "prisma/schema.prisma",
-        ":node_modules",
-        "//:node_modules/typescript",
-    ],
     args = [
         "db",
         "push",
         "--schema",
         "$(location prisma/schema.prisma)",
-        "--skip-generate"
+        "--skip-generate",
+    ],
+    data = [
+        "prisma/schema.prisma",
+        ":node_modules",
+        "//:node_modules/typescript",
     ],
     env = {
-        "DATA_SOURCE_POSTGRES_URL": "$(DATA_SOURCE_POSTGRES_URL)"
+        "DATA_SOURCE_POSTGRES_URL": "$(DATA_SOURCE_POSTGRES_URL)",
     },
-    toolchains = ["//sandbox:data_source_env_vars"],
     tags = ["requires-network"],
+    toolchains = ["//sandbox:data_source_env_vars"],
 )
-
 
 js_library(
     name = "prisma-client",
