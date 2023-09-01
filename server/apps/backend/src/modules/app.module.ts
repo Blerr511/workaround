@@ -14,8 +14,14 @@ import {
 } from '../app/authorization/verify-token.service';
 import { Request } from 'express';
 import { AuthModule } from './auth/auth.module';
+import { WorkspaceModule } from './workspace/workspace.module';
 
-const internalModules = [AppUserModule, MyUserModule, AuthModule];
+const internalModules = [
+  AppUserModule,
+  MyUserModule,
+  AuthModule,
+  WorkspaceModule,
+];
 
 @Module({
   imports: [

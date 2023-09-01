@@ -14,3 +14,52 @@ model MyUser {
   lastName String
   email    String @unique
 }
+
+enum VideoEntityType {
+  VIDEO
+  IMAGE
+}
+
+model VideoEntity {
+  id              Int             @id @default(autoincrement())
+  type            VideoEntityType
+  path            String
+  VideoFragment   VideoFragment?  @relation(fields: [videoFragmentId], references: [id])
+  videoFragmentId Int?
+  duration        Int
+  order           Int
+
+  @@unique([videoFragmentId, order])
+}
+
+model VideoFragment {
+  id        Int           @id @default(autoincrement())
+  start     Float?
+  end       Float?
+  entities  VideoEntity[]
+  project   VideoProject  @relation(fields: [projectId], references: [id])
+  projectId Int
+}
+
+model AudoEntity {
+  id             Int          @id @default(autoincrement())
+  path           String
+  fragment       AudoFragment @relation(fields: [audoFragmentId], references: [id])
+  audoFragmentId Int          @unique
+}
+
+model AudoFragment {
+  id        Int          @id @default(autoincrement())
+  start     Float?
+  end       Float?
+  entity    AudoEntity?
+  projectId Int
+  project   VideoProject @relation(fields: [projectId], references: [id])
+}
+
+model VideoProject {
+  id    Int             @id @default(autoincrement())
+  name  String          @default("")
+  video VideoFragment[]
+  audio  AudoFragment[]
+}
