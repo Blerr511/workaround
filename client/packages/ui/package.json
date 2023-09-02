@@ -12,15 +12,26 @@
   "devDependencies": {
     "@babel/preset-env": "^7.22.4",
     "@babel/preset-react": "^7.22.3",
+    "@types/react": "18.x.x",
+    "@types/react-dom": "18.0.11",
     "babel-cli": "6",
     "babel-preset-react-app": "3",
-    "@types/react": "18.x.x",
     "react": "18.x.x",
-    "@types/react-dom": "18.0.11"
+    "typescript-plugin-css-modules": "^5.0.1"
   },
   "peerDependencies": {
     "@types/react": "18.x.x",
-    "react": "18.x.x",
-    "@types/react-dom": "18.0.11"
+    "@types/react-dom": "18.0.11",
+    "react": "18.x.x"
+  },
+  "dependencies": {
+    "@chakra-ui/next-js": "^2.1.5",
+    "@chakra-ui/react": "^2.8.0",
+    "@emotion/cache": "^11.11.0",
+    "@emotion/react": "^11.11.1",
+    "@emotion/server": "^11.11.0",
+    "@emotion/styled": "^11.11.0",
+    "cache": "link:@types/@emotion/cache",
+    "framer-motion": "^10.16.2"
   }
 }
