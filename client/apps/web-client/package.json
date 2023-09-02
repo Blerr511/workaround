@@ -12,6 +12,7 @@
     "@auth0/auth0-react": "^2.2.1",
     "@types/react": "18.0.37",
     "@wr/backend-api": "workspace:^",
+    "@wr/core": "workspace:^",
     "@wr/ui": "workspace:^",
     "autoprefixer": "10.4.14",
     "eslint": "8.38.0",

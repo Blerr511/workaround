@@ -1,0 +1,80 @@
+load("@aspect_rules_js//js:defs.bzl", "js_binary", "js_library")
+load("@aspect_rules_ts//ts:defs.bzl", "ts_config", "ts_project")
+load("@npm//:defs.bzl", "npm_link_all_packages")
+load("@aspect_rules_js//npm:defs.bzl", "npm_package")
+load("@bazel_skylib//lib:partial.bzl", "partial")
+load("//client/bazel:babel.bzl", "babel")
+
+npm_link_all_packages(name = "node_modules")
+
+ts_config(
+    name = "tsconfig",
+    src = "tsconfig.json",
+)
+
+ts_project(
+    name = "ts",
+    srcs = glob(["src/**"]),
+    allow_js = True,
+    data = [
+        ":tsconfig",
+    ],
+    declaration = True,
+    incremental = True,
+    preserve_jsx = True,
+    resolve_json_module = True,
+    source_map = True,
+    transpiler = partial.make(
+        babel,
+        presets = {
+            "@babel/preset-typescript": "//:node_modules/@babel/preset-typescript",
+            "@babel/preset-env": "//:node_modules/@babel/preset-env",
+            "@babel/preset-react": "//:node_modules/@babel/preset-react",
+        },
+    ),
+    validate = True,
+    deps = [
+        ":node_modules",
+        "//:node_modules/@types/react",
+        "//:node_modules/react",
+        "//:node_modules/react-dom",
+    ],
+)
+
+# make this library available via node_modules
+npm_package(
+    name = "core",
+    srcs = [
+        "package.json",
+        ":ts",
+    ],
+    # This is a perf improvement; the default will be flipped to False in rules_js 2.0
+    include_runfiles = False,
+    visibility = ["//visibility:public"],
+)
+
+sh_binary(
+    name = "npm.publish",
+    srcs = [
+        "//tools/npm:npm_cli",
+    ],
+    args = [
+        "publish",
+        "$(location :core)",
+        # "--dry-run",
+    ],
+    data = [
+        ":core",
+        "//tools/gcloud:npmrc",
+    ],
+    env = {
+        "NPM_CONFIG_USERCONFIG": "$(location //tools/gcloud:npmrc)",
+    },
+    tags = ["requires-network"],
+)
+
+filegroup(
+    name = "core.json",
+    srcs = [":package.json"],
+    visibility = ["//visibility:public"],
+)
