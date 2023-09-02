@@ -2,7 +2,7 @@
   "name": "@wr/ui",
   "version": "1.0.1",
   "description": "",
-  "main": "src/index.js",
+  "main": "src/index.ts",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -15,8 +15,9 @@
     "babel-cli": "6",
     "babel-preset-react-app": "3"
   },
-  "dependencies": {
-    "@types/react": "18.0.37",
+  "peerDependencies": {
+    "@types/react": "18.x.x",
+    "react": "18.x.x",
     "@types/react-dom": "18.0.11"
   }
 }

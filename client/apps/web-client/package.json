@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "ibazel run //client/apps/web-client:next_dev",
+    "dev": "next dev",
     "build": "next build",
     "start": "next start",
     "lint": "next lint"
@@ -21,6 +21,7 @@
     "tailwindcss": "3.3.1"
   },
   "devDependencies": {
-    "@types/node": "17.0.41"
+    "@types/node": "17.0.41",
+    "typescript": "^5.2.2"
   }
 }

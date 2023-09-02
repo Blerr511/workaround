@@ -15,7 +15,6 @@ export class AppUser {
   role: string;
   username: string | null;
   constructor(@Inject(CONTEXT) context: GraphqlContext) {
-    console.log(context.user);
     if (context.user) {
       this.type = ApiUserType.user;
       // this.username = context.user.providers.at(0).identifier;

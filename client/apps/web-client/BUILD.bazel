@@ -1,94 +1,15 @@
 load("@aspect_rules_js//js:defs.bzl", "js_library", "js_run_devserver", "js_test")
 load("@npm//:defs.bzl", "npm_link_all_packages")
-load("@npm//:next/package_json.bzl", next_bin = "bin")
 load("@aspect_rules_ts//ts:defs.bzl", "ts_config", "ts_project")
 load("//tools/utils:js_image.bzl", "js_image")
 
 npm_link_all_packages(name = "node_modules")
 
-next_bin.next_binary(
-    name = "next_js_binary",
-    visibility = ["//visibility:public"],
-)
-
-srcs = glob([
-    "src/**",
-])
-
-filegroup(
-    name = "project_support_files",
-    srcs = glob([
-        "*.json",
-        ".*.json",
-        "*.js",
-        ".*.js",
-        ".*.css",
-    ]),
-)
-
-data = glob(
-    [
-        "*.json",
-        "*.js",
-    ],
-    exclude = ["nodemon.json"],
-)
-
-deps = [
-    ":node_modules",
-    "//:node_modules/next",
-    # "//:node_modules/react",
-    # "//:node_modules/react-dom",
-    # "//:node_modules/typescript",
-]
-
-
-# js_image(
-#     name = "web-client",
-#     srcs = srcs + data,
-#     image = "$(GCP_DOCKER_WEB_CLIENT_IMAGE)",
-#     package_json = "package.json",
-#     post_install = [
-#         "cd /app/client/apps/web-client",
-#         "npm run build",
-#     ],
-#     start_cmd = "npm start",
-#     deps = [
-#         "//client/packages/ui:ui.json",
-#         "//server/packages/backend-api:backend-api.json",
-#     ],
-# )
-
-js_run_devserver(
-    name = "dev",
-    args = ["dev"],
-    chdir = "client/apps/web-client",
-    command = "../../../node_modules/next/dist/bin/next",
-    data = deps + data + srcs,
-)
-
-# A smoke test on the artifact produced by the :next target
-js_test(
-    name = "build_smoke_test",
-    chdir = package_name(),
-    data = [":next"],
-    entry_point = "build_smoke_test.js",
-)
-
-js_library(
-    name = "package_json",
-    srcs = ["package.json"],
-    visibility = ["//visibility:public"],
-)
-
-js_library(
-    name = "jest_config",
-    srcs = ["jest.config.js"],
-    visibility = ["//visibility:public"],
-)
-
-filegroup(
-    name = "web-client.json",
-    srcs = [":package.json"],
-    visibility = ["//visibility:public"],
+genrule(
+    name = "env",
+    srcs = ["//sandbox:web_client_env_vars.env"],
+    outs = [".env"],
+    cmd = """
+    cp $(location //sandbox:web_client_env_vars.env) $@
+    """
 )

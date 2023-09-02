@@ -143,3 +143,12 @@ import_env_vars(
     },
     visibility = ["//visibility:public"],
 )
+
+import_env_vars(
+    name = "web_client_env_vars",
+    vars_mapping = {
+        "WEB_CLIENT_AUTHZ_DOMAIN": "WEB_CLIENT_AUTHZ_DOMAIN",
+        "WEB_CLIENT_AUTHZ_CLIENT_ID": "WEB_CLIENT_AUTHZ_CLIENT_ID",
+    },
+    visibility = ["//visibility:public"],
+)
