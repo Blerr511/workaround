@@ -22,24 +22,14 @@ variable "gcp_terraform_bucket" {
   description = "Terraform GCP bucket name"
 }
 
+variable "gcp_github_ssh_key_secret_name" {
+  type        = string
+  description = "Github repo ssh access key"
+}
+
 #
 # Backend
 #
-
-variable "gcp_cloud_sql_sa" {
-  type        = string
-  description = "Cloud Sql User service account id"
-}
-
-variable "gcp_cloud_sql_sa_secret" {
-  type        = string
-  description = "Cloud Sql User service account id"
-}
-
-variable "gcp_cloud_sql_name" {
-  type = string
-  description = "Cloud Sql Instance Name"
-}
 
 
 #
@@ -51,19 +41,14 @@ variable "gcp_cloud_build_sa" {
   description = "Cloud Buld User service account id"
 }
 
+variable "gcp_docker_artifacts_repository" {
+  type        = string
+  description = "Application images repoisotry"
+}
+
 #
 # GKE Cluster
 #
-
-variable gke_cluster_name_short {
-  type        = string
-  description = "GKE cluster name"
-}
-
-variable gke_cluster_location {
-  type = string
-  description = "GKE cluster location"
-}
 
 #
 # Development

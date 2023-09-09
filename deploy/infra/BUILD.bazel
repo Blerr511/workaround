@@ -33,6 +33,8 @@ tf(
         "gke_cluster_name_short": "$(GKE_CLUSTER_NAME_SHORT)",
         "gke_cluster_location": "$(GKE_CLUSTER_LOCATION)",
         "gcp_cloud_sql_name": "$(GCP_CLOUD_SQL_NAME)",
+        "gcp_docker_artifacts_repository": "$(GCP_DOCKER_ARTIFACTS_REPOSITORY)",
+        "gcp_github_ssh_key_secret_name": "$(GCP_GITHUB_SSH_KEY_SECRET_NAME)",
     },
 )
 
@@ -49,6 +51,7 @@ sh_binary(
     ],
     env = {
         "PROJECT_ID": "$(GCP_PROJECT_ID)",
+        "CLOUDSDK_CONFIG": "$(GCP_CLOUDSDK_CONFIG)",
     },
     toolchains = [
         "//sandbox:gcp_env_vars",

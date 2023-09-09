@@ -1,11 +1,11 @@
 # WORKSPACE
-build --action_env=APP_ENV=local
+build --action_env=APP_ENV=dev
 build --action_env=PY_VENV="/tmp/.wr/.py_virtualenv"
 # build --workspace_status_command=./tools/git/commit_hash.sh
 
 # GCP
-build --action_env=GCP_PROJECT_ID=workaround-388416
-build --action_env=GCP_PROJECT_NAME=workaround
+build --action_env=GCP_PROJECT_ID=wr-dev-393622
+build --action_env=GCP_PROJECT_NAME=wr-dev
 build --action_env=GCP_REGION=europe-central2
 build --action_env=GCP_CLOUDSDK_CONFIG="/tmp/.wr/.config/gcloud/$(APP_ENV)"
 build --action_env=GCP_CLOUD_SQL_SA=
@@ -13,13 +13,15 @@ build --action_env=GCP_CLOUD_SQL_SA_SECRET=
 build --action_env=GCP_CLOUD_SQL_INSTANCE=
 build --action_env=GCP_TERRAFORM_BUCKET="$(GCP_PROJECT_NAME)-terraform"
 build --action_env=GCP_TERRAFORM_SA="terraform-sa"
-build --action_env=GCP_TERRAFORM_SA_SECRET="terraform_sa"
+build --action_env=GCP_TERRAFORM_SA_SECRET="terraform-sa"
 build --action_env=GCP_CLOUD_BUILD_SA=
 build --action_env=GCP_CLOUD_BUILD_SA_SECRET=
 build --action_env=GCP_DEVELOPMENT_SA="development-sa"
 build --action_env=GCP_DEVELOPMENT_SA_SECRET="development-sa"
+build --action_env=GCP_CLOUD_BUILD_SDK_VERSION="7.0.0"
+build --action_env=GCP_GITHUB_SSH_KEY_SECRET_NAME="github-ssh-key"
 
-# AWS 
+# AWS
 build --action_env=AWS_DEFAULT_REGION=eu-north-1
 build --action_env=AWS_CONFIG_FILE=/tmp/.wr/.aws_config
 # Specify on your local.bazelrc file
@@ -54,7 +56,6 @@ build --action_env=GKE_CLUSTER_LOCATION_ROOT=
 build --action_env=AUTHZ_DOMAIN=
 build --action_env=AUTHZ_CLIENT_ID=
 build --action_env=AUTHZ_CLIENT_SECRET=
-
 
 # POSTGRES SERVICE
 build --action_env=POSTGRES_HOST=localhost
@@ -118,3 +119,5 @@ build --action_env=PROMPT_OPENAI_API_KEY=
 build --action_env=PROMPT_REDIS_HOST=$(REDIS_HOST)
 build --action_env=PROMPT_REDIS_PORT=$(REDIS_PORT)
 build --action_env=PROMPT_REDIS_DB=1
+
+import %workspace%/.aspect/bazelrc/cloud/.bazelrc

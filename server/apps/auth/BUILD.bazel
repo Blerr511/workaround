@@ -81,6 +81,7 @@ js_image(
     image = "$(GCP_DOCKER_AUTH_IMAGE)",
     package_json = "package.json",
     start_cmd = "node src/main.js",
+    toolchains = ["//sandbox:gcp_env_vars"],
     deps = [
         "//server/packages/logger:logger.json",
     ],

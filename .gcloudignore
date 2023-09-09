@@ -1,0 +1,17 @@
+# Use "gcloud meta list-files-for-upload" to get list of files to be uploaded
+
+.bazel
+.githooks
+.github
+.vscode
+*node_modules*
+*.next*
+*.venv*
+tmp
+__pycache__
+local.bazelrc
+.gitignore
+.RData
+.Rhistory
+cypress.json
+README.md

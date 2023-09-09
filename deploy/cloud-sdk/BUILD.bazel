@@ -1,0 +1,32 @@
+load("//tools/bazel/copy-files:defs.bzl", "copy_files")
+
+copy_files(
+    name = "cloud_sdk_files",
+    srcs = [
+        "Dockerfile",
+        "build.sh",
+        "cloudbuild.yaml",
+    ],
+)
+
+sh_binary(
+    name = "build_image",
+    srcs = [
+        "run_build.sh",
+    ],
+    args = [
+        "--project",
+        "$(GCP_PROJECT_ID)",
+        "--config='cloudbuild.yaml'",
+        "--substitutions=_CLOUD_SDK_VERSION=$(GCP_CLOUD_BUILD_SDK_VERSION),_GCP_DOCKER_ARTIFACTS_LOCATION=$(GCP_DOCKER_ARTIFACTS_LOCATION)",
+    ],
+    data = [":cloud_sdk_files"],
+    env = {
+        "CLOUDSDK_CONFIG": "$(GCP_CLOUDSDK_CONFIG)",
+        "PROJECT_ID": "$(GCP_PROJECT_ID)",
+    },
+    toolchains = [
+        "//sandbox:workspace_env_vars",
+        "//sandbox:gcp_env_vars",
+    ],
+)
