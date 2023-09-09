@@ -30,6 +30,6 @@ fi
 
 echo "Package $PACKAGE_NAME@$VERSION_TO_CHECK not found in repo, publishing..."
 
-/workspace/bzl.sh run //$PACKAGE_PATH:$PACKAGE_TARGET
+bazel run //$PACKAGE_PATH:$PACKAGE_TARGET
 
 echo "Package $PACKAGE_NAME@$VERSION_TO_CHECK successfully published to artifacts repo"
