@@ -47,6 +47,24 @@ importers:
       '@auth0/auth0-react':
         specifier: ^2.2.1
         version: 2.2.1(react-dom@18.2.0)(react@18.2.0)
+      '@chakra-ui/icons':
+        specifier: ^2.1.0
+        version: 2.1.0(@chakra-ui/system@2.6.0)(react@18.2.0)
+      '@chakra-ui/next-js':
+        specifier: ^2.1.5
+        version: 2.1.5(@chakra-ui/react@2.8.0)(@emotion/react@11.11.1)(next@13.4.19)(react@18.2.0)
+      '@chakra-ui/react':
+        specifier: ^2.8.0
+        version: 2.8.0(@emotion/react@11.11.1)(@emotion/styled@11.11.0)(@types/react@18.0.37)(framer-motion@10.16.2)(react-dom@18.2.0)(react@18.2.0)
+      '@chakra-ui/theme-tools':
+        specifier: ^2.1.0
+        version: 2.1.0(@chakra-ui/styled-system@2.9.1)
+      '@emotion/react':
+        specifier: ^11.11.1
+        version: 11.11.1(@types/react@18.0.37)(react@18.2.0)
+      '@emotion/styled':
+        specifier: ^11.11.0
+        version: 11.11.0(@emotion/react@11.11.1)(@types/react@18.0.37)(react@18.2.0)
       '@types/react':
         specifier: 18.0.37
         version: 18.0.37
@@ -62,18 +80,27 @@ importers:
       autoprefixer:
         specifier: 10.4.14
         version: 10.4.14(postcss@8.4.22)
+      cache:
+        specifier: link:@types/@emotion/cache
+        version: link:@types/@emotion/cache
       eslint:
         specifier: 8.38.0
         version: 8.38.0
       eslint-config-next:
         specifier: 13.3.0
         version: 13.3.0(eslint@8.38.0)(typescript@5.2.2)
+      framer-motion:
+        specifier: ^10.16.2
+        version: 10.16.2(react-dom@18.2.0)(react@18.2.0)
       next:
         specifier: ^13.4.19
         version: 13.4.19(@babel/core@7.21.8)(react-dom@18.2.0)(react@18.2.0)
       postcss:
         specifier: 8.4.22
         version: 8.4.22
+      recoil:
+        specifier: ^0.7.7
+        version: 0.7.7(react-dom@18.2.0)(react@18.2.0)
       tailwindcss:
         specifier: 3.3.1
         version: 3.3.1(postcss@8.4.22)
@@ -81,6 +108,9 @@ importers:
       '@types/node':
         specifier: 17.0.41
         version: 17.0.41
+      eslint-plugin-react-hooks:
+        specifier: ^4.6.0
+        version: 4.6.0(eslint@8.38.0)
       typescript:
         specifier: ^5.2.2
         version: 5.2.2
@@ -96,12 +126,18 @@ importers:
 
   client/packages/ui:
     dependencies:
+      '@chakra-ui/icons':
+        specifier: ^2.1.0
+        version: 2.1.0(@chakra-ui/system@2.6.0)(react@18.2.0)
       '@chakra-ui/next-js':
         specifier: ^2.1.5
         version: 2.1.5(@chakra-ui/react@2.8.0)(@emotion/react@11.11.1)(next@13.4.19)(react@18.2.0)
       '@chakra-ui/react':
         specifier: ^2.8.0
         version: 2.8.0(@emotion/react@11.11.1)(@emotion/styled@11.11.0)(@types/react@18.0.37)(framer-motion@10.16.2)(react-dom@18.2.0)(react@18.2.0)
+      '@chakra-ui/theme-tools':
+        specifier: ^2.1.0
+        version: 2.1.0(@chakra-ui/styled-system@2.9.1)
       '@emotion/cache':
         specifier: ^11.11.0
         version: 11.11.0
@@ -120,6 +156,12 @@ importers:
       framer-motion:
         specifier: ^10.16.2
         version: 10.16.2(react-dom@18.2.0)(react@18.2.0)
+      icons:
+        specifier: link:@types/@chakra-ui/icons
+        version: link:@types/@chakra-ui/icons
+      theme-tools:
+        specifier: link:@types/@chakra-ui/theme-tools
+        version: link:@types/@chakra-ui/theme-tools
     devDependencies:
       '@babel/preset-env':
         specifier: ^7.22.4
@@ -2599,6 +2641,17 @@ packages:
       react: '>=18'
     dependencies:
       '@chakra-ui/shared-utils': 2.0.5
+      '@chakra-ui/system': 2.6.0(@emotion/react@11.11.1)(@emotion/styled@11.11.0)(react@18.2.0)
+      react: 18.2.0
+    dev: false
+
+  /@chakra-ui/icons@2.1.0(@chakra-ui/system@2.6.0)(react@18.2.0):
+    resolution: {integrity: sha512-pGFxFfQ/P5VnSRnTzK8zGAJxoxkxpHo/Br9ohRZdOpuhnIHSW7va0P53UoycEO5/vNJ/7BN0oDY0k9qurChcew==}
+    peerDependencies:
+      '@chakra-ui/system': '>=2.0.0'
+      react: '>=18'
+    dependencies:
+      '@chakra-ui/icon': 3.1.0(@chakra-ui/system@2.6.0)(react@18.2.0)
       '@chakra-ui/system': 2.6.0(@emotion/react@11.11.1)(@emotion/styled@11.11.0)(react@18.2.0)
       react: 18.2.0
     dev: false
@@ -9234,7 +9287,6 @@ packages:
       eslint: ^3.0.0 || ^4.0.0 || ^5.0.0 || ^6.0.0 || ^7.0.0 || ^8.0.0-0
     dependencies:
       eslint: 8.38.0
-    dev: false
 
   /eslint-plugin-react@7.32.2(eslint@8.38.0):
     resolution: {integrity: sha512-t2fBMa+XzonrrNkyVirzKlvn5RXzzPwRHtMvLAtVZrt8oxgnTQaYbU6SXTOO1mwQgp1y5+toMSKInnzGr0Knqg==}
@@ -10315,6 +10367,10 @@ packages:
   /graphql@16.6.0:
     resolution: {integrity: sha512-KPIBPDlW7NxrbT/eh4qPXz5FiFdL5UbaA0XUNz2Rp3Z3hqBSkbj0GVjwFDztsWVauZUWsbKHgMg++sk8UX0bkw==}
     engines: {node: ^12.22.0 || ^14.16.0 || ^16.0.0 || >=17.0.0}
+
+  /hamt_plus@1.0.2:
+    resolution: {integrity: sha512-t2JXKaehnMb9paaYA7J0BX8QQAY8lwfQ9Gjf4pg/mk4krt+cmwmU652HOoWonf+7+EQV97ARPMhhVgU1ra2GhA==}
+    dev: false
 
   /has-ansi@2.0.0:
     resolution: {integrity: sha512-C8vBJ8DwUCx19vhm7urhTuUsr4/IyP6l4VzNQDv+ryHQObW3TTTp9yB68WpYgRe2bbaGuZ/se74IqFeVnMnLZg==}
@@ -14007,6 +14063,23 @@ packages:
     dependencies:
       resolve: 1.22.2
     dev: true
+
+  /recoil@0.7.7(react-dom@18.2.0)(react@18.2.0):
+    resolution: {integrity: sha512-8Og5KPQW9LwC577Vc7Ug2P0vQshkv1y3zG3tSSkWMqkWSwHmE+by06L8JtnGocjW6gcCvfwB3YtrJG6/tWivNQ==}
+    peerDependencies:
+      react: '>=16.13.1'
+      react-dom: '*'
+      react-native: '*'
+    peerDependenciesMeta:
+      react-dom:
+        optional: true
+      react-native:
+        optional: true
+    dependencies:
+      hamt_plus: 1.0.2
+      react: 18.2.0
+      react-dom: 18.2.0(react@18.2.0)
+    dev: false
 
   /reflect-metadata@0.1.13:
     resolution: {integrity: sha512-Ts1Y/anZELhSsjMcU605fU9RE4Oi3p5ORujwbIKXfWa+0Zxs510Qrmrce5/Jowq3cHSZSJqBjypxmHarc+vEWg==}

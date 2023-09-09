@@ -1,7 +1,7 @@
 import './globals.css';
 import type { Metadata } from 'next';
-import { ContainerLayout } from '@wr/ui';
 import { Providers } from './providers';
+import { Header } from '@/features/header';
 
 export const metadata: Metadata = {
   title: 'Workaround',
@@ -17,7 +17,9 @@ export default function RootLayout({
     <html lang="en">
       <body>
         <Providers>
-          <ContainerLayout>{children}</ContainerLayout>
+          <main>
+            <Header />
+          </main>
         </Providers>
       </body>
     </html>

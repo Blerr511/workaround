@@ -19,6 +19,18 @@ build --action_env=GCP_CLOUD_BUILD_SA_SECRET=
 build --action_env=GCP_DEVELOPMENT_SA="development-sa"
 build --action_env=GCP_DEVELOPMENT_SA_SECRET="development-sa"
 
+# AWS 
+build --action_env=AWS_DEFAULT_REGION=eu-north-1
+build --action_env=AWS_CONFIG_FILE=/tmp/.wr/.aws_config
+# Specify on your local.bazelrc file
+build --action_env=AWS_DEFAULT_ACCESS_KEY_ID=
+build --action_env=AWS_DEFAULT_ACCESS_KEY_SECRET=
+## EC2
+build --action_env=AWS_EC2_INSTANCE_ID=i-03717b829f59c4e8f
+build --action_env=AWS_EC2_INSTANCE_SSH_PATH=ubuntu@ec2-16-171-224-221.eu-north-1.compute.amazonaws.com
+# Define it on your local.bazelrc file
+build --action_env=AWS_EC2_SSH_KEY_PATH=
+
 # GCP artifacts
 build --action_env=GCP_NPM_ARTIFACTS_SCOPE=
 build --action_env=GCP_NPM_ARTIFACTS_REPOSITORY=

@@ -44,6 +44,20 @@ import_env_vars(
 )
 
 import_env_vars(
+    name = "aws_env_vars",
+    vars_mapping = {
+        "AWS_DEFAULT_REGION": "AWS_DEFAULT_REGION",
+        "AWS_CONFIG_FILE": "AWS_CONFIG_FILE",
+        "AWS_EC2_INSTANCE_ID": "AWS_EC2_INSTANCE_ID",
+        "AWS_EC2_SSH_KEY_PATH": "AWS_EC2_SSH_KEY_PATH",
+        "AWS_EC2_INSTANCE_SSH_PATH": "AWS_EC2_INSTANCE_SSH_PATH",
+        "AWS_DEFAULT_ACCESS_KEY_SECRET": "AWS_DEFAULT_ACCESS_KEY_SECRET",
+        "AWS_DEFAULT_ACCESS_KEY_ID": "AWS_DEFAULT_ACCESS_KEY_ID",
+    },
+    visibility = ["//visibility:public"],
+)
+
+import_env_vars(
     name = "postgres_env_vars",
     vars_mapping = {
         "POSTGRES_HOST": "POSTGRES_HOST",
