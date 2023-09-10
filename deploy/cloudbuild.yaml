@@ -102,6 +102,14 @@ steps:
       - |
         /workspace/release-npm-package.sh client/packages/ui npm.publish
 
+  - name: "$_GCP_DOCKER_ARTIFACTS_LOCATION-docker.pkg.dev/$PROJECT_ID/cloudsdktool/cloud-sdk:$_CLOUD_SDK_VERSION"
+    id: release-wr-core
+    entrypoint: "bash"
+    args:
+      - "-c"
+      - |
+        /workspace/release-npm-package.sh client/packages/core npm.publish
+
   # - name: "$_GCP_DOCKER_ARTIFACTS_LOCATION-docker.pkg.dev/$PROJECT_ID/cloudsdktool/cloud-sdk:$_CLOUD_SDK_VERSION"
   #   id: deploy-backend
   #   entrypoint: "bash"
