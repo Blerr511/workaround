@@ -1,5 +1,8 @@
 #!/bin/bash
 # Trying to fix permissions and re-install whatever could fail to install
+
+set -e
+
 mkdir -p /usr/local/lib/node_modules/firebase-tools/node_modules/puppeteer/.local-chromium
 usermod -a -G root nobody
 chmod 710 /root
@@ -49,7 +52,7 @@ export CLOUD_SDK_REPO="cloud-sdk" &&
     echo "deb https://packages.cloud.google.com/apt $CLOUD_SDK_REPO main" | sudo tee -a /etc/apt/sources.list.d/google-cloud-sdk.list
 curl https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo apt-key add - &&
     apt-get update &&
-    apt-get install -qqy google-cloud-sdk=${CLOUD_SDK_VERSION}-0 \
+    apt-get install -qqy google-cloud-sdk \
         kubectl &&
     gcloud --version &&
     docker --version && kubectl version --client
@@ -85,6 +88,6 @@ mv bazel-5.3.2-linux-x86_64 /usr/local/bin/bazel
 
 echo "Bazel instllation completed, version: $(bazel --version)"
 
-git config --system credential.'https://source.developers.google.com'.helper gcloud.sh
+git config --system credential.'https://source.developergclous.google.com'.helper gcloud.sh
 
 rm -rf /var/lib/apt/lists/*

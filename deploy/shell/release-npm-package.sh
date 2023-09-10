@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -e
+
 PACKAGE_PATH=$1
 PACKAGE_TARGET=$2
 

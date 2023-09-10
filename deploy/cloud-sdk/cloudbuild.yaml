@@ -5,8 +5,6 @@ steps:
         "build",
         "-t",
         "$_GCP_DOCKER_ARTIFACTS_LOCATION-docker.pkg.dev/$PROJECT_ID/cloudsdktool/cloud-sdk:$_CLOUD_SDK_VERSION",
-        "--build-arg",
-        "CLOUD_SDK_VERSION=$_CLOUD_SDK_VERSION",
         ".",
       ]
 
