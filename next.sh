@@ -1,6 +1,10 @@
 #!/bin/bash
 
-package=$1
+set -e
+
+package=$(echo $1 | sed 's/\.\///')
+
+echo "Package $package"
 
 echo "Installing node_modules"
 
