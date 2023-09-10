@@ -19,11 +19,17 @@ PACKAGE_NAME=$(cat $PACKAGE_PATH/package.json | jq -r ".name")
 
 echo "Starting release of package $PACKAGE_NAME"
 
-VERSIONS_PATH=$(bzl build //tools/gcloud:npm_package_versions --define _PACKAGE=$PACKAGE_NAME 2>&1 | grep "npm_package_versions.txt" | awk '{ print $1 }')
+set +e
+
+VERSIONS_PATH=$(bazel build //tools/gcloud:npm_package_versions --define _PACKAGE=$PACKAGE_NAME 2>&1 | grep "npm_package_versions.txt" | awk '{ print $1 }')
+
+echo "VERSIONS_PATH $VERSIONS_PATH"
 
 VERSIONS=$(cat $VERSIONS_PATH)
 
 VERSION_TO_CHECK=$(cat $PACKAGE_PATH/package.json | jq -r ".version")
+
+set -e
 
 if echo "$VERSIONS" | grep -q "$VERSION_TO_CHECK"; then
     echo "Version $VERSION_TO_CHECK of package $PACKAGE_NAME already exists in the repository $REPO_NAME. Skipping..."

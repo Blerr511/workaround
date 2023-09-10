@@ -1,6 +1,6 @@
 {
   "name": "@wr/ui",
-  "version": "1.0.1",
+  "version": "1.0.3",
   "description": "",
   "main": "src/index.ts",
   "scripts": {
@@ -21,7 +21,7 @@
   },
   "peerDependencies": {
     "@types/react": "18.x.x",
-    "@types/react-dom": "18.0.11",
+    "@types/react-dom": "18.x.x",
     "react": "18.x.x",
     "@chakra-ui/icons": "2.1.x",
     "@chakra-ui/next-js": "2.1.x",
@@ -29,7 +29,7 @@
     "@chakra-ui/theme-tools": "2.1.x",
     "@emotion/styled": "11.11.x",
     "@emotion/react": "^11.11.x",
-    "framer-motion": "10.16.x"
+    "framer-motion": "10.x.x"
   },
   "dependencies": {
     "@chakra-ui/icons": "^2.1.0",
@@ -40,9 +40,6 @@
     "@emotion/react": "^11.11.1",
     "@emotion/server": "^11.11.0",
     "@emotion/styled": "^11.11.0",
-    "cache": "link:@types/@emotion/cache",
-    "framer-motion": "^10.16.2",
-    "icons": "link:@types/@chakra-ui/icons",
-    "theme-tools": "link:@types/@chakra-ui/theme-tools"
+    "framer-motion": "^10.16.2"
   }
 }

@@ -1,8 +1,6 @@
 #!/bin/bash
 # Trying to fix permissions and re-install whatever could fail to install
 
-set -e
-
 mkdir -p /usr/local/lib/node_modules/firebase-tools/node_modules/puppeteer/.local-chromium
 usermod -a -G root nobody
 chmod 710 /root

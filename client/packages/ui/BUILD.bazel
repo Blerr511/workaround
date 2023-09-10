@@ -14,7 +14,10 @@ ts_config(
 
 ts_project(
     name = "ts",
-    srcs = glob(["src/**"]),
+    srcs = glob([
+        "src/**/*.ts",
+        "src/**/*.tsx",
+    ]),
     allow_js = True,
     data = [
         ":tsconfig",
@@ -41,15 +44,25 @@ ts_project(
     ],
 )
 
+genrule(
+    name = "prod_package_json",
+    srcs = ["package.json"],
+    outs = ["prod_package.json"],
+    cmd = """
+    jq '.main = "src/index.js"' $(location package.json) > $@
+    """,
+)
+
 # make this library available via node_modules
 npm_package(
     name = "ui",
     srcs = [
-        "package.json",
+        ":prod_package_json",
         ":ts",
     ],
     # This is a perf improvement; the default will be flipped to False in rules_js 2.0
     include_runfiles = False,
+    replace_prefixes = {"prod_package.json": "package.json"},
     visibility = ["//visibility:public"],
 )
 
