@@ -35,6 +35,7 @@ tf(
         "gcp_cloud_sql_name": "$(GCP_CLOUD_SQL_NAME)",
         "gcp_docker_artifacts_repository": "$(GCP_DOCKER_ARTIFACTS_REPOSITORY)",
         "gcp_github_ssh_key_secret_name": "$(GCP_GITHUB_SSH_KEY_SECRET_NAME)",
+        "gcp_npm_artifacts_repository": "$(GCP_NPM_ARTIFACTS_REPOSITORY)",
     },
 )
 

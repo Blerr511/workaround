@@ -14,7 +14,7 @@ build --action_env=GCP_DEVELOPMENT_SA_SECRET="development-sa"
 
 # GCP artifacts
 build --action_env=GCP_NPM_ARTIFACTS_SCOPE=@wr
-build --action_env=GCP_NPM_ARTIFACTS_REPOSITORY=internal-deps-npm
+build --action_env=GCP_NPM_ARTIFACTS_REPOSITORY=npm
 build --action_env=GCP_NPM_ARTIFACTS_LOCATION=europe-central2
 
 # GCP docker artifacts

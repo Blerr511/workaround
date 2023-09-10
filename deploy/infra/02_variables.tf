@@ -46,6 +46,11 @@ variable "gcp_docker_artifacts_repository" {
   description = "Application images repoisotry"
 }
 
+variable "gcp_npm_artifacts_repository" {
+  type        = string
+  description = "Npm artifacts repository"
+}
+
 #
 # GKE Cluster
 #

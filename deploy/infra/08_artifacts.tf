@@ -1,7 +1,7 @@
 resource "google_artifact_registry_repository" "npm_artifacts" {
   project       = var.gcp_project_id
   location      = var.gcp_region
-  repository_id = "npm"
+  repository_id = var.gcp_npm_artifacts_repository
   format        = "npm"
   description   = "Private npm packages"
 }
