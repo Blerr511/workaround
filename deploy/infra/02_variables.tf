@@ -69,3 +69,18 @@ variable "gcp_development_sa_secret" {
   type        = string
   description = "Development and build process service account seceret name"
 }
+
+
+#
+# AWS
+#
+
+variable "aws_region" {
+  type        = string
+  description = "AWS region"
+}
+
+variable "aws_eks_cluster_name" {
+  type        = string
+  description = "AWS EKS cluster name"
+}

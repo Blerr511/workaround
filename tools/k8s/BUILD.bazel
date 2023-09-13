@@ -1,0 +1,8 @@
+sh_binary(
+    name = "kubectl",
+    srcs = ["kubectl.sh"],
+    env = {
+        "KUBECONFIG": "$(KUBE_CONFIG)",
+    },
+    toolchains = ["//sandbox:workspace_env_vars"],
+)

@@ -4,8 +4,26 @@ sh_binary(
     env = {
         "AWS_CONFIG_FILE": "$(AWS_CONFIG_FILE)",
         "AWS_DEFAULT_REGION": "$(AWS_DEFAULT_REGION)",
+        "KUBECONFIG": "$(KUBE_CONFIG)",
     },
-    toolchains = ["//sandbox:aws_env_vars"],
+    toolchains = [
+        "//sandbox:aws_env_vars",
+        "//sandbox:workspace_env_vars",
+    ],
+)
+
+sh_binary(
+    name = "eksctl",
+    srcs = ["eksctl.sh"],
+    env = {
+        "AWS_CONFIG_FILE": "$(AWS_CONFIG_FILE)",
+        "AWS_DEFAULT_REGION": "$(AWS_DEFAULT_REGION)",
+        "KUBECONFIG": "$(KUBE_CONFIG)",
+    },
+    toolchains = [
+        "//sandbox:aws_env_vars",
+        "//sandbox:workspace_env_vars",
+    ],
 )
 
 sh_binary(
@@ -19,3 +37,30 @@ sh_binary(
     },
     toolchains = ["//sandbox:aws_env_vars"],
 )
+
+genrule(
+    name = "aws-k8s-authenticator",
+    outs = ["setup-auth.sh"],
+    cmd = """
+    curl -Lo $@ https://github.com/kubernetes-sigs/aws-iam-authenticator/releases/download/v0.5.9/aws-iam-authenticator_0.5.9_linux_amd64
+    chmod +x $@
+    """,
+    tags = ["requires-network"],
+)
+
+sh_binary(
+    name = "aws.k8s_auth",
+    srcs = ["aws-k8s-authenticator"],
+    args = ["init"],
+    env = {
+        "AWS_CONFIG_FILE": "$(AWS_CONFIG_FILE)",
+        "AWS_DEFAULT_REGION": "$(AWS_DEFAULT_REGION)",
+        "KUBECONFIG": "$(KUBE_CONFIG)",
+    },
+    toolchains = [
+        "//sandbox:aws_env_vars",
+        "//sandbox:workspace_env_vars",
+    ],
+)
+
+## curl -Lo aws-iam-authenticator https://github.com/kubernetes-sigs/aws-iam-authenticator/releases/download/v0.5.9/aws-iam-authenticator_0.5.9_linux_amd64

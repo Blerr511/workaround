@@ -8,6 +8,10 @@ terraform {
       source  = "hashicorp/helm"
       version = "~> 2.8.0"
     }
+    aws = {
+      source  = "hashicorp/aws"
+      version = "5.16.1"
+    }
     kubernetes = {
       source  = "hashicorp/kubernetes"
       version = "~> 2.16.1"
@@ -26,4 +30,8 @@ terraform {
 provider "google" {
   project = var.gcp_project_id
   region  = var.gcp_region
+}
+
+provider "aws" {
+  region = var.aws_region
 }

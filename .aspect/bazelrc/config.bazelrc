@@ -1,6 +1,8 @@
 # WORKSPACE
 build --action_env=APP_ENV=dev
 build --action_env=PY_VENV="/tmp/.wr/.py_virtualenv"
+build --action_env=KUBE_CONFIG="/tmp/.wr/.kube/config"
+
 # build --workspace_status_command=./tools/git/commit_hash.sh
 
 # GCP
@@ -32,6 +34,7 @@ build --action_env=AWS_EC2_INSTANCE_ID=i-03717b829f59c4e8f
 build --action_env=AWS_EC2_INSTANCE_SSH_PATH=ubuntu@ec2-16-171-224-221.eu-north-1.compute.amazonaws.com
 # Define it on your local.bazelrc file
 build --action_env=AWS_EC2_SSH_KEY_PATH=
+build --action_env=AWS_EKS_CLUSTER_NAME=wr
 
 # GCP artifacts
 build --action_env=GCP_NPM_ARTIFACTS_SCOPE=
