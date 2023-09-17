@@ -23,7 +23,7 @@ k8s_object(
     name = "service",
     cluster = "$(_CLUSTER)",
     kind = "service",
-    kubeconfig = "$(KUBE_CONFIG)",
+    kubeconfig = "//tools/aws:kubeconfig",
     substitutions = {
         "{ name }": "web-client",
         "{ port }": "3000",

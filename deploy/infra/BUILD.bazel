@@ -52,8 +52,14 @@ tf(
         "gcp_docker_artifacts_repository": "$(GCP_DOCKER_ARTIFACTS_REPOSITORY)",
         "gcp_github_ssh_key_secret_name": "$(GCP_GITHUB_SSH_KEY_SECRET_NAME)",
         "gcp_npm_artifacts_repository": "$(GCP_NPM_ARTIFACTS_REPOSITORY)",
+        "gcp_artifacts_reader_sa_secret": "$(GCP_ARTIFACTS_READER_SA_SECRET)",
+        "gcp_artifacts_reader_sa": "$(GCP_ARTIFACTS_READER_SA)",
         "aws_region": "$(AWS_DEFAULT_REGION)",
         "aws_eks_cluster_name": "$(AWS_EKS_CLUSTER_NAME)",
+        "aws_rds_postgres_name": "$(AWS_RDS_POSTGRES_NAME)",
+        "aws_rds_postgres_username": "$(AWS_RDS_POSTGRES_USERNAME)",
+        "aws_rds_postgres_password": "$(AWS_RDS_POSTGRES_PASSWORD)",
+        "aws_rds_postgres_db_name": "$(AWS_RDS_POSTGRES_DB_NAME)",
     },
 )
 

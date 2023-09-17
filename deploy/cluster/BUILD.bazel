@@ -3,6 +3,7 @@ load("@io_bazel_rules_k8s//k8s:objects.bzl", "k8s_objects")
 k8s_objects(
     name = "app",
     objects = [
+        "//deploy/cluster/general:general",
         "//deploy/cluster/backend:backend",
         "//deploy/cluster/web-client:web-client",
     ],

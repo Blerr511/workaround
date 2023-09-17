@@ -26,3 +26,20 @@ resource "google_secret_manager_secret" "github_ssh_key" {
     automatic = true
   }
 }
+
+resource "google_secret_manager_secret" "artifacts_reader_sa_secret" {
+  secret_id = var.gcp_artifacts_reader_sa_secret
+
+  labels = {
+    create = "automatic"
+  }
+
+  replication {
+    automatic = true
+  }
+}
+
+resource "google_secret_manager_secret_version" "artifacts_Reader_sa_secret" {
+  secret      = google_secret_manager_secret.artifacts_reader_sa_secret.id
+  secret_data = base64decode(google_service_account_key.artifacts_reader_key.private_key)
+}

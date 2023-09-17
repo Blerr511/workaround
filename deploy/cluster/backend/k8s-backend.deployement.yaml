@@ -48,6 +48,8 @@ spec:
             - name: cloudsql-instance-credentials
               mountPath: /secrets/cloudsql
               readOnly: true
+      imagePullSecrets:
+        - name: gar
       volumes:
         - name: cloudsql-instance-credentials
           secret:

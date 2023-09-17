@@ -27,6 +27,16 @@ variable "gcp_github_ssh_key_secret_name" {
   description = "Github repo ssh access key"
 }
 
+variable "gcp_artifacts_reader_sa" {
+  type        = string
+  description = "Serviec Account artifacts reader name"
+}
+
+variable "gcp_artifacts_reader_sa_secret" {
+  type        = string
+  description = "Secret name for artifacts reader sa credentials"
+}
+
 #
 # Backend
 #
@@ -83,4 +93,24 @@ variable "aws_region" {
 variable "aws_eks_cluster_name" {
   type        = string
   description = "AWS EKS cluster name"
+}
+
+variable "aws_rds_postgres_name" {
+  type        = string
+  description = "AWS RDS postgres instance name"
+}
+
+variable "aws_rds_postgres_db_name" {
+  type        = string
+  description = "AWS RDS postgres db name"
+}
+
+variable "aws_rds_postgres_username" {
+  type        = string
+  description = "AWS RDS postgres db username"
+}
+
+variable "aws_rds_postgres_password" {
+  type        = string
+  description = "AWS RDS postgres db password"
 }

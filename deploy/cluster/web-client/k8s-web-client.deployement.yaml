@@ -17,3 +17,5 @@ spec:
           image: { image }
           ports:
             - containerPort: { port }
+      imagePullSecrets:
+        - name: gar

@@ -1,0 +1,59 @@
+load("@io_bazel_rules_k8s//k8s:object.bzl", "k8s_object")
+load("@io_bazel_rules_k8s//k8s:objects.bzl", "k8s_objects")
+load("//sandbox/gcp:defs.bzl", "secret_version")
+
+secret_version(
+    name = "artifacts_reader_sa",
+    secret = "$(GCP_ARTIFACTS_READER_SA_SECRET)",
+)
+
+genrule(
+    name = "dockerconfigjson",
+    srcs = [
+        ".dockerconfigjson",
+        ":artifacts_reader_sa",
+    ],
+    outs = [".dockerconfig.json"],
+    cmd = """
+    export REGION=$(GCP_REGION)
+    export PROJECT_ID=$(GCP_PROJECT_ID)
+    export REPOSITORY_ID=$(GCP_DOCKER_ARTIFACTS_REPOSITORY)
+    export AUTH_STRING=$$(cat $(location :artifacts_reader_sa))
+
+    envsubst < $(location .dockerconfigjson) > $@
+    """,
+    toolchains = ["//sandbox:gcp_env_vars"],
+)
+
+genrule(
+    name = "dockerconfigjson.base64",
+    srcs = [":dockerconfigjson"],
+    outs = [".dockerconfigjson_base64"],
+    cmd = """
+        cat $(location :dockerconfigjson) | base64 | tr -d '[:space:]' > $@
+        """,
+)
+
+k8s_object(
+    name = "gar-secret",
+    cluster = "$(_CLUSTER)",
+    kind = "secret",
+    kubeconfig = "//tools/aws:kubeconfig",
+    substitutions = {
+        "{ DOCKERCONFIG }": ":dockerconfigjson.base64",
+    },
+    template = ":gar.secret.yaml",
+    toolchains = [
+        "//sandbox:gcp_env_vars",
+        "//sandbox:workspace_env_vars",
+    ],
+)
+
+k8s_objects(
+    name = "general",
+    objects = [
+        # ":deployement",
+        ":gar-secret",
+    ],
+    visibility = ["//visibility:public"],
+)

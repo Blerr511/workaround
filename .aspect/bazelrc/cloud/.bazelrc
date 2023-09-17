@@ -1,6 +1,5 @@
 
 # GCP
-build --action_env=GCP_CLOUD_SQL_SA="cloud-sql-user"
 build --action_env=GCP_CLOUD_SQL_SA_SECRET="cloud_sql_sa"
 build --action_env=GCP_CLOUD_SQL_NAME=backend-postgres
 build --action_env=GCP_CLOUD_SQL_INSTANCE="$(GCP_PROJECT_ID):$(GCP_REGION):$(GCP_CLOUD_SQL_NAME)"

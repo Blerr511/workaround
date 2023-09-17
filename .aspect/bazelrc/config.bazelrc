@@ -22,9 +22,11 @@ build --action_env=GCP_DEVELOPMENT_SA="development-sa"
 build --action_env=GCP_DEVELOPMENT_SA_SECRET="development-sa"
 build --action_env=GCP_CLOUD_BUILD_SDK_VERSION="7.0.1"
 build --action_env=GCP_GITHUB_SSH_KEY_SECRET_NAME="github-ssh-key"
+build --action_env=GCP_ARTIFACTS_READER_SA=artifacts-reader
+build --action_env=GCP_ARTIFACTS_READER_SA_SECRET=artifacts-reader-sa
 
 # AWS
-build --action_env=AWS_DEFAULT_REGION=eu-north-1
+build --action_env=AWS_DEFAULT_REGION="eu-north-1"
 build --action_env=AWS_CONFIG_FILE=/tmp/.wr/.aws_config
 # Specify on your local.bazelrc file
 build --action_env=AWS_DEFAULT_ACCESS_KEY_ID=
@@ -35,6 +37,12 @@ build --action_env=AWS_EC2_INSTANCE_SSH_PATH=ubuntu@ec2-16-171-224-221.eu-north-
 # Define it on your local.bazelrc file
 build --action_env=AWS_EC2_SSH_KEY_PATH=
 build --action_env=AWS_EKS_CLUSTER_NAME=wr
+## RDS
+build --action_env=AWS_RDS_POSTGRES_NAME=datasource
+build --action_env=AWS_RDS_POSTGRES_DB_NAME=data_source
+build --action_env=AWS_RDS_POSTGRES_USERNAME=data-source-user
+build --action_env=AWS_RDS_POSTGRES_PASSWORD=
+=
 
 # GCP artifacts
 build --action_env=GCP_NPM_ARTIFACTS_SCOPE=

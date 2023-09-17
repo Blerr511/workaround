@@ -1,11 +1,7 @@
-load("@npm//:defs.bzl", "npm_link_all_packages")
-load("@aspect_rules_js//js:defs.bzl", "js_binary", "js_run_devserver", "js_test")
+load("@aspect_rules_js//js:defs.bzl", "js_binary")
 load("@aspect_rules_ts//ts:defs.bzl", "ts_config", "ts_project")
+load("@npm//:defs.bzl", "npm_link_all_packages")
 load("//tools/utils:js_image.bzl", "js_image")
-
-service_name = "data-backend"
-
-package_name = "server/backend"
 
 npm_link_all_packages(name = "node_modules")
 
@@ -14,6 +10,8 @@ filegroup(
     srcs = glob([
         "*.js",
         ".*.js",
+        "*.json",
+        "*.yaml",
     ]),
 )
 
@@ -51,10 +49,10 @@ ts_project(
 
 js_binary(
     name = "start",
+    args = ["-r tsconfig-paths/register"],
     data = [
         ":ts",
     ],
-    args = ["-r tsconfig-paths/register"],
     entry_point = ":src/main.js",
     env = {
         "DATA_SOURCE_POSTGRES_URL": "$(DATA_SOURCE_POSTGRES_URL)",

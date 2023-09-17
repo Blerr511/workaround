@@ -16,7 +16,7 @@ exports_files([
     "package.json",
     "pnpm-lock.yaml",
     "pnpm-workspace.yaml",
-])
+] + glob(["**/package.json"]))
 
 toolchain(
     name = "kubectl_linux_toolchain",
@@ -30,6 +30,6 @@ toolchain(
 )
 
 alias(
-    name = 'dc',
-    actual = "//sandbox/environment:dc"
+    name = "dc",
+    actual = "//sandbox/environment:dc",
 )

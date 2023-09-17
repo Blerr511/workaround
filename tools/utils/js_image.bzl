@@ -97,13 +97,3 @@ def js_image(name, srcs, deps, package_json, image, tag = "latest", post_install
         """.format(package = native.package_name(), start = start_cmd),
         visibility = ["//visibility:public"],
     )
-
-    container_push(
-        name = "{name}_image_push".format(name = name),
-        image = "{name}_image".format(name = name),
-        format = "Docker",
-        registry = "$(GCP_DOCKER_ARTIFACTS_LOCATION)-docker.pkg.dev",
-        repository = "$(GCP_PROJECT_ID)/$(GCP_DOCKER_ARTIFACTS_REPOSITORY)/{image}:{tag}".format(image = image, tag = tag),
-        toolchains = ["//sandbox:gcp_env_vars"],
-        visibility = ["//visibility:public"],
-    )

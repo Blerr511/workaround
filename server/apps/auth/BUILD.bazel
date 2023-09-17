@@ -1,10 +1,10 @@
-load("@npm//:defs.bzl", "npm_link_all_packages")
 load("@aspect_rules_js//js:defs.bzl", "js_binary", "js_run_binary")
 load("@aspect_rules_ts//ts:defs.bzl", "ts_config", "ts_project")
-load("//tools/utils:js_image.bzl", "js_image")
-load("@npm//server/apps/auth:typeorm/package_json.bzl", typeorm = "bin")
+load("@npm//:defs.bzl", "npm_link_all_packages")
 load("@npm//server/apps/auth:ts-node/package_json.bzl", ts_node = "bin")
+load("@npm//server/apps/auth:typeorm/package_json.bzl", typeorm = "bin")
 load("//tools/bazel/copy-to-source:defs.bzl", "copy_to_source")
+load("//tools/utils:js_image.bzl", "js_image")
 
 npm_link_all_packages(name = "node_modules")
 
@@ -81,7 +81,6 @@ js_image(
     image = "$(GCP_DOCKER_AUTH_IMAGE)",
     package_json = "package.json",
     start_cmd = "node src/main.js",
-    toolchains = ["//sandbox:gcp_env_vars"],
     deps = [
         "//server/packages/logger:logger.json",
     ],

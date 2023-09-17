@@ -27,9 +27,9 @@ ts_project(
     transpiler = partial.make(
         babel,
         presets = {
-            "@babel/preset-typescript": "//:node_modules/@babel/preset-typescript",
-            "@babel/preset-env": "//:node_modules/@babel/preset-env",
-            "@babel/preset-react": "//:node_modules/@babel/preset-react",
+            "@babel/preset-typescript": "//client:node_modules/@babel/preset-typescript",
+            "@babel/preset-env": "//client:node_modules/@babel/preset-env",
+            "@babel/preset-react": "//client:node_modules/@babel/preset-react",
         },
     ),
     validate = True,

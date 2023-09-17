@@ -27,3 +27,10 @@ resource "google_project_iam_binding" "development_artifact_registry_writer" {
     "serviceAccount:${google_service_account.development_sa.email}",
   ]
 }
+
+resource "google_project_iam_binding" "artifacts_reader_artifacts_reader" {
+  project = var.gcp_project_id
+  role    = "roles/artifactregistry.reader"
+
+  members = ["serviceAccount:${google_service_account.artifacts_reader.email}"]
+}

@@ -21,6 +21,22 @@ sh_binary(
     ],
 )
 
+sh_binary(
+    name = "configure_docker",
+    srcs = [
+        ":gcloud_cli",
+    ],
+    args = ["auth configure-docker $(GCP_DOCKER_ARTIFACTS_LOCATION)-docker.pkg.dev"],
+    env = {
+        "CLOUDSDK_CONFIG": "$(GCP_CLOUDSDK_CONFIG)",
+        "PROJECT_ID": "$(GCP_PROJECT_ID)",
+    },
+    toolchains = [
+        "//sandbox:workspace_env_vars",
+        "//sandbox:gcp_env_vars",
+    ],
+)
+
 genrule(
     name = "access_token",
     srcs = [
@@ -104,7 +120,6 @@ genrule(
     ],
     visibility = ["//visibility:public"],
 )
-
 
 # REPO_URL=$(gcloud artifacts repositories describe REPO_NAME --project=PROJECT_ID --format="value(repository.format)")
 # TOKEN=$(gcloud auth print-access-token)
