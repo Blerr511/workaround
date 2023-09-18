@@ -110,21 +110,13 @@ steps:
       - |
         /workspace/release-npm-package.sh client/packages/core npm.publish
 
-  # - name: "$_GCP_DOCKER_ARTIFACTS_LOCATION-docker.pkg.dev/$PROJECT_ID/cloudsdktool/cloud-sdk:$_CLOUD_SDK_VERSION"
-  #   id: deploy-backend
-  #   entrypoint: "bash"
-  #   args:
-  #     - "-c"
-  #     - |
-  #       /workspace/apply-k8s.sh deploy/cluster/backend:backend.apply
-
-  # - name: "$_GCP_DOCKER_ARTIFACTS_LOCATION-docker.pkg.dev/$PROJECT_ID/cloudsdktool/cloud-sdk:$_CLOUD_SDK_VERSION"
-  #   id: deploy-web-client
-  #   entrypoint: "bash"
-  #   args:
-  #     - "-c"
-  #     - |
-  #       /workspace/apply-k8s.sh deploy/cluster/web-client:web-client.apply
+  - name: "$_GCP_DOCKER_ARTIFACTS_LOCATION-docker.pkg.dev/$PROJECT_ID/cloudsdktool/cloud-sdk:$_CLOUD_SDK_VERSION"
+    id: deploy-backend
+    entrypoint: "bash"
+    args:
+      - "-c"
+      - |
+        /workspace/apply-k8s.sh deploy/cluster:app.apply
 
 availableSecrets:
   secretManager:
