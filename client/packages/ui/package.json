@@ -10,6 +10,7 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "@babel/preset-typescript": "^7.21.5",
     "@babel/preset-env": "^7.22.4",
     "@babel/preset-react": "^7.22.3",
     "@types/react": "18.x.x",
@@ -20,16 +21,16 @@
     "typescript-plugin-css-modules": "^5.0.1"
   },
   "peerDependencies": {
-    "@types/react": "18.x.x",
-    "@types/react-dom": "18.x.x",
-    "react": "18.x.x",
     "@chakra-ui/icons": "2.1.x",
     "@chakra-ui/next-js": "2.1.x",
     "@chakra-ui/react": "2.8.x",
     "@chakra-ui/theme-tools": "2.1.x",
-    "@emotion/styled": "11.11.x",
     "@emotion/react": "^11.11.x",
-    "framer-motion": "10.x.x"
+    "@emotion/styled": "11.11.x",
+    "@types/react": "18.x.x",
+    "@types/react-dom": "18.x.x",
+    "framer-motion": "10.x.x",
+    "react": "18.x.x"
   },
   "dependencies": {
     "@chakra-ui/icons": "^2.1.0",

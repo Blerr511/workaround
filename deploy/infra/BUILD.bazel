@@ -60,6 +60,8 @@ tf(
         "aws_rds_postgres_username": "$(AWS_RDS_POSTGRES_USERNAME)",
         "aws_rds_postgres_password": "$(AWS_RDS_POSTGRES_PASSWORD)",
         "aws_rds_postgres_db_name": "$(AWS_RDS_POSTGRES_DB_NAME)",
+        "aws_iam_user_cloud_builder": "$(AWS_IAM_USER_CLOUD_BUILDER)",
+        "gcp_aws_iam_user_cloud_builder_sa": "$(GCP_AWS_IAM_USER_CLOUD_BUILDER_SA)",
     },
 )
 

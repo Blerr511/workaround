@@ -61,6 +61,11 @@ variable "gcp_npm_artifacts_repository" {
   description = "Npm artifacts repository"
 }
 
+variable "gcp_aws_iam_user_cloud_builder_sa" {
+  type        = string
+  description = "Secret Name of aws cloudbuilder user credentials"
+}
+
 #
 # GKE Cluster
 #
@@ -113,4 +118,9 @@ variable "aws_rds_postgres_username" {
 variable "aws_rds_postgres_password" {
   type        = string
   description = "AWS RDS postgres db password"
+}
+
+variable "aws_iam_user_cloud_builder" {
+  type        = string
+  description = "AWS IAM user for pushing pods into eks"
 }

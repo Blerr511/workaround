@@ -111,16 +111,24 @@ steps:
         /workspace/release-npm-package.sh client/packages/core npm.publish
 
   - name: "$_GCP_DOCKER_ARTIFACTS_LOCATION-docker.pkg.dev/$PROJECT_ID/cloudsdktool/cloud-sdk:$_CLOUD_SDK_VERSION"
+    id: deploy-general
+    entrypoint: "bash"
+    args:
+      - "-c"
+      - |
+        /workspace/apply-k8s.sh deploy/general:general.apply
+
+  - name: "$_GCP_DOCKER_ARTIFACTS_LOCATION-docker.pkg.dev/$PROJECT_ID/cloudsdktool/cloud-sdk:$_CLOUD_SDK_VERSION"
     id: deploy-backend
     entrypoint: "bash"
     args:
       - "-c"
       - |
-        /workspace/apply-k8s.sh deploy/cluster:app.apply
+        /workspace/apply-k8s.sh deploy/cluster/backend:backend.apply
 
 availableSecrets:
   secretManager:
     - versionName: projects/$PROJECT_ID/secrets/github-ssh-key/versions/latest
-      env: 'SSH_KEY'
+      env: "SSH_KEY"
 images:
   - "$_GCP_DOCKER_ARTIFACTS_LOCATION-docker.pkg.dev/$PROJECT_ID/cloudsdktool/cloud-sdk:$_CLOUD_SDK_VERSION"

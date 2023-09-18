@@ -19,6 +19,8 @@ sh_binary(
     name = "aws",
     srcs = ["aws.sh"],
     env = {
+        "AWS_DEFAULT_ACCESS_KEY_ID": "$(AWS_DEFAULT_ACCESS_KEY_ID)",
+        "AWS_DEFAULT_ACCESS_KEY_SECRET": "$(AWS_DEFAULT_ACCESS_KEY_SECRET)",
         "AWS_CONFIG_FILE": "$(AWS_CONFIG_FILE)",
         "AWS_DEFAULT_REGION": "$(AWS_DEFAULT_REGION)",
         "KUBECONFIG": "$(KUBE_CONFIG)",
@@ -84,7 +86,6 @@ genrule(
     name = "kubeconfig",
     srcs = ["aws.sh"],
     outs = ["kconfig"],
-    visibility=["//visibility:public"],
     cmd = """
     export AWS_CONFIG_FILE=$(AWS_CONFIG_FILE)
     export AWS_DEFAULT_REGION=$(AWS_DEFAULT_REGION)
@@ -93,6 +94,7 @@ genrule(
     """,
     tags = ["requires-network"],
     toolchains = ["//sandbox:aws_env_vars"],
+    visibility = ["//visibility:public"],
 )
 
 ## curl -Lo aws-iam-authenticator https://github.com/kubernetes-sigs/aws-iam-authenticator/releases/download/v0.5.9/aws-iam-authenticator_0.5.9_linux_amd64

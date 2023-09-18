@@ -43,3 +43,25 @@ resource "google_secret_manager_secret_version" "artifacts_Reader_sa_secret" {
   secret      = google_secret_manager_secret.artifacts_reader_sa_secret.id
   secret_data = base64decode(google_service_account_key.artifacts_reader_key.private_key)
 }
+
+
+locals {
+  aws_credentials = {
+    access_key = aws_iam_access_key.cloud_builder_ak.id
+    secret_key = aws_iam_access_key.cloud_builder_ak.secret
+  }
+  aws_credentials_base64 = base64encode(jsonencode(local.aws_credentials))
+}
+
+resource "google_secret_manager_secret" "aws_cloudbuilder_credentials" {
+  secret_id = var.gcp_aws_iam_user_cloud_builder_sa
+
+  replication {
+    automatic = true
+  }
+}
+
+resource "google_secret_manager_secret_version" "aws_cloudbuilder_credentials" {
+  secret      = google_secret_manager_secret.aws_cloudbuilder_credentials.id
+  secret_data = local.aws_credentials_base64
+}

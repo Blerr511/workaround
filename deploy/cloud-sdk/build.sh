@@ -88,4 +88,9 @@ echo "Bazel instllation completed, version: $(bazel --version)"
 
 git config --system credential.'https://source.developergclous.google.com'.helper gcloud.sh
 
+# AWS CLI
+curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+unzip awscliv2.zip
+./aws/install
+
 rm -rf /var/lib/apt/lists/*

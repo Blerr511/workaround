@@ -20,10 +20,11 @@ build --action_env=GCP_CLOUD_BUILD_SA=
 build --action_env=GCP_CLOUD_BUILD_SA_SECRET=
 build --action_env=GCP_DEVELOPMENT_SA="development-sa"
 build --action_env=GCP_DEVELOPMENT_SA_SECRET="development-sa"
-build --action_env=GCP_CLOUD_BUILD_SDK_VERSION="7.0.1"
+build --action_env=GCP_CLOUD_BUILD_SDK_VERSION="7.0.2"
 build --action_env=GCP_GITHUB_SSH_KEY_SECRET_NAME="github-ssh-key"
 build --action_env=GCP_ARTIFACTS_READER_SA=artifacts-reader
 build --action_env=GCP_ARTIFACTS_READER_SA_SECRET=artifacts-reader-sa
+build --action_env=GCP_AWS_IAM_USER_CLOUD_BUILDER_SA=cloud-builder-sa
 
 # AWS
 build --action_env=AWS_DEFAULT_REGION="eu-north-1"
@@ -42,7 +43,8 @@ build --action_env=AWS_RDS_POSTGRES_NAME=datasource
 build --action_env=AWS_RDS_POSTGRES_DB_NAME=data_source
 build --action_env=AWS_RDS_POSTGRES_USERNAME=data-source-user
 build --action_env=AWS_RDS_POSTGRES_PASSWORD=
-=
+## IAM
+build --action_env=AWS_IAM_USER_CLOUD_BUILDER=cloud_builder
 
 # GCP artifacts
 build --action_env=GCP_NPM_ARTIFACTS_SCOPE=
