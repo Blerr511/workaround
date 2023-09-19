@@ -29,6 +29,7 @@ build --action_env=GCP_AWS_IAM_USER_CLOUD_BUILDER_SA=cloud-builder-sa
 # AWS
 build --action_env=AWS_DEFAULT_REGION="eu-north-1"
 build --action_env=AWS_CONFIG_FILE=/tmp/.wr/.aws_config
+build --action_env=AWS_SHARED_CREDENTIALS_FILE=/tmp/.wr/.aws_credentials
 # Specify on your local.bazelrc file
 build --action_env=AWS_DEFAULT_ACCESS_KEY_ID=
 build --action_env=AWS_DEFAULT_ACCESS_KEY_SECRET=

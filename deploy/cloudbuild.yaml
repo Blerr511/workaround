@@ -56,6 +56,7 @@ steps:
       - "SHORT_SHA=${SHORT_SHA}"
       - "_TAG=${SHORT_SHA}"
       - "_ENV=${_ENV}"
+      - "_CLUSTER=${_CLUSTER}"
       - "BAZEL_RC_PATH=.aspect/bazelrc/${_ENV}/.bazelrc"
     args:
       - "-c"
@@ -63,8 +64,7 @@ steps:
         printenv > /workspace/.env;
         gcloud auth print-access-token > /workspace/gcp_token.txt;
         gcloud config get account > /workspace/gcp_account.txt
-        cp -pf ./deploy/shell/apply-k8s.sh /workspace/apply-k8s.sh; chmod +x /workspace/apply-k8s.sh;
-        cp -pf ./deploy/shell/release-npm-package.sh /workspace/release-npm-package.sh; chmod +x /workspace/release-npm-package.sh;
+        chmod +x /workspace/**/*.sh
         GCP_ACC=$(cat /workspace/gcp_account.txt);
         bazel run //tools/gcloud:gcloud -- auth activate-service-account $$GCP_ACC --key-file="/workspace/gcp_token.txt";
         rm /workspace/gcp_token.txt;
@@ -76,7 +76,7 @@ steps:
     args:
       - "-c"
       - |
-        /workspace/release-npm-package.sh server/packages/logger npm.publish
+        /workspace/deploy/shell/release-npm-package.sh server/packages/logger npm.publish
 
   - name: "$_GCP_DOCKER_ARTIFACTS_LOCATION-docker.pkg.dev/$PROJECT_ID/cloudsdktool/cloud-sdk:$_CLOUD_SDK_VERSION"
     id: release-backend-api
@@ -84,7 +84,7 @@ steps:
     args:
       - "-c"
       - |
-        /workspace/release-npm-package.sh server/packages/backend-api npm.publish
+        /workspace/deploy/shell/release-npm-package.sh server/packages/backend-api npm.publish
 
   - name: "$_GCP_DOCKER_ARTIFACTS_LOCATION-docker.pkg.dev/$PROJECT_ID/cloudsdktool/cloud-sdk:$_CLOUD_SDK_VERSION"
     id: release-data-source
@@ -92,7 +92,7 @@ steps:
     args:
       - "-c"
       - |
-        /workspace/release-npm-package.sh server/packages/data-source npm.publish
+        /workspace/deploy/shell/release-npm-package.sh server/packages/data-source npm.publish
 
   - name: "$_GCP_DOCKER_ARTIFACTS_LOCATION-docker.pkg.dev/$PROJECT_ID/cloudsdktool/cloud-sdk:$_CLOUD_SDK_VERSION"
     id: release-wr-ui
@@ -100,7 +100,7 @@ steps:
     args:
       - "-c"
       - |
-        /workspace/release-npm-package.sh client/packages/ui npm.publish
+        /workspace/deploy/shell/release-npm-package.sh client/packages/ui npm.publish
 
   - name: "$_GCP_DOCKER_ARTIFACTS_LOCATION-docker.pkg.dev/$PROJECT_ID/cloudsdktool/cloud-sdk:$_CLOUD_SDK_VERSION"
     id: release-wr-core
@@ -108,23 +108,37 @@ steps:
     args:
       - "-c"
       - |
-        /workspace/release-npm-package.sh client/packages/core npm.publish
+        /workspace/deploy/shell/release-npm-package.sh client/packages/core npm.publish
+
+  - name: "$_GCP_DOCKER_ARTIFACTS_LOCATION-docker.pkg.dev/$PROJECT_ID/cloudsdktool/cloud-sdk:$_CLOUD_SDK_VERSION"
+    id: aws-configure
+    entrypoint: "bash"
+    args:
+      - "-c"
+      - |
+        /workspace/deploy/shell/configure-aws.sh
 
   - name: "$_GCP_DOCKER_ARTIFACTS_LOCATION-docker.pkg.dev/$PROJECT_ID/cloudsdktool/cloud-sdk:$_CLOUD_SDK_VERSION"
     id: deploy-general
     entrypoint: "bash"
+    env:
+      - "_CLUSTER=${_CLUSTER}"
+      - "_TAG=${SHORT_SHA}"
     args:
       - "-c"
       - |
-        /workspace/apply-k8s.sh deploy/general:general.apply
+        /workspace/deploy/shell/apply-k8s.sh deploy/cluster/general:general.apply
 
   - name: "$_GCP_DOCKER_ARTIFACTS_LOCATION-docker.pkg.dev/$PROJECT_ID/cloudsdktool/cloud-sdk:$_CLOUD_SDK_VERSION"
     id: deploy-backend
     entrypoint: "bash"
+    env:
+      - "_CLUSTER=${_CLUSTER}"
+      - "_TAG=${SHORT_SHA}"
     args:
       - "-c"
       - |
-        /workspace/apply-k8s.sh deploy/cluster/backend:backend.apply
+        /workspace/deploy/shell/apply-k8s.sh deploy/cluster/backend:backend.apply
 
 availableSecrets:
   secretManager:

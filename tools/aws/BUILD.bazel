@@ -1,12 +1,12 @@
 sh_binary(
     name = "aws.configure",
-    srcs = ["aws.sh"],
-    args = ["configure"],
+    srcs = ["aws_configure.sh"],
     env = {
         "AWS_CONFIG_FILE": "$(AWS_CONFIG_FILE)",
+        "AWS_SHARED_CREDENTIALS_FILE": "$(AWS_SHARED_CREDENTIALS_FILE)",
         "AWS_DEFAULT_REGION": "$(AWS_DEFAULT_REGION)",
-        "AWS_DEFAULT_ACCESS_KEY_ID": "$(AWS_DEFAULT_ACCESS_KEY_ID)",
-        "AWS_DEFAULT_ACCESS_KEY_SECRET": "$(AWS_DEFAULT_ACCESS_KEY_SECRET)",
+        "AWS_ACCESS_KEY_ID": "$(AWS_DEFAULT_ACCESS_KEY_ID)",
+        "AWS_ACCESS_KEY_SECRET": "$(AWS_DEFAULT_ACCESS_KEY_SECRET)",
         "KUBECONFIG": "$(KUBE_CONFIG)",
     },
     toolchains = [
@@ -19,9 +19,8 @@ sh_binary(
     name = "aws",
     srcs = ["aws.sh"],
     env = {
-        "AWS_DEFAULT_ACCESS_KEY_ID": "$(AWS_DEFAULT_ACCESS_KEY_ID)",
-        "AWS_DEFAULT_ACCESS_KEY_SECRET": "$(AWS_DEFAULT_ACCESS_KEY_SECRET)",
         "AWS_CONFIG_FILE": "$(AWS_CONFIG_FILE)",
+        "AWS_SHARED_CREDENTIALS_FILE": "$(AWS_SHARED_CREDENTIALS_FILE)",
         "AWS_DEFAULT_REGION": "$(AWS_DEFAULT_REGION)",
         "KUBECONFIG": "$(KUBE_CONFIG)",
     },
@@ -36,6 +35,7 @@ sh_binary(
     srcs = ["eksctl.sh"],
     env = {
         "AWS_CONFIG_FILE": "$(AWS_CONFIG_FILE)",
+        "AWS_SHARED_CREDENTIALS_FILE": "$(AWS_SHARED_CREDENTIALS_FILE)",
         "AWS_DEFAULT_REGION": "$(AWS_DEFAULT_REGION)",
         "KUBECONFIG": "$(KUBE_CONFIG)",
     },
@@ -49,6 +49,7 @@ sh_binary(
     name = "ec2.ssh",
     srcs = ["ssh.sh"],
     env = {
+        "AWS_SHARED_CREDENTIALS_FILE": "$(AWS_SHARED_CREDENTIALS_FILE)",
         "AWS_CONFIG_FILE": "AWS_CONFIG_FILE",
         "AWS_DEFAULT_REGION": "AWS_DEFAULT_REGION",
         "SSH_KEY": "$(AWS_EC2_SSH_KEY_PATH)",
@@ -73,6 +74,7 @@ sh_binary(
     args = ["init"],
     env = {
         "AWS_CONFIG_FILE": "$(AWS_CONFIG_FILE)",
+        "AWS_SHARED_CREDENTIALS_FILE": "$(AWS_SHARED_CREDENTIALS_FILE)",
         "AWS_DEFAULT_REGION": "$(AWS_DEFAULT_REGION)",
         "KUBECONFIG": "$(KUBE_CONFIG)",
     },
@@ -87,8 +89,11 @@ genrule(
     srcs = ["aws.sh"],
     outs = ["kconfig"],
     cmd = """
+    export AWS_SHARED_CREDENTIALS_FILE=$(AWS_SHARED_CREDENTIALS_FILE)
     export AWS_CONFIG_FILE=$(AWS_CONFIG_FILE)
     export AWS_DEFAULT_REGION=$(AWS_DEFAULT_REGION)
+    export AWS_ACCESS_KEY_ID=$(AWS_DEFAULT_ACCESS_KEY_ID)
+    export AWS_ACCESS_KEY_SECRET=$(AWS_DEFAULT_ACCESS_KEY_SECRET),
     export KUBECONFIG=$@
     $(location aws.sh) eks update-kubeconfig --name $(AWS_EKS_CLUSTER_NAME)
     """,

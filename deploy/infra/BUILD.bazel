@@ -26,6 +26,7 @@ tf(
     env = {
         "WORKDIR": "deploy/infra",
         "AWS_CONFIG_FILE": "$(AWS_CONFIG_FILE)",
+        "AWS_SHARED_CREDENTIALS_FILE": "$(AWS_SHARED_CREDENTIALS_FILE)",
         "AWS_DEFAULT_REGION": "$(AWS_DEFAULT_REGION)",
         "KUBECONFIG": "$(KUBE_CONFIG)",
         "CLOUDSDK_CONFIG": "$(GCP_CLOUDSDK_CONFIG)",
