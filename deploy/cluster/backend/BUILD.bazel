@@ -1,11 +1,11 @@
 load("@io_bazel_rules_k8s//k8s:object.bzl", "k8s_object")
 load("@io_bazel_rules_k8s//k8s:objects.bzl", "k8s_objects")
 
-# Use with inline defining config variables bazel run //.... --define _CLUSTER=... _TAG=...
+# Use with inline defining config variables bazel run //.... TAG=...
 
 k8s_object(
     name = "deployement",
-    cluster = "$(_CLUSTER)",
+    cluster = "",
     image_chroot = "$(GCP_DOCKER_ARTIFACTS_LOCATION)-docker.pkg.dev/$(GCP_PROJECT_ID)/$(GCP_DOCKER_ARTIFACTS_REPOSITORY)",
     images = {
         "$(GCP_DOCKER_ARTIFACTS_LOCATION)-docker.pkg.dev/$(GCP_PROJECT_ID)/$(GCP_DOCKER_ARTIFACTS_REPOSITORY)/$(GCP_DOCKER_BACKEND_IMAGE):{tag}".format(tag = "$(_TAG)"): "//server/apps/backend:backend_image",
@@ -15,7 +15,6 @@ k8s_object(
     substitutions = {
         "{ name }": "backend",
         "{ image }": "$(GCP_DOCKER_ARTIFACTS_LOCATION)-docker.pkg.dev/$(GCP_PROJECT_ID)/$(GCP_DOCKER_ARTIFACTS_REPOSITORY)/$(GCP_DOCKER_BACKEND_IMAGE):{tag}".format(tag = "$(_TAG)"),
-        "{ cloud_sql_instance }": "$(GCP_CLOUD_SQL_INSTANCE)",
         "{ backend_port }": "3000",
     },
     template = ":k8s-backend.deployement.yaml",
@@ -37,7 +36,7 @@ k8s_object(
 
 k8s_object(
     name = "secret",
-    cluster = "$(_CLUSTER)",
+    cluster = "",
     kind = "secret",
     kubeconfig = "//tools/aws:kubeconfig",
     template = ":k8s-backend.secret.yaml",
@@ -49,7 +48,7 @@ k8s_object(
 
 k8s_object(
     name = "service",
-    cluster = "$(_CLUSTER)",
+    cluster = "",
     kind = "service",
     kubeconfig = "//tools/aws:kubeconfig",
     substitutions = {

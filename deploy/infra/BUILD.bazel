@@ -42,14 +42,9 @@ tf(
         "gcp_project_id": "$(GCP_PROJECT_ID)",
         "gcp_terraform_bucket": "$(GCP_TERRAFORM_BUCKET)",
         "gcp_region": "$(GCP_REGION)",
-        "gcp_cloud_sql_sa": "$(GCP_CLOUD_SQL_SA)",
-        "gcp_cloud_sql_sa_secret": "$(GCP_CLOUD_SQL_SA_SECRET)",
         "gcp_cloud_build_sa": "$(GCP_CLOUD_BUILD_SA)",
         "gcp_development_sa": "$(GCP_DEVELOPMENT_SA)",
         "gcp_development_sa_secret": "$(GCP_DEVELOPMENT_SA_SECRET)",
-        "gke_cluster_name_short": "$(GKE_CLUSTER_NAME_SHORT)",
-        "gke_cluster_location": "$(GKE_CLUSTER_LOCATION)",
-        "gcp_cloud_sql_name": "$(GCP_CLOUD_SQL_NAME)",
         "gcp_docker_artifacts_repository": "$(GCP_DOCKER_ARTIFACTS_REPOSITORY)",
         "gcp_github_ssh_key_secret_name": "$(GCP_GITHUB_SSH_KEY_SECRET_NAME)",
         "gcp_npm_artifacts_repository": "$(GCP_NPM_ARTIFACTS_REPOSITORY)",
@@ -63,6 +58,7 @@ tf(
         "aws_rds_postgres_db_name": "$(AWS_RDS_POSTGRES_DB_NAME)",
         "aws_iam_user_cloud_builder": "$(AWS_IAM_USER_CLOUD_BUILDER)",
         "gcp_aws_iam_user_cloud_builder_sa": "$(GCP_AWS_IAM_USER_CLOUD_BUILDER_SA)",
+        "kubeconfig": "$(KUBE_CONFIG)",
     },
 )
 

@@ -1,6 +1,7 @@
 load("@io_bazel_rules_k8s//k8s:object.bzl", "k8s_object")
 load("@io_bazel_rules_k8s//k8s:objects.bzl", "k8s_objects")
 load("//sandbox/gcp:defs.bzl", "secret_version")
+load("//tools/aws:defs.bzl", "user_arn")
 
 secret_version(
     name = "artifacts_reader_sa",
@@ -34,18 +35,42 @@ genrule(
         """,
 )
 
+genrule(
+    name = "generate_gar_secret_yaml",
+    srcs = [
+        "gar.secret.yaml",
+        ":dockerconfigjson.base64",
+    ],
+    outs = ["generated_gar.secret.yaml"],
+    cmd = "cat $(location :dockerconfigjson.base64) | xargs -I {} sed 's/{ DOCKERCONFIG }/{}/g' $(location gar.secret.yaml) > $@",
+)
+
 k8s_object(
-    name = "gar-secret",
-    cluster = "$(_CLUSTER)",
-    kind = "secret",
+    name = "cloud-builder-role",
+    cluster = "",
+    kind = "cluster-role",
     kubeconfig = "//tools/aws:kubeconfig",
     substitutions = {
-        "{ DOCKERCONFIG }": ":dockerconfigjson.base64",
+        "{ CLOUD_BUILDER_NAME }": "$(AWS_IAM_USER_CLOUD_BUILDER)",
     },
-    template = ":gar.secret.yaml",
+    template = "cloud_builder.cluster-role.yaml",
     toolchains = [
         "//sandbox:gcp_env_vars",
         "//sandbox:workspace_env_vars",
+        "//sandbox:aws_env_vars",
+    ],
+)
+
+k8s_object(
+    name = "gar-secret",
+    cluster = "",
+    kind = "secret",
+    kubeconfig = "//tools/aws:kubeconfig",
+    template = ":generate_gar_secret_yaml",
+    toolchains = [
+        "//sandbox:gcp_env_vars",
+        "//sandbox:workspace_env_vars",
+        "//sandbox:aws_env_vars",
     ],
 )
 

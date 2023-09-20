@@ -56,7 +56,6 @@ steps:
       - "SHORT_SHA=${SHORT_SHA}"
       - "_TAG=${SHORT_SHA}"
       - "_ENV=${_ENV}"
-      - "_CLUSTER=${_CLUSTER}"
       - "BAZEL_RC_PATH=.aspect/bazelrc/${_ENV}/.bazelrc"
     args:
       - "-c"
@@ -64,51 +63,50 @@ steps:
         printenv > /workspace/.env;
         gcloud auth print-access-token > /workspace/gcp_token.txt;
         gcloud config get account > /workspace/gcp_account.txt
-        chmod +x /workspace/**/*.sh
         GCP_ACC=$(cat /workspace/gcp_account.txt);
         bazel run //tools/gcloud:gcloud -- auth activate-service-account $$GCP_ACC --key-file="/workspace/gcp_token.txt";
         rm /workspace/gcp_token.txt;
         rm /workspace/gcp_account.txt
 
-  - name: "$_GCP_DOCKER_ARTIFACTS_LOCATION-docker.pkg.dev/$PROJECT_ID/cloudsdktool/cloud-sdk:$_CLOUD_SDK_VERSION"
-    id: release-wr-logger
-    entrypoint: "bash"
-    args:
-      - "-c"
-      - |
-        /workspace/deploy/shell/release-npm-package.sh server/packages/logger npm.publish
+  # - name: "$_GCP_DOCKER_ARTIFACTS_LOCATION-docker.pkg.dev/$PROJECT_ID/cloudsdktool/cloud-sdk:$_CLOUD_SDK_VERSION"
+  #   id: release-wr-logger
+  #   entrypoint: "bash"
+  #   args:
+  #     - "-c"
+  #     - |
+  #       /workspace/deploy/shell/release-npm-package.sh server/packages/logger npm.publish
 
-  - name: "$_GCP_DOCKER_ARTIFACTS_LOCATION-docker.pkg.dev/$PROJECT_ID/cloudsdktool/cloud-sdk:$_CLOUD_SDK_VERSION"
-    id: release-backend-api
-    entrypoint: "bash"
-    args:
-      - "-c"
-      - |
-        /workspace/deploy/shell/release-npm-package.sh server/packages/backend-api npm.publish
+  # - name: "$_GCP_DOCKER_ARTIFACTS_LOCATION-docker.pkg.dev/$PROJECT_ID/cloudsdktool/cloud-sdk:$_CLOUD_SDK_VERSION"
+  #   id: release-backend-api
+  #   entrypoint: "bash"
+  #   args:
+  #     - "-c"
+  #     - |
+  #       /workspace/deploy/shell/release-npm-package.sh server/packages/backend-api npm.publish
 
-  - name: "$_GCP_DOCKER_ARTIFACTS_LOCATION-docker.pkg.dev/$PROJECT_ID/cloudsdktool/cloud-sdk:$_CLOUD_SDK_VERSION"
-    id: release-data-source
-    entrypoint: "bash"
-    args:
-      - "-c"
-      - |
-        /workspace/deploy/shell/release-npm-package.sh server/packages/data-source npm.publish
+  # - name: "$_GCP_DOCKER_ARTIFACTS_LOCATION-docker.pkg.dev/$PROJECT_ID/cloudsdktool/cloud-sdk:$_CLOUD_SDK_VERSION"
+  #   id: release-data-source
+  #   entrypoint: "bash"
+  #   args:
+  #     - "-c"
+  #     - |
+  #       /workspace/deploy/shell/release-npm-package.sh server/packages/data-source npm.publish
 
-  - name: "$_GCP_DOCKER_ARTIFACTS_LOCATION-docker.pkg.dev/$PROJECT_ID/cloudsdktool/cloud-sdk:$_CLOUD_SDK_VERSION"
-    id: release-wr-ui
-    entrypoint: "bash"
-    args:
-      - "-c"
-      - |
-        /workspace/deploy/shell/release-npm-package.sh client/packages/ui npm.publish
+  # - name: "$_GCP_DOCKER_ARTIFACTS_LOCATION-docker.pkg.dev/$PROJECT_ID/cloudsdktool/cloud-sdk:$_CLOUD_SDK_VERSION"
+  #   id: release-wr-ui
+  #   entrypoint: "bash"
+  #   args:
+  #     - "-c"
+  #     - |
+  #       /workspace/deploy/shell/release-npm-package.sh client/packages/ui npm.publish
 
-  - name: "$_GCP_DOCKER_ARTIFACTS_LOCATION-docker.pkg.dev/$PROJECT_ID/cloudsdktool/cloud-sdk:$_CLOUD_SDK_VERSION"
-    id: release-wr-core
-    entrypoint: "bash"
-    args:
-      - "-c"
-      - |
-        /workspace/deploy/shell/release-npm-package.sh client/packages/core npm.publish
+  # - name: "$_GCP_DOCKER_ARTIFACTS_LOCATION-docker.pkg.dev/$PROJECT_ID/cloudsdktool/cloud-sdk:$_CLOUD_SDK_VERSION"
+  #   id: release-wr-core
+  #   entrypoint: "bash"
+  #   args:
+  #     - "-c"
+  #     - |
+  #       /workspace/deploy/shell/release-npm-package.sh client/packages/core npm.publish
 
   - name: "$_GCP_DOCKER_ARTIFACTS_LOCATION-docker.pkg.dev/$PROJECT_ID/cloudsdktool/cloud-sdk:$_CLOUD_SDK_VERSION"
     id: aws-configure
@@ -122,7 +120,6 @@ steps:
     id: deploy-general
     entrypoint: "bash"
     env:
-      - "_CLUSTER=${_CLUSTER}"
       - "_TAG=${SHORT_SHA}"
     args:
       - "-c"
@@ -133,7 +130,6 @@ steps:
     id: deploy-backend
     entrypoint: "bash"
     env:
-      - "_CLUSTER=${_CLUSTER}"
       - "_TAG=${SHORT_SHA}"
     args:
       - "-c"

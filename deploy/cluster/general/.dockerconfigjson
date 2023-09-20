@@ -1,7 +1,7 @@
 {
   "auths": {
     "${REGION}-docker.pkg.dev/${PROJECT_ID}/${REPOSITORY_ID}": {
-      "auth": "${AUTH_STRING}"
+      "auth": ${AUTH_STRING}
     }
   }
 }

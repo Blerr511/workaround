@@ -1,23 +1,21 @@
 # WORKSPACE
 build --action_env=APP_ENV=dev
-build --action_env=PY_VENV="/tmp/.wr/.py_virtualenv"
+build --action_env=WR_TMP_DATA=tmp
+build --action_env=PY_VENV="/$(WR_TMP_DATA)/.wr/.py_virtualenv"
 build --action_env=KUBE_CONFIG="/tmp/.wr/.kube/config"
+build --action_env=GCP_CLOUDSDK_CONFIG="/tmp/.wr/.config/gcloud/$(APP_ENV)"
 
 # build --workspace_status_command=./tools/git/commit_hash.sh
 
 # GCP
-build --action_env=GCP_PROJECT_ID=wr-dev-393622
-build --action_env=GCP_PROJECT_NAME=wr-dev
+build --action_env=GCP_PROJECT_ID=
+build --action_env=GCP_PROJECT_NAME=
 build --action_env=GCP_REGION=europe-central2
-build --action_env=GCP_CLOUDSDK_CONFIG="/tmp/.wr/.config/gcloud/$(APP_ENV)"
-build --action_env=GCP_CLOUD_SQL_SA=
-build --action_env=GCP_CLOUD_SQL_SA_SECRET=
-build --action_env=GCP_CLOUD_SQL_INSTANCE=
 build --action_env=GCP_TERRAFORM_BUCKET="$(GCP_PROJECT_NAME)-terraform"
 build --action_env=GCP_TERRAFORM_SA="terraform-sa"
-build --action_env=GCP_TERRAFORM_SA_SECRET="terraform-sa"
-build --action_env=GCP_CLOUD_BUILD_SA=
-build --action_env=GCP_CLOUD_BUILD_SA_SECRET=
+build --action_env=GCP_TERRAFORM_SA_SECRET="terraform_sa"
+build --action_env=GCP_CLOUD_BUILD_SA="cloud-build-sa"
+build --action_env=GCP_CLOUD_BUILD_SA_SECRET="cloud-build-sa"
 build --action_env=GCP_DEVELOPMENT_SA="development-sa"
 build --action_env=GCP_DEVELOPMENT_SA_SECRET="development-sa"
 build --action_env=GCP_CLOUD_BUILD_SDK_VERSION="7.0.2"
@@ -26,45 +24,46 @@ build --action_env=GCP_ARTIFACTS_READER_SA=artifacts-reader
 build --action_env=GCP_ARTIFACTS_READER_SA_SECRET=artifacts-reader-sa
 build --action_env=GCP_AWS_IAM_USER_CLOUD_BUILDER_SA=cloud-builder-sa
 
+# GCP artifacts
+build --action_env=GCP_NPM_ARTIFACTS_SCOPE=@wr
+build --action_env=GCP_NPM_ARTIFACTS_REPOSITORY=npm
+build --action_env=GCP_NPM_ARTIFACTS_LOCATION=europe-central2
+
+# GCP docker artifacts
+build --action_env=GCP_DOCKER_ARTIFACTS_REPOSITORY=service-images
+build --action_env=GCP_DOCKER_ARTIFACTS_LOCATION=europe-central2
+
+# Docker image names
+build --action_env=GCP_DOCKER_BACKEND_IMAGE=wr-backend
+build --action_env=GCP_DOCKER_AUTH_IMAGE=wr-auth
+build --action_env=GCP_DOCKER_WEB_CLIENT_IMAGE=wr-client
+
+
 # AWS
 build --action_env=AWS_DEFAULT_REGION="eu-north-1"
 build --action_env=AWS_CONFIG_FILE=/tmp/.wr/.aws_config
 build --action_env=AWS_SHARED_CREDENTIALS_FILE=/tmp/.wr/.aws_credentials
+
 # Specify on your local.bazelrc file
 build --action_env=AWS_DEFAULT_ACCESS_KEY_ID=
 build --action_env=AWS_DEFAULT_ACCESS_KEY_SECRET=
+
 ## EC2
-build --action_env=AWS_EC2_INSTANCE_ID=i-03717b829f59c4e8f
-build --action_env=AWS_EC2_INSTANCE_SSH_PATH=ubuntu@ec2-16-171-224-221.eu-north-1.compute.amazonaws.com
+build --action_env=AWS_EC2_INSTANCE_ID=
+build --action_env=AWS_EC2_INSTANCE_SSH_PATH=
+
 # Define it on your local.bazelrc file
 build --action_env=AWS_EC2_SSH_KEY_PATH=
 build --action_env=AWS_EKS_CLUSTER_NAME=wr
+
 ## RDS
 build --action_env=AWS_RDS_POSTGRES_NAME=datasource
 build --action_env=AWS_RDS_POSTGRES_DB_NAME=data_source
 build --action_env=AWS_RDS_POSTGRES_USERNAME=data-source-user
-build --action_env=AWS_RDS_POSTGRES_PASSWORD=
+build --action_env=AWS_RDS_POSTGRES_PASSWORD=$(POSTGRES_PASSWORD)
+
 ## IAM
 build --action_env=AWS_IAM_USER_CLOUD_BUILDER=cloud_builder
-
-# GCP artifacts
-build --action_env=GCP_NPM_ARTIFACTS_SCOPE=
-build --action_env=GCP_NPM_ARTIFACTS_REPOSITORY=
-build --action_env=GCP_NPM_ARTIFACTS_LOCATION=
-
-# GCP docker artifacts
-build --action_env=GCP_DOCKER_ARTIFACTS_REPOSITORY=
-build --action_env=GCP_DOCKER_ARTIFACTS_LOCATION=
-
-# Docker image names
-build --action_env=GCP_DOCKER_BACKEND_IMAGE=
-build --action_env=GCP_DOCKER_WEB_CLIENT_IMAGE=
-
-# GKE cluster config
-build --action_env=GKE_CLUSTER_NAME_SHORT=
-build --action_env=GKE_CLUSTER_LOCATION=
-build --action_env=GKE_CLUSTER_NAME=
-build --action_env=GKE_CLUSTER_LOCATION_ROOT=
 
 # AUTHZ
 build --action_env=AUTHZ_DOMAIN=
@@ -134,4 +133,3 @@ build --action_env=PROMPT_REDIS_HOST=$(REDIS_HOST)
 build --action_env=PROMPT_REDIS_PORT=$(REDIS_PORT)
 build --action_env=PROMPT_REDIS_DB=1
 
-import %workspace%/.aspect/bazelrc/cloud/.bazelrc

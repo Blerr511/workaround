@@ -1,7 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: '{ name }-deployment'
+  name: "{ name }-deployment"
 spec:
   replicas: 1
   selector:
@@ -17,7 +17,7 @@ spec:
           image: { image }
           env:
             - name: DATA_SOURCE_POSTGRES_URL
-              value: 'postgresql://postgres:tangolier8@localhost:6432/postgres'
+              value: "postgresql://postgres:tangolier8@localhost:6432/postgres"
           ports:
             - containerPort: { backend_port }
           resources:
@@ -27,30 +27,7 @@ spec:
               ephemeral-storage: 2Gi
             limits:
               cpu: 410m
-              memory: '1.5Gi'
+              memory: "1.5Gi"
               ephemeral-storage: 4Gi
-        - name: cloud-sql-proxy
-          image: gcr.io/cloudsql-docker/gce-proxy:1.17
-          command:
-            [
-              '/cloud_sql_proxy',
-              '-instances={ cloud_sql_instance }=tcp:6432',
-              '-credential_file=/secrets/cloudsql/credentials.json',
-            ]
-          resources:
-            requests:
-              cpu: 25m
-              memory: 64Mi
-            limits:
-              cpu: 100m
-              memory: 124Mi
-          volumeMounts:
-            - name: cloudsql-instance-credentials
-              mountPath: /secrets/cloudsql
-              readOnly: true
       imagePullSecrets:
         - name: gar
-      volumes:
-        - name: cloudsql-instance-credentials
-          secret:
-            secretName: cloudsql-instance-credentials

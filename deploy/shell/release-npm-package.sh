@@ -1,16 +1,26 @@
 #!/bin/bash
 
+currentDir=$(pwd)
+
+while [[ "$currentDir" != "" && ! -e "$currentDir/WORKSPACE" ]]; do
+    currentDir=${currentDir%/*}
+done
+
+if [[ ! -e "$currentDir/WORKSPACE" ]]; then
+    echo "No WORKSPACE file found in any parent directory."
+    exit 1
+fi
+
+if [[ -e "$currentDir/.env" ]]; then
+    for line in $(cat "$SCRIPT_DIR/.env"); do
+        export $line
+    done
+fi
+
 set -e
 
 PACKAGE_PATH=$1
 PACKAGE_TARGET=$2
-
-SCRIPT_DIR=$(cd $(dirname "${BASH_SOURCE[0]}") && pwd)
-if [[ -e "${SCRIPT_DIR}/.env" ]]; then
-    for line in $(cat "${SCRIPT_DIR}/.env"); do
-        export $line
-    done
-fi
 
 [[ -z "$PACKAGE_PATH" ]] && echo "Error: PACKAGE_PATH is not set" && exit 1
 [[ -z "$PACKAGE_TARGET" ]] && echo "Error: PACKAGE_TARGET is not set" && exit 1
@@ -21,7 +31,7 @@ echo "Starting release of package $PACKAGE_NAME"
 
 set +e
 
-VERSIONS_PATH=$(bazel build //tools/gcloud:npm_package_versions --define _PACKAGE=$PACKAGE_NAME 2>&1 | grep "npm_package_versions.txt" | awk '{ print $1 }')
+VERSIONS_PATH=$(./bzl.sh build //tools/gcloud:npm_package_versions --define _PACKAGE=$PACKAGE_NAME 2>&1 | grep "npm_package_versions.txt" | awk '{ print $1 }')
 
 echo "VERSIONS_PATH $VERSIONS_PATH"
 
@@ -38,6 +48,6 @@ fi
 
 echo "Package $PACKAGE_NAME@$VERSION_TO_CHECK not found in repo, publishing..."
 
-bazel run //$PACKAGE_PATH:$PACKAGE_TARGET
+./bzl.sh run //$PACKAGE_PATH:$PACKAGE_TARGET
 
 echo "Package $PACKAGE_NAME@$VERSION_TO_CHECK successfully published to artifacts repo"

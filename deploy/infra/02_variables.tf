@@ -85,6 +85,10 @@ variable "gcp_development_sa_secret" {
   description = "Development and build process service account seceret name"
 }
 
+variable "kubeconfig" {
+  type        = string
+  description = "Kubernetes config file path"
+}
 
 #
 # AWS

@@ -12,6 +12,7 @@ genrule(
     cmd = """
     cat $(location :aws_cloud_builder_ak) | base64 --decode | jq ".access_key" | sed "s/\\"//g" > $@
     """,
+    visibility = ["//visibility:public"],
 )
 
 genrule(
@@ -21,4 +22,5 @@ genrule(
     cmd = """
     cat $(location :aws_cloud_builder_ak) | base64 --decode | jq ".secret_key" | sed "s/\\"//g" > $@
     """,
+    visibility = ["//visibility:public"],
 )

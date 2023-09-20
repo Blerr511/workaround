@@ -9,6 +9,26 @@ sh_binary(
         "AWS_ACCESS_KEY_SECRET": "$(AWS_DEFAULT_ACCESS_KEY_SECRET)",
         "KUBECONFIG": "$(KUBE_CONFIG)",
     },
+    tags = ["no-cache"],
+    toolchains = [
+        "//sandbox:aws_env_vars",
+        "//sandbox:workspace_env_vars",
+    ],
+)
+
+genrule(
+    name = "aws.export_vars",
+    outs = ["export_vars.sh"],
+    cmd = """
+    echo "
+    #!/bin/bash
+
+    export AWS_CONFIG_FILE=$(AWS_CONFIG_FILE)
+    export AWS_SHARED_CREDENTIALS_FILE=$(AWS_SHARED_CREDENTIALS_FILE)
+
+    export barlus=sdfsf
+    " >$@
+    """,
     toolchains = [
         "//sandbox:aws_env_vars",
         "//sandbox:workspace_env_vars",
@@ -55,29 +75,6 @@ sh_binary(
         "SSH_KEY": "$(AWS_EC2_SSH_KEY_PATH)",
         "INSTANCE": "$(AWS_EC2_INSTANCE_SSH_PATH)",
     },
-    toolchains = ["//sandbox:aws_env_vars"],
-)
-
-genrule(
-    name = "aws-k8s-authenticator",
-    outs = ["setup-auth.sh"],
-    cmd = """
-    curl -Lo $@ https://github.com/kubernetes-sigs/aws-iam-authenticator/releases/download/v0.5.9/aws-iam-authenticator_0.5.9_linux_amd64
-    chmod +x $@
-    """,
-    tags = ["requires-network"],
-)
-
-sh_binary(
-    name = "aws.k8s_auth",
-    srcs = ["aws-k8s-authenticator"],
-    args = ["init"],
-    env = {
-        "AWS_CONFIG_FILE": "$(AWS_CONFIG_FILE)",
-        "AWS_SHARED_CREDENTIALS_FILE": "$(AWS_SHARED_CREDENTIALS_FILE)",
-        "AWS_DEFAULT_REGION": "$(AWS_DEFAULT_REGION)",
-        "KUBECONFIG": "$(KUBE_CONFIG)",
-    },
     toolchains = [
         "//sandbox:aws_env_vars",
         "//sandbox:workspace_env_vars",
@@ -91,15 +88,17 @@ genrule(
     cmd = """
     export AWS_SHARED_CREDENTIALS_FILE=$(AWS_SHARED_CREDENTIALS_FILE)
     export AWS_CONFIG_FILE=$(AWS_CONFIG_FILE)
-    export AWS_DEFAULT_REGION=$(AWS_DEFAULT_REGION)
-    export AWS_ACCESS_KEY_ID=$(AWS_DEFAULT_ACCESS_KEY_ID)
-    export AWS_ACCESS_KEY_SECRET=$(AWS_DEFAULT_ACCESS_KEY_SECRET),
     export KUBECONFIG=$@
     $(location aws.sh) eks update-kubeconfig --name $(AWS_EKS_CLUSTER_NAME)
     """,
     tags = ["requires-network"],
-    toolchains = ["//sandbox:aws_env_vars"],
+    toolchains = [
+        "//sandbox:aws_env_vars",
+        "//sandbox:workspace_env_vars",
+    ],
     visibility = ["//visibility:public"],
 )
 
 ## curl -Lo aws-iam-authenticator https://github.com/kubernetes-sigs/aws-iam-authenticator/releases/download/v0.5.9/aws-iam-authenticator_0.5.9_linux_amd64
+
+exports_files(["aws.sh"])
