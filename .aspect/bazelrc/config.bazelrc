@@ -1,9 +1,12 @@
 # WORKSPACE
 build --action_env=APP_ENV=dev
-build --action_env=WR_TMP_DATA=tmp
-build --action_env=PY_VENV="/$(WR_TMP_DATA)/.wr/.py_virtualenv"
-build --action_env=KUBE_CONFIG="/tmp/.wr/.kube/config"
-build --action_env=GCP_CLOUDSDK_CONFIG="/tmp/.wr/.config/gcloud/$(APP_ENV)"
+build --action_env=WR_TMP_DATA=/tmp/.wr
+build --action_env=PY_VENV="$(WR_TMP_DATA)/.py_virtualenv"
+build --action_env=KUBE_CONFIG="$(WR_TMP_DATA)/.kube/config"
+build --action_env=GCP_CLOUDSDK_CONFIG="$(WR_TMP_DATA)/.gcloud"
+build --action_env=AWS_CONFIG_FILE=$(WR_TMP_DATA)/.aws_config
+build --action_env=AWS_SHARED_CREDENTIALS_FILE=$(WR_TMP_DATA)/.aws_credentials
+
 
 # build --workspace_status_command=./tools/git/commit_hash.sh
 
@@ -41,8 +44,6 @@ build --action_env=GCP_DOCKER_WEB_CLIENT_IMAGE=wr-client
 
 # AWS
 build --action_env=AWS_DEFAULT_REGION="eu-north-1"
-build --action_env=AWS_CONFIG_FILE=/tmp/.wr/.aws_config
-build --action_env=AWS_SHARED_CREDENTIALS_FILE=/tmp/.wr/.aws_credentials
 
 # Specify on your local.bazelrc file
 build --action_env=AWS_DEFAULT_ACCESS_KEY_ID=

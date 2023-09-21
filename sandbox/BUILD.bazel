@@ -9,6 +9,7 @@ import_env_vars(
         "KUBE_CONFIG": "KUBE_CONFIG",
         "GCP_CLOUDSDK_CONFIG": "GCP_CLOUDSDK_CONFIG",
         "AWS_CONFIG_FILE": "AWS_CONFIG_FILE",
+        "AWS_SHARED_CREDENTIALS_FILE": "AWS_SHARED_CREDENTIALS_FILE",
     },
     visibility = ["//visibility:public"],
 )
@@ -47,7 +48,6 @@ import_env_vars(
     name = "aws_env_vars",
     vars_mapping = {
         "AWS_DEFAULT_REGION": "AWS_DEFAULT_REGION",
-        "AWS_SHARED_CREDENTIALS_FILE": "AWS_SHARED_CREDENTIALS_FILE",
         "AWS_EC2_INSTANCE_ID": "AWS_EC2_INSTANCE_ID",
         "AWS_EC2_SSH_KEY_PATH": "AWS_EC2_SSH_KEY_PATH",
         "AWS_EKS_CLUSTER_NAME": "AWS_EKS_CLUSTER_NAME",

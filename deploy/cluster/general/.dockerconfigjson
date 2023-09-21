@@ -1,7 +1,10 @@
 {
   "auths": {
-    "${REGION}-docker.pkg.dev/${PROJECT_ID}/${REPOSITORY_ID}": {
-      "auth": ${AUTH_STRING}
+    "${REGION}-docker.pkg.dev/${PROJECT_ID}/${REPOSITORY_ID}": 
+    {
+      "username": "_json_key",
+      "password": ${AUTH_STRING},
+      "email": "${AUTH_EMAIL}"
     }
   }
 }

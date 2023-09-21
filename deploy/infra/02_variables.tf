@@ -51,6 +51,12 @@ variable "gcp_cloud_build_sa" {
   description = "Cloud Buld User service account id"
 }
 
+variable "gcp_cloud_build_sa_secret" {
+  type        = string
+  description = "Cloud Buld User service account secretid"
+}
+
+
 variable "gcp_docker_artifacts_repository" {
   type        = string
   description = "Application images repoisotry"

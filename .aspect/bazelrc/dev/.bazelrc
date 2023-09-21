@@ -1,6 +1,4 @@
 # WORKSPACE
-build --action_env=WR_TMP_DATA=workspace
-
 # GCP
 build --action_env=GCP_PROJECT_ID=wr-dev-393622
 build --action_env=GCP_PROJECT_NAME=wr-dev

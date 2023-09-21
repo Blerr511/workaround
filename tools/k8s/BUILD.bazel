@@ -2,6 +2,9 @@ sh_binary(
     name = "kubectl",
     srcs = ["kubectl.sh"],
     env = {
+        "GCP_CLOUDSDK_CONFIG": "$(GCP_CLOUDSDK_CONFIG)",
+        "AWS_CONFIG_FILE": "$(AWS_CONFIG_FILE)",
+        "AWS_SHARED_CREDENTIALS_FILE": "$(AWS_SHARED_CREDENTIALS_FILE)",
         "KUBECONFIG": "$(KUBE_CONFIG)",
     },
     toolchains = ["//sandbox:workspace_env_vars"],

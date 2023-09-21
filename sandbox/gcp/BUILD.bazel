@@ -24,3 +24,30 @@ genrule(
     """,
     visibility = ["//visibility:public"],
 )
+
+secret_version(
+    name = "gcp_cloud_builder_sa",
+    secret = "$(GCP_CLOUD_BUILD_SA_SECRET)",
+)
+
+sh_binary(
+    name = "active_cloud_builder_sa",
+    srcs = ["//tools/gcloud:gcloud_cli"],
+    args = [
+        "auth",
+        "activate-service-account",
+        "--key-file=$(location :gcp_cloud_builder_sa)",
+    ],
+    data = [
+        ":gcp_cloud_builder_sa",
+        ":gcp_cloud_builder_sa_email",
+    ],
+    env = {
+        "CLOUDSDK_CONFIG": "$(GCP_CLOUDSDK_CONFIG)",
+        "PROJECT_ID": "$(GCP_PROJECT_ID)",
+    },
+    toolchains = [
+        "//sandbox:workspace_env_vars",
+        "//sandbox:gcp_env_vars",
+    ],
+)

@@ -43,6 +43,7 @@ tf(
         "gcp_terraform_bucket": "$(GCP_TERRAFORM_BUCKET)",
         "gcp_region": "$(GCP_REGION)",
         "gcp_cloud_build_sa": "$(GCP_CLOUD_BUILD_SA)",
+        "gcp_cloud_build_sa_secret": "$(GCP_CLOUD_BUILD_SA_SECRET)",
         "gcp_development_sa": "$(GCP_DEVELOPMENT_SA)",
         "gcp_development_sa_secret": "$(GCP_DEVELOPMENT_SA_SECRET)",
         "gcp_docker_artifacts_repository": "$(GCP_DOCKER_ARTIFACTS_REPOSITORY)",

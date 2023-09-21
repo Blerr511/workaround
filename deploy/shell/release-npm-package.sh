@@ -2,17 +2,8 @@
 
 currentDir=$(pwd)
 
-while [[ "$currentDir" != "" && ! -e "$currentDir/WORKSPACE" ]]; do
-    currentDir=${currentDir%/*}
-done
-
-if [[ ! -e "$currentDir/WORKSPACE" ]]; then
-    echo "No WORKSPACE file found in any parent directory."
-    exit 1
-fi
-
-if [[ -e "$currentDir/.env" ]]; then
-    for line in $(cat "$SCRIPT_DIR/.env"); do
+if [[ -e "/workspace/.env" ]]; then
+    for line in $(cat "/workspace/.env"); do
         export $line
     done
 fi
@@ -31,7 +22,7 @@ echo "Starting release of package $PACKAGE_NAME"
 
 set +e
 
-VERSIONS_PATH=$(./bzl.sh build //tools/gcloud:npm_package_versions --define _PACKAGE=$PACKAGE_NAME 2>&1 | grep "npm_package_versions.txt" | awk '{ print $1 }')
+VERSIONS_PATH=$(bazel build //tools/gcloud:npm_package_versions --define _PACKAGE=$PACKAGE_NAME 2>&1 | grep "npm_package_versions.txt" | awk '{ print $1 }')
 
 echo "VERSIONS_PATH $VERSIONS_PATH"
 
@@ -48,6 +39,6 @@ fi
 
 echo "Package $PACKAGE_NAME@$VERSION_TO_CHECK not found in repo, publishing..."
 
-./bzl.sh run //$PACKAGE_PATH:$PACKAGE_TARGET
+bazel run //$PACKAGE_PATH:$PACKAGE_TARGET
 
 echo "Package $PACKAGE_NAME@$VERSION_TO_CHECK successfully published to artifacts repo"

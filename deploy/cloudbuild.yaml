@@ -60,13 +60,9 @@ steps:
     args:
       - "-c"
       - |
-        printenv > /workspace/.env;
-        gcloud auth print-access-token > /workspace/gcp_token.txt;
-        gcloud config get account > /workspace/gcp_account.txt
-        GCP_ACC=$(cat /workspace/gcp_account.txt);
-        bazel run //tools/gcloud:gcloud -- auth activate-service-account $$GCP_ACC --key-file="/workspace/gcp_token.txt";
-        rm /workspace/gcp_token.txt;
-        rm /workspace/gcp_account.txt
+        mv /workspace/.cloudbuild.bazelrc.tpl /workspace/.cloudbuild.bazelrc;
+        /workspace/use_context.sh $_ENV;
+        bazel run //sandbox/gcp:active_cloud_builder_sa
 
   # - name: "$_GCP_DOCKER_ARTIFACTS_LOCATION-docker.pkg.dev/$PROJECT_ID/cloudsdktool/cloud-sdk:$_CLOUD_SDK_VERSION"
   #   id: release-wr-logger

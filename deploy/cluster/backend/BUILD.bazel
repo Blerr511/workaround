@@ -4,6 +4,26 @@ load("@io_bazel_rules_k8s//k8s:objects.bzl", "k8s_objects")
 # Use with inline defining config variables bazel run //.... TAG=...
 
 k8s_object(
+    name = "config-map",
+    cluster = "",
+    kind = "service",
+    kubeconfig = "//tools/aws:kubeconfig",
+    substitutions = {
+        "{ name }": "backend",
+        "{ DATA_SOURCE_POSTGRES_URL }": "$(DATA_SOURCE_POSTGRES_URL)",
+        "{ BACKEND_AUTH_VERIFY_WEBHOOK_URL }": "$(BACKEND_AUTH_VERIFY_WEBHOOK_URL)",
+        "{ BACKEND_AUTH_API_URL }": "$(BACKEND_AUTH_API_URL)",
+    },
+    template = ":k8s-backend.configmap.yaml",
+    toolchains = [
+        "//sandbox:gcp_env_vars",
+        "//sandbox:workspace_env_vars",
+        "//sandbox:data_source_env_vars",
+        "//sandbox:backend_env_vars",
+    ],
+)
+
+k8s_object(
     name = "deployement",
     cluster = "",
     image_chroot = "$(GCP_DOCKER_ARTIFACTS_LOCATION)-docker.pkg.dev/$(GCP_PROJECT_ID)/$(GCP_DOCKER_ARTIFACTS_REPOSITORY)",
@@ -35,18 +55,6 @@ k8s_object(
 # )
 
 k8s_object(
-    name = "secret",
-    cluster = "",
-    kind = "secret",
-    kubeconfig = "//tools/aws:kubeconfig",
-    template = ":k8s-backend.secret.yaml",
-    toolchains = [
-        "//sandbox:gcp_env_vars",
-        "//sandbox:workspace_env_vars",
-    ],
-)
-
-k8s_object(
     name = "service",
     cluster = "",
     kind = "service",
@@ -66,8 +74,8 @@ k8s_objects(
     name = "backend",
     objects = [
         ":deployement",
-        ":secret",
         ":service",
+        ":config-map",
     ],
     visibility = ["//visibility:public"],
 )

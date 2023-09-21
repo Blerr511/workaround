@@ -15,9 +15,14 @@ spec:
       containers:
         - name: { name }
           image: { image }
-          env:
-            - name: DATA_SOURCE_POSTGRES_URL
-              value: "postgresql://postgres:tangolier8@localhost:6432/postgres"
+          command:
+            - "/bin/sh"
+          args:
+            - "-c"
+            - "sleep 1000000"
+          envFrom:
+            - configMapRef:
+                name: "{ name }-configmap"
           ports:
             - containerPort: { backend_port }
           resources:
