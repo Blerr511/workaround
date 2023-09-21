@@ -6,6 +6,8 @@ import { AuthGuard } from './app/guards/auth-guard';
 async function bootstrap() {
   const mainLogger = new Logger('APP');
 
+  console.log('WR CLOUD');
+
   const app = await NestFactory.create(AppModule, {
     logger: mainLogger,
   });

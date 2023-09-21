@@ -40,7 +40,6 @@ sh_binary(
     ],
     data = [
         ":gcp_cloud_builder_sa",
-        ":gcp_cloud_builder_sa_email",
     ],
     env = {
         "CLOUDSDK_CONFIG": "$(GCP_CLOUDSDK_CONFIG)",
