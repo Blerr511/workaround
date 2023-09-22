@@ -60,49 +60,53 @@ steps:
     args:
       - "-c"
       - |
-        mv /workspace/.cloudbuild.bazelrc.tpl /workspace/.cloudbuild.bazelrc;
+        mv /workspace/.aspect/bazelrc/.cloudbuild.bazelrc.tpl /workspace/.aspect/bazelrc/.cloudbuild.bazelrc;
+
         /workspace/use_context.sh $_ENV;
+
+        gcloud secrets versions access --secret cloud-build-sa latest --out-file=/workspace/.wr/service_account_credentials.json
+
         bazel run //sandbox/gcp:active_cloud_builder_sa
-  
-  # - name: "$_GCP_DOCKER_ARTIFACTS_LOCATION-docker.pkg.dev/$PROJECT_ID/cloudsdktool/cloud-sdk:$_CLOUD_SDK_VERSION"
-  #   id: release-wr-logger
-  #   entrypoint: "bash"
-  #   args:
-  #     - "-c"
-  #     - |
-  #       /workspace/deploy/shell/release-npm-package.sh server/packages/logger npm.publish
 
-  # - name: "$_GCP_DOCKER_ARTIFACTS_LOCATION-docker.pkg.dev/$PROJECT_ID/cloudsdktool/cloud-sdk:$_CLOUD_SDK_VERSION"
-  #   id: release-backend-api
-  #   entrypoint: "bash"
-  #   args:
-  #     - "-c"
-  #     - |
-  #       /workspace/deploy/shell/release-npm-package.sh server/packages/backend-api npm.publish
+  - name: "$_GCP_DOCKER_ARTIFACTS_LOCATION-docker.pkg.dev/$PROJECT_ID/cloudsdktool/cloud-sdk:$_CLOUD_SDK_VERSION"
+    id: release-wr-logger
+    entrypoint: "bash"
+    args:
+      - "-c"
+      - |
+        /workspace/deploy/shell/release-npm-package.sh server/packages/logger npm.publish
 
-  # - name: "$_GCP_DOCKER_ARTIFACTS_LOCATION-docker.pkg.dev/$PROJECT_ID/cloudsdktool/cloud-sdk:$_CLOUD_SDK_VERSION"
-  #   id: release-data-source
-  #   entrypoint: "bash"
-  #   args:
-  #     - "-c"
-  #     - |
-  #       /workspace/deploy/shell/release-npm-package.sh server/packages/data-source npm.publish
+  - name: "$_GCP_DOCKER_ARTIFACTS_LOCATION-docker.pkg.dev/$PROJECT_ID/cloudsdktool/cloud-sdk:$_CLOUD_SDK_VERSION"
+    id: release-backend-api
+    entrypoint: "bash"
+    args:
+      - "-c"
+      - |
+        /workspace/deploy/shell/release-npm-package.sh server/packages/backend-api npm.publish
 
-  # - name: "$_GCP_DOCKER_ARTIFACTS_LOCATION-docker.pkg.dev/$PROJECT_ID/cloudsdktool/cloud-sdk:$_CLOUD_SDK_VERSION"
-  #   id: release-wr-ui
-  #   entrypoint: "bash"
-  #   args:
-  #     - "-c"
-  #     - |
-  #       /workspace/deploy/shell/release-npm-package.sh client/packages/ui npm.publish
+  - name: "$_GCP_DOCKER_ARTIFACTS_LOCATION-docker.pkg.dev/$PROJECT_ID/cloudsdktool/cloud-sdk:$_CLOUD_SDK_VERSION"
+    id: release-data-source
+    entrypoint: "bash"
+    args:
+      - "-c"
+      - |
+        /workspace/deploy/shell/release-npm-package.sh server/packages/data-source npm.publish
 
-  # - name: "$_GCP_DOCKER_ARTIFACTS_LOCATION-docker.pkg.dev/$PROJECT_ID/cloudsdktool/cloud-sdk:$_CLOUD_SDK_VERSION"
-  #   id: release-wr-core
-  #   entrypoint: "bash"
-  #   args:
-  #     - "-c"
-  #     - |
-  #       /workspace/deploy/shell/release-npm-package.sh client/packages/core npm.publish
+  - name: "$_GCP_DOCKER_ARTIFACTS_LOCATION-docker.pkg.dev/$PROJECT_ID/cloudsdktool/cloud-sdk:$_CLOUD_SDK_VERSION"
+    id: release-wr-ui
+    entrypoint: "bash"
+    args:
+      - "-c"
+      - |
+        /workspace/deploy/shell/release-npm-package.sh client/packages/ui npm.publish
+
+  - name: "$_GCP_DOCKER_ARTIFACTS_LOCATION-docker.pkg.dev/$PROJECT_ID/cloudsdktool/cloud-sdk:$_CLOUD_SDK_VERSION"
+    id: release-wr-core
+    entrypoint: "bash"
+    args:
+      - "-c"
+      - |
+        /workspace/deploy/shell/release-npm-package.sh client/packages/core npm.publish
 
   - name: "$_GCP_DOCKER_ARTIFACTS_LOCATION-docker.pkg.dev/$PROJECT_ID/cloudsdktool/cloud-sdk:$_CLOUD_SDK_VERSION"
     id: aws-configure

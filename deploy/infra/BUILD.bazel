@@ -60,6 +60,7 @@ tf(
         "aws_iam_user_cloud_builder": "$(AWS_IAM_USER_CLOUD_BUILDER)",
         "gcp_aws_iam_user_cloud_builder_sa": "$(GCP_AWS_IAM_USER_CLOUD_BUILDER_SA)",
         "kubeconfig": "$(KUBE_CONFIG)",
+        "gcp_bazel_remote_cache_bucket": "$(GCP_BAZEL_REMOTE_CACHE_BUCKET)",
     },
 )
 

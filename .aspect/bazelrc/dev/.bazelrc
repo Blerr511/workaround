@@ -3,6 +3,7 @@
 build --action_env=GCP_PROJECT_ID=wr-dev-393622
 build --action_env=GCP_PROJECT_NAME=wr-dev
 build --action_env=GCP_REGION=europe-central2
+build --action_env=GCP_BAZEL_REMOTE_CACHE_BUCKET=bzl-remote-cache
 
 # AWS
 build --action_env=AWS_DEFAULT_REGION="eu-north-1"

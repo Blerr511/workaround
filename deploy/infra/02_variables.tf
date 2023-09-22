@@ -37,6 +37,13 @@ variable "gcp_artifacts_reader_sa_secret" {
   description = "Secret name for artifacts reader sa credentials"
 }
 
+
+variable "gcp_bazel_remote_cache_bucket" {
+  type        = string
+  description = "Bazel remote cache bucket name"
+}
+
+
 #
 # Backend
 #
