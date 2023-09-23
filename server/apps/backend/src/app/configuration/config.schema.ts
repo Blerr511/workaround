@@ -39,11 +39,6 @@ export class ConfigSchema {
   @IsString()
   @IsNotEmpty()
   @Expose()
-  DATA_SOURCE_POSTGRES_URL: string;
-
-  @IsString()
-  @IsNotEmpty()
-  @Expose()
   AUTH_VERIFY_WEBHOOK_URL: string;
 
   @IsString()
