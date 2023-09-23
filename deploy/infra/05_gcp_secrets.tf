@@ -71,7 +71,7 @@ locals {
 }
 
 resource "google_secret_manager_secret" "aws_cloudbuilder_credentials" {
-  secret_id = var.gcp_aws_iam_user_cloud_builder_sa
+  secret_id = var.gcp_aws_iam_user_cloud_builder_sa_secret
 
   replication {
     automatic = true
@@ -81,4 +81,21 @@ resource "google_secret_manager_secret" "aws_cloudbuilder_credentials" {
 resource "google_secret_manager_secret_version" "aws_cloudbuilder_credentials" {
   secret      = google_secret_manager_secret.aws_cloudbuilder_credentials.id
   secret_data = local.aws_credentials_base64
+}
+
+resource "google_secret_manager_secret" "aws_rds_pg_connection_host" {
+  secret_id = var.gcp_aws_rds_host_secret
+
+  labels = {
+    create = "automatic"
+  }
+
+  replication {
+    automatic = true
+  }
+}
+
+resource "google_secret_manager_secret_version" "aws_rds_pg_connection_host_version" {
+  secret      = google_secret_manager_secret.aws_rds_pg_connection_host.id
+  secret_data = aws_db_instance.data_source.endpoint
 }

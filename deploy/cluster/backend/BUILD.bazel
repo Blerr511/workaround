@@ -1,7 +1,14 @@
 load("@io_bazel_rules_k8s//k8s:object.bzl", "k8s_object")
 load("@io_bazel_rules_k8s//k8s:objects.bzl", "k8s_objects")
+load("//sandbox/gcp:defs.bzl", "secret_version")
+load("//tools/utils:defs.bzl", "substitution_file")
 
 # Use with inline defining config variables bazel run //.... TAG=...
+
+secret_version(
+    name = "aws_rds_connection_host",
+    secret = "$(GCP_AWS_RDS_HOST_SECRET)",
+)
 
 k8s_object(
     name = "config-map",
@@ -44,15 +51,31 @@ k8s_object(
     ],
 )
 
-# genrule(
-#     name = "create_backend_secret_yaml",
-#     srcs = [
-#         "k8s-backend.secret.yaml",
-#         "//sandbox/gcp/cloud-sql:sa.base64",
-#     ],
-#     outs = ["k8s-backend.secret.gen.yaml"],
-#     cmd = "sed 's/{ sa_base64 }/'\"$$(cat $(location //sandbox/gcp/cloud-sql:sa.base64))\"'/' $(location k8s-backend.secret.yaml) > $@",
-# )
+substitution_file(
+    name = "backend_data_source_secret_yaml",
+    data = [":aws_rds_connection_host"],
+    file = "k8s-backend-data-source.configmap.yaml",
+    substitutions = {
+        "name": "backend",
+        "RDS_HOST_64": "$$(cat $(location :aws_rds_connection_host) | base64)",
+        "RDS_PORT_64": "$$(echo '5432' | base64)",
+        "RDS_USERNAME_64": "$$(echo '$(AWS_RDS_POSTGRES_USERNAME)' | base64)",
+        "RDS_PASSWORD_64": "$$(echo '$(AWS_RDS_POSTGRES_PASSWORD)' | base64)",
+        "RDS_DB_64": "$$(echo '$(AWS_RDS_POSTGRES_DB_NAME)' | base64)",
+    },
+)
+
+k8s_object(
+    name = "data-source-configmap",
+    cluster = "",
+    kind = "configmap",
+    kubeconfig = "//tools/aws:kubeconfig",
+    template = ":backend_data_source_secret_yaml",
+    toolchains = [
+        "//sandbox:gcp_env_vars",
+        "//sandbox:workspace_env_vars",
+    ],
+)
 
 k8s_object(
     name = "service",
@@ -73,6 +96,7 @@ k8s_object(
 k8s_objects(
     name = "backend",
     objects = [
+        ":data-source-configmap",
         ":deployement",
         ":service",
         ":config-map",

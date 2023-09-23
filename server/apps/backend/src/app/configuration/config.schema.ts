@@ -1,4 +1,4 @@
-import { Expose, plainToInstance } from 'class-transformer';
+import { Expose, Transform, plainToInstance } from 'class-transformer';
 import { IsNotEmpty, IsString } from 'class-validator';
 
 export class ConfigSchema {
@@ -9,6 +9,32 @@ export class ConfigSchema {
       excludeExtraneousValues: true,
     });
   }
+
+  @IsString()
+  @IsNotEmpty()
+  @Expose()
+  POSTGRES_HOST: string;
+
+  @Transform(({ value }) => Number(value))
+  @IsString()
+  @IsNotEmpty()
+  @Expose()
+  POSTGRES_PORT: number;
+
+  @IsString()
+  @IsNotEmpty()
+  @Expose()
+  POSTGRES_USERNAME: string;
+
+  @IsString()
+  @IsNotEmpty()
+  @Expose()
+  POSTGRES_PASSWORD: string;
+
+  @IsString()
+  @IsNotEmpty()
+  @Expose()
+  POSTGRES_DATABASE: string;
 
   @IsString()
   @IsNotEmpty()

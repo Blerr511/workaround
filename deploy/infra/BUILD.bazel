@@ -51,6 +51,9 @@ tf(
         "gcp_npm_artifacts_repository": "$(GCP_NPM_ARTIFACTS_REPOSITORY)",
         "gcp_artifacts_reader_sa_secret": "$(GCP_ARTIFACTS_READER_SA_SECRET)",
         "gcp_artifacts_reader_sa": "$(GCP_ARTIFACTS_READER_SA)",
+        "gcp_bazel_remote_cache_bucket": "$(GCP_BAZEL_REMOTE_CACHE_BUCKET)",
+        "gcp_aws_rds_host_secret": "$(GCP_AWS_RDS_HOST_SECRET)",
+        "gcp_aws_iam_user_cloud_builder_sa_secret": "$(GCP_AWS_IAM_USER_CLOUD_BUILDER_SA_SECRET)",
         "aws_region": "$(AWS_DEFAULT_REGION)",
         "aws_eks_cluster_name": "$(AWS_EKS_CLUSTER_NAME)",
         "aws_rds_postgres_name": "$(AWS_RDS_POSTGRES_NAME)",
@@ -58,9 +61,7 @@ tf(
         "aws_rds_postgres_password": "$(AWS_RDS_POSTGRES_PASSWORD)",
         "aws_rds_postgres_db_name": "$(AWS_RDS_POSTGRES_DB_NAME)",
         "aws_iam_user_cloud_builder": "$(AWS_IAM_USER_CLOUD_BUILDER)",
-        "gcp_aws_iam_user_cloud_builder_sa": "$(GCP_AWS_IAM_USER_CLOUD_BUILDER_SA)",
         "kubeconfig": "$(KUBE_CONFIG)",
-        "gcp_bazel_remote_cache_bucket": "$(GCP_BAZEL_REMOTE_CACHE_BUCKET)",
     },
 )
 

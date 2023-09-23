@@ -43,6 +43,10 @@ variable "gcp_bazel_remote_cache_bucket" {
   description = "Bazel remote cache bucket name"
 }
 
+variable "gcp_aws_rds_host_secret" {
+  type        = string
+  description = "AWS Rds database connection host"
+}
 
 #
 # Backend
@@ -74,7 +78,7 @@ variable "gcp_npm_artifacts_repository" {
   description = "Npm artifacts repository"
 }
 
-variable "gcp_aws_iam_user_cloud_builder_sa" {
+variable "gcp_aws_iam_user_cloud_builder_sa_secret" {
   type        = string
   description = "Secret Name of aws cloudbuilder user credentials"
 }

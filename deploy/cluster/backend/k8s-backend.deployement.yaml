@@ -23,6 +23,32 @@ spec:
           envFrom:
             - configMapRef:
                 name: "{ name }-configmap"
+          env:
+            - name: POSTGRES_HOST
+              valueFrom:
+                secretKeyRef:
+                  name: "{ name }-postgres-db-credentials"
+                  key: host
+            - name: POSTGRES_PORT
+              valueFrom:
+                secretKeyRef:
+                  name: "{ name }-postgres-db-credentials"
+                  key: port
+            - name: POSTGRES_DATABASE
+              valueFrom:
+                secretKeyRef:
+                  name: "{ name }-postgres-db-credentials"
+                  key: dbname
+            - name: POSTGRES_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: "{ name }-postgres-db-credentials"
+                  key: username
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: "{ name }-postgres-db-credentials"
+                  key: password
           ports:
             - containerPort: { backend_port }
           resources:

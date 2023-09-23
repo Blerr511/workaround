@@ -14,19 +14,26 @@ build --action_env=AWS_SHARED_CREDENTIALS_FILE=$(WR_TMP_DATA)/.aws_credentials
 build --action_env=GCP_PROJECT_ID=
 build --action_env=GCP_PROJECT_NAME=
 build --action_env=GCP_REGION=europe-central2
-build --action_env=GCP_TERRAFORM_BUCKET="$(GCP_PROJECT_NAME)-terraform"
-build --action_env=GCP_TERRAFORM_SA="terraform-sa"
-build --action_env=GCP_TERRAFORM_SA_SECRET="terraform_sa"
-build --action_env=GCP_CLOUD_BUILD_SA="cloud-build-sa"
-build --action_env=GCP_CLOUD_BUILD_SA_SECRET="cloud-build-sa"
-build --action_env=GCP_DEVELOPMENT_SA="development-sa"
-build --action_env=GCP_DEVELOPMENT_SA_SECRET="development-sa"
 build --action_env=GCP_CLOUD_BUILD_SDK_VERSION="7.0.2"
-build --action_env=GCP_GITHUB_SSH_KEY_SECRET_NAME="github-ssh-key"
+
+# GCP Service Accounts
+build --action_env=GCP_TERRAFORM_SA="terraform-sa"
+build --action_env=GCP_CLOUD_BUILD_SA="cloud-build-sa"
+build --action_env=GCP_DEVELOPMENT_SA="development-sa"
 build --action_env=GCP_ARTIFACTS_READER_SA=artifacts-reader
+
+# GCP Secrets
+build --action_env=GCP_TERRAFORM_SA_SECRET="terraform_sa"
+build --action_env=GCP_CLOUD_BUILD_SA_SECRET="cloud-build-sa"
+build --action_env=GCP_DEVELOPMENT_SA_SECRET="development-sa"
 build --action_env=GCP_ARTIFACTS_READER_SA_SECRET=artifacts-reader-sa
-build --action_env=GCP_AWS_IAM_USER_CLOUD_BUILDER_SA=cloud-builder-sa
+build --action_env=GCP_GITHUB_SSH_KEY_SECRET_NAME="github-ssh-key"
+build --action_env=GCP_AWS_IAM_USER_CLOUD_BUILDER_SA_SECRET=cloud-builder-sa
+build --action_env=GCP_AWS_RDS_HOST_SECRET=aws-rds-host-secret
+
+# GCP Buckets
 build --action_env=GCP_BAZEL_REMOTE_CACHE_BUCKET=
+build --action_env=GCP_TERRAFORM_BUCKET="$(GCP_PROJECT_NAME)-terraform"
 
 # GCP artifacts
 build --action_env=GCP_NPM_ARTIFACTS_SCOPE=@wr
@@ -61,8 +68,8 @@ build --action_env=AWS_EKS_CLUSTER_NAME=wr
 ## RDS
 build --action_env=AWS_RDS_POSTGRES_NAME=datasource
 build --action_env=AWS_RDS_POSTGRES_DB_NAME=data_source
-build --action_env=AWS_RDS_POSTGRES_USERNAME=data-source-user
-build --action_env=AWS_RDS_POSTGRES_PASSWORD=$(POSTGRES_PASSWORD)
+build --action_env=AWS_RDS_POSTGRES_USERNAME=data_source_user
+build --action_env=AWS_RDS_POSTGRES_PASSWORD=$(POSTGRES_PASSWORD) # TODO - move it into .bazelrc.sensetive and save into secrets manager
 
 ## IAM
 build --action_env=AWS_IAM_USER_CLOUD_BUILDER=cloud_builder

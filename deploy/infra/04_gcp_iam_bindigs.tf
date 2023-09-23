@@ -51,7 +51,7 @@ resource "google_project_iam_binding" "development_artifact_registry_writer" {
   ]
 }
 
-resource "google_project_iam_binding" "artifacts_reader_artifacts_reader" {
+resource "google_project_iam_binding" "artifacts_reader_artifacts_reader_bind" {
   project = var.gcp_project_id
   role    = "roles/artifactregistry.reader"
 
