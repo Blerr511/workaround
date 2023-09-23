@@ -57,7 +57,7 @@ substitution_file(
     file = "k8s-backend-data-source.configmap.yaml",
     substitutions = {
         "name": "backend",
-        "RDS_HOST_64": "$$(cat $(location :aws_rds_connection_host) | base64)",
+        "RDS_HOST_64": "$$(cat $(location :aws_rds_connection_host) | awk -F':' '{print $$1}' | base64)",
         "RDS_PORT_64": "$$(echo '5432' | base64)",
         "RDS_USERNAME_64": "$$(echo '$(AWS_RDS_POSTGRES_USERNAME)' | base64)",
         "RDS_PASSWORD_64": "$$(echo '$(AWS_RDS_POSTGRES_PASSWORD)' | base64)",

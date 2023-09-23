@@ -7,4 +7,7 @@ const {
 } = process.env;
 
 export const createPostgresConnectionString = () =>
-  `postgresql://${POSTGRES_USERNAME}:${POSTGRES_PASSWORD}@${POSTGRES_HOST}:${POSTGRES_PORT}/${POSTGRES_DATABASE}?schema=public`;
+  `postgresql://${POSTGRES_USERNAME}:${POSTGRES_PASSWORD}@${POSTGRES_HOST}:${POSTGRES_PORT}/${POSTGRES_DATABASE}?schema=public`.replace(
+    /\n/g,
+    '',
+  );
