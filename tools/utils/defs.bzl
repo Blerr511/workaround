@@ -1,4 +1,4 @@
-def substitution_file(name, file, data = [], substitutions = {}, **kwards):
+def substitution_file(name, file, data = [], substitutions = {}, **kwargs):
     export_commands = []
     for key, value in substitutions.items():
         export_commands.append("export {}={}".format(key, value))
@@ -16,5 +16,5 @@ def substitution_file(name, file, data = [], substitutions = {}, **kwards):
         srcs = [file] + data,
         outs = ["generated_{}".format(file)],
         cmd = cmd_string,
-        toolchains = ["//sandbox:aws_env_vars"],
+        **kwargs
     )

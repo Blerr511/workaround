@@ -4,8 +4,4 @@ metadata:
   name: "${name}-postgres-db-credentials"
 type: Opaque
 data:
-  host: ${RDS_HOST_64}
-  port: ${RDS_PORT_64}
-  username: ${RDS_USERNAME_64}
-  password: ${RDS_PASSWORD_64}
-  dbname: ${RDS_DB_64}
+  DATA_SOURCE_POSTGRES_URL: ${DATA_SOURCE_POSTGRES_URL}

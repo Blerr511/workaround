@@ -51,18 +51,28 @@ k8s_object(
     ],
 )
 
+genrule(
+    name = "backend_data_source_url",
+    srcs = [":aws_rds_connection_host"],
+    outs = ["data_source_connection_string.txt"],
+    cmd = """
+        export _HOST=$$(cat $(location :aws_rds_connection_host) | awk -F':' '{print $$1}')
+        export _PORT=$$(echo '5432')
+        export CONNECTION_STRING=postgresql://$(AWS_RDS_POSTGRES_USERNAME):$(AWS_RDS_POSTGRES_PASSWORD)@$$_HOST:$$_PORT/$(AWS_RDS_POSTGRES_DB_NAME)?schema=public
+        echo $$CONNECTION_STRING  > $@
+    """,
+    toolchains = ["//sandbox:aws_env_vars"],
+)
+
 substitution_file(
     name = "backend_data_source_secret_yaml",
-    data = [":aws_rds_connection_host"],
+    data = [":backend_data_source_url"],
     file = "k8s-backend-data-source.configmap.yaml",
     substitutions = {
         "name": "backend",
-        "RDS_HOST_64": "$$(cat $(location :aws_rds_connection_host) | awk -F':' '{print $$1}' | base64)",
-        "RDS_PORT_64": "$$(echo '5432' | base64)",
-        "RDS_USERNAME_64": "$$(echo '$(AWS_RDS_POSTGRES_USERNAME)' | base64)",
-        "RDS_PASSWORD_64": "$$(echo '$(AWS_RDS_POSTGRES_PASSWORD)' | base64)",
-        "RDS_DB_64": "$$(echo '$(AWS_RDS_POSTGRES_DB_NAME)' | base64)",
+        "DATA_SOURCE_POSTGRES_URL": "$$(cat $(location :backend_data_source_url) | base64)",
     },
+    toolchains = ["//sandbox:aws_env_vars"],
 )
 
 k8s_object(
