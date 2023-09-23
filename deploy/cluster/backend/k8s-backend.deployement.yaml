@@ -15,11 +15,6 @@ spec:
       containers:
         - name: { name }
           image: { image }
-          command:
-            - "/bin/sh"
-          args:
-            - "-c"
-            - "sleep 1000000"
           envFrom:
             - configMapRef:
                 name: "{ name }-configmap"

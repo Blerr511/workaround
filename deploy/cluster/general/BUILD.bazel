@@ -17,10 +17,7 @@ genrule(
     outs = [".dockerconfig.json"],
     cmd = """
     export REGION=$(GCP_REGION)
-    export PROJECT_ID=$(GCP_PROJECT_ID)
-    export REPOSITORY_ID=$(GCP_DOCKER_ARTIFACTS_REPOSITORY)
-    export AUTH_STRING=$$(cat $(location :artifacts_reader_sa) | jq -c -r tostring | sed 's/"/\\\\"/g')
-    export AUTH_EMAIL=$$(cat $(location :artifacts_reader_sa) | jq ".client_email" | sed "s/\\"//g")
+    export AUTH_STRING=$$(echo _json_key:$$(cat $(location :artifacts_reader_sa)) | base64 | tr -d '\n')
 
     envsubst < $(location .dockerconfigjson) > $@
     """,
