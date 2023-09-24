@@ -30,6 +30,9 @@ build --action_env=GCP_ARTIFACTS_READER_SA_SECRET=artifacts-reader-sa
 build --action_env=GCP_GITHUB_SSH_KEY_SECRET_NAME="github-ssh-key"
 build --action_env=GCP_AWS_IAM_USER_CLOUD_BUILDER_SA_SECRET=cloud-builder-sa
 build --action_env=GCP_AWS_RDS_HOST_SECRET=aws-rds-host-secret
+build --action_env=GCP_AWS_BASTION_HOST_SSH_KEY_SECRET=aws-bastion-ssh-secret
+build --action_env=GCP_AWS_BASTION_HOST_PUBLIC_IP_SECRET=aws-bastion-public-ip-secret
+build --action_env=GCP_AWS_BASTION_INSTANCE_ID=aws-bastion-instance-id-secret
 
 # GCP Buckets
 build --action_env=GCP_BAZEL_REMOTE_CACHE_BUCKET=

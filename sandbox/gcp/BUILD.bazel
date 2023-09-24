@@ -50,3 +50,72 @@ sh_binary(
         "//sandbox:gcp_env_vars",
     ],
 )
+
+secret_version(
+    name = "gcp_bastion_ssh_key",
+    secret = "$(GCP_AWS_BASTION_HOST_SSH_KEY_SECRET)",
+)
+
+secret_version(
+    name = "gcp_bastion_public_ip",
+    secret = "$(GCP_AWS_BASTION_HOST_PUBLIC_IP_SECRET)",
+)
+
+secret_version(
+    name = "gcp_bastion_instance_id",
+    secret = "$(GCP_AWS_BASTION_INSTANCE_ID)",
+)
+
+sh_binary(
+    name = "bastion.connect",
+    srcs = ["shell/connect-bastion.sh"],
+    args = [
+        "$(location :gcp_bastion_ssh_key)",
+        "$(location :gcp_bastion_public_ip)",
+    ],
+    data = [
+        ":gcp_bastion_public_ip",
+        ":gcp_bastion_ssh_key",
+    ],
+    env = {
+        "AWS_CONFIG_FILE": "$(AWS_CONFIG_FILE)",
+        "AWS_SHARED_CREDENTIALS_FILE": "$(AWS_SHARED_CREDENTIALS_FILE)",
+    },
+    toolchains = ["//sandbox:workspace_env_vars"],
+)
+
+sh_binary(
+    name = "bastion.proxy",
+    srcs = ["shell/proxy-bastion.sh"],
+    args = [
+        "$(location :gcp_bastion_ssh_key)",
+        "$(location :gcp_bastion_public_ip)",
+        "$(location //deploy/cluster/backend:aws_rds_connection_host)",
+        "$(location :gcp_bastion_instance_id)",
+    ],
+    data = [
+        ":gcp_bastion_instance_id",
+        ":gcp_bastion_public_ip",
+        ":gcp_bastion_ssh_key",
+        "//deploy/cluster/backend:aws_rds_connection_host",
+    ],
+    env = {
+        "LOCAL_PORT": "5433",
+        "WR_TMP_DATA": "$(WR_TMP_DATA)",
+        "AWS_CONFIG_FILE": "$(AWS_CONFIG_FILE)",
+        "AWS_SHARED_CREDENTIALS_FILE": "$(AWS_SHARED_CREDENTIALS_FILE)",
+    },
+    toolchains = ["//sandbox:workspace_env_vars"],
+)
+
+sh_binary(
+    name = "bastion.proxy_drop",
+    srcs = ["shell/drop-bastion-proxy.sh"],
+    env = {
+        "LOCAL_PORT": "5433",
+        "WR_TMP_DATA": "$(WR_TMP_DATA)",
+        "AWS_CONFIG_FILE": "$(AWS_CONFIG_FILE)",
+        "AWS_SHARED_CREDENTIALS_FILE": "$(AWS_SHARED_CREDENTIALS_FILE)",
+    },
+    toolchains = ["//sandbox:workspace_env_vars"],
+)

@@ -8,6 +8,7 @@ load("//tools/utils:defs.bzl", "substitution_file")
 secret_version(
     name = "aws_rds_connection_host",
     secret = "$(GCP_AWS_RDS_HOST_SECRET)",
+    visibility = ["//visibility:public"],
 )
 
 k8s_object(
@@ -59,6 +60,8 @@ genrule(
         export _HOST=$$(cat $(location :aws_rds_connection_host) | awk -F':' '{print $$1}')
         export _PORT=$$(echo '5432')
         export CONNECTION_STRING=postgresql://$(AWS_RDS_POSTGRES_USERNAME):$(AWS_RDS_POSTGRES_PASSWORD)@$$_HOST:$$_PORT/$(AWS_RDS_POSTGRES_DB_NAME)?schema=public
+        echo $$CONNECTION_STRING
+
         echo $$CONNECTION_STRING  > $@
     """,
     toolchains = ["//sandbox:aws_env_vars"],
@@ -70,7 +73,7 @@ substitution_file(
     file = "k8s-backend-data-source.configmap.yaml",
     substitutions = {
         "name": "backend",
-        "DATA_SOURCE_POSTGRES_URL": "$$(cat $(location :backend_data_source_url) | base64)",
+        "DATA_SOURCE_POSTGRES_URL": "$$(cat $(location :backend_data_source_url) | base64 | tr -d '[:space:]')",
     },
     toolchains = ["//sandbox:aws_env_vars"],
 )

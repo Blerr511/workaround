@@ -42,6 +42,54 @@ resource "aws_security_group" "data_source_sg" {
   }
 }
 
+resource "aws_instance" "bastion" {
+  ami           = "ami-0ab5a19dc928db69a"
+  instance_type = "t3.micro"
+
+  subnet_id = aws_subnet.public-1.id
+
+  key_name = aws_key_pair.generated_key.key_name
+
+  vpc_security_group_ids = [aws_security_group.bastion_sg.id]
+
+  source_dest_check = false
+
+  tags = {
+    Name = "Bastion Host"
+  }
+}
+
+resource "tls_private_key" "bastion_ssh_key" {
+  algorithm = "RSA"
+  rsa_bits  = 4096
+}
+
+
+resource "aws_key_pair" "generated_key" {
+  key_name   = "bastion_generated_key"
+  public_key = tls_private_key.bastion_ssh_key.public_key_openssh
+}
+
+resource "aws_security_group" "bastion_sg" {
+  name        = "bastion_sg"
+  description = "Security group for the Bastion host"
+  vpc_id      = aws_vpc.main.id
+
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  ingress {
+    from_port   = 22
+    to_port     = 22
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+}
+
 
 
 output "db_address" {

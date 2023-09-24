@@ -48,6 +48,21 @@ variable "gcp_aws_rds_host_secret" {
   description = "AWS Rds database connection host"
 }
 
+variable "gcp_aws_bastion_host_ssh_key_secret" {
+  type        = string
+  description = "AWS Bastion host ssh key secret name"
+}
+
+variable "gcp_aws_bastion_host_public_ip_secret" {
+  type        = string
+  description = "AWS Bastion host public ip address"
+}
+
+variable "gcp_aws_bastion_instance_id" {
+  type        = string
+  description = "AWS Bastion host instance id"
+}
+
 #
 # Backend
 #

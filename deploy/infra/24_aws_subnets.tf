@@ -29,7 +29,7 @@ resource "aws_subnet" "public-1" {
   map_public_ip_on_launch = true
 
   tags = {
-    "Name"                     = "private-1"
+    "Name"                     = "public-1"
     "kubernetes.io/role/elb"   = "1"
     "kubernetes.io/cluster/wr" = "owned"
   }
@@ -44,7 +44,7 @@ resource "aws_subnet" "public-2" {
   map_public_ip_on_launch = true
 
   tags = {
-    "Name"                     = "private-1"
+    "Name"                     = "public-1"
     "kubernetes.io/role/elb"   = "1"
     "kubernetes.io/cluster/wr" = "owned"
   }

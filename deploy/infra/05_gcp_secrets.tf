@@ -99,3 +99,60 @@ resource "google_secret_manager_secret_version" "aws_rds_pg_connection_host_vers
   secret      = google_secret_manager_secret.aws_rds_pg_connection_host.id
   secret_data = aws_db_instance.data_source.endpoint
 }
+
+resource "google_secret_manager_secret" "bastion_ssh_key_secret" {
+  secret_id = var.gcp_aws_bastion_host_ssh_key_secret
+
+  labels = {
+    create = "automatic"
+  }
+
+  replication {
+    automatic = true
+  }
+}
+
+resource "google_secret_manager_secret_version" "bastion_ssh_key_secret_version" {
+  secret      = google_secret_manager_secret.bastion_ssh_key_secret.id
+  secret_data = tls_private_key.bastion_ssh_key.private_key_pem
+}
+
+resource "google_secret_manager_secret" "bastion_public_ip_secret" {
+  secret_id = var.gcp_aws_bastion_host_public_ip_secret
+
+  project = var.gcp_project_id
+
+  labels = {
+    create = "automatic"
+  }
+
+  replication {
+    automatic = true
+  }
+}
+
+
+resource "google_secret_manager_secret_version" "bastion_public_ip_secret_version" {
+  secret      = google_secret_manager_secret.bastion_public_ip_secret.id
+  secret_data = aws_instance.bastion.public_ip
+}
+
+
+resource "google_secret_manager_secret" "bastion_instance_id_secret" {
+  secret_id = var.gcp_aws_bastion_instance_id
+
+  project = var.gcp_project_id
+
+  labels = {
+    create = "automatic"
+  }
+
+  replication {
+    automatic = true
+  }
+}
+
+resource "google_secret_manager_secret_version" "bastion_instance_id" {
+  secret      = google_secret_manager_secret.bastion_instance_id_secret.id
+  secret_data = aws_instance.bastion.id
+}

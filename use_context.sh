@@ -15,6 +15,7 @@ if [ "$#" -eq 1 ]; then
     if [ $? -eq 0 ]; then
         shopt -s dotglob
         mkdir -p $(pwd)/.aspect/bazelrc/current
+        # TODO - try to use symlinks
         cp -r $(pwd)/.aspect/bazelrc/$ARGUMENT/* $(pwd)/.aspect/bazelrc/current/
     else
         echo "Invalid argument. Please provide one of the following values: ${VALID_ENUM[*]}"
