@@ -58,9 +58,18 @@ genrule(
     outs = ["data_source_connection_string.txt"],
     cmd = """
         export _HOST=$$(cat $(location :aws_rds_connection_host) | awk -F':' '{print $$1}')
-        export _PORT=$$(echo '5432')
-        export CONNECTION_STRING=postgresql://$(AWS_RDS_POSTGRES_USERNAME):$(AWS_RDS_POSTGRES_PASSWORD)@$$_HOST:$$_PORT/$(AWS_RDS_POSTGRES_DB_NAME)?schema=public
-        echo $$CONNECTION_STRING
+        export CONNECTION_STRING=postgresql://$(AWS_RDS_POSTGRES_USERNAME):$(AWS_RDS_POSTGRES_PASSWORD)@$$_HOST:$(AWS_RDS_POSTGRES_PORT)/$(AWS_RDS_POSTGRES_DB_NAME)?schema=public
+
+        echo $$CONNECTION_STRING  > $@
+    """,
+    toolchains = ["//sandbox:aws_env_vars"],
+)
+
+genrule(
+    name = "backend_data_source_url.local",
+    outs = ["data_source_connection_string_local.txt"],
+    cmd = """
+        export CONNECTION_STRING=postgresql://$(AWS_RDS_POSTGRES_USERNAME):$(AWS_RDS_POSTGRES_PASSWORD)@localhost:5433/$(AWS_RDS_POSTGRES_DB_NAME)?schema=public
 
         echo $$CONNECTION_STRING  > $@
     """,

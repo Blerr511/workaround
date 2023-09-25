@@ -9,7 +9,8 @@ INSTANCE_ID=$(cat $4)
 [[ -z "$RDS_HOST" ]] && echo "Error: RDS_HOST is not set" && exit 1
 [[ -z "$LOCAL_PORT" ]] && echo "Error: LOCAL_PORT is not set" && exit 1
 
-# Start the bastion host
+export AWS_PAGER=""
+
 aws ec2 start-instances --instance-ids $INSTANCE_ID
 
 # Wait for the bastion host to be in running state
@@ -23,6 +24,10 @@ HOST=$(aws ec2 describe-instances --instance-ids $INSTANCE_ID --query "Reservati
 
 chmod 400 $SSH_KEY_PATH
 
-ssh -f -N -L $LOCAL_PORT:$RDS_HOST -i $SSH_KEY_PATH ec2-user@$HOST
+ssh -f -N -L -o StrictHostKeyChecking=no $LOCAL_PORT:$RDS_HOST -i $SSH_KEY_PATH ec2-user@$HOST
 
-echo $! >$WR_TMP_DATA/ssh_tunnel_pid.txt
+pid=$(pgrep -n -f "ssh -f -N -L $LOCAL_PORT:$RDS_HOST -i $SSH_KEY_PATH ec2-user@$HOST")
+
+echo "SSH process pid: $pid"
+
+echo $pid > $WR_TMP_DATA/ssh_tunnel_pid.txt

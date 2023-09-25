@@ -62,6 +62,7 @@ tf(
         "aws_rds_postgres_name": "$(AWS_RDS_POSTGRES_NAME)",
         "aws_rds_postgres_username": "$(AWS_RDS_POSTGRES_USERNAME)",
         "aws_rds_postgres_password": "$(AWS_RDS_POSTGRES_PASSWORD)",
+        "aws_rds_postgres_port": "$(AWS_RDS_POSTGRES_PORT)",
         "aws_rds_postgres_db_name": "$(AWS_RDS_POSTGRES_DB_NAME)",
         "aws_iam_user_cloud_builder": "$(AWS_IAM_USER_CLOUD_BUILDER)",
         "kubeconfig": "$(KUBE_CONFIG)",

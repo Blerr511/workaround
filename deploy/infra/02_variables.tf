@@ -156,6 +156,11 @@ variable "aws_rds_postgres_password" {
   description = "AWS RDS postgres db password"
 }
 
+variable "aws_rds_postgres_port" {
+  type        = number
+  description = "AWS RDS postgres instance port"
+}
+
 variable "aws_iam_user_cloud_builder" {
   type        = string
   description = "AWS IAM user for pushing pods into eks"

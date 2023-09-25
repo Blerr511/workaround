@@ -71,10 +71,10 @@ sh_binary(
     srcs = ["shell/connect-bastion.sh"],
     args = [
         "$(location :gcp_bastion_ssh_key)",
-        "$(location :gcp_bastion_public_ip)",
+        "$(location :gcp_bastion_instance_id)",
     ],
     data = [
-        ":gcp_bastion_public_ip",
+        ":gcp_bastion_instance_id",
         ":gcp_bastion_ssh_key",
     ],
     env = {
@@ -111,6 +111,12 @@ sh_binary(
 sh_binary(
     name = "bastion.proxy_drop",
     srcs = ["shell/drop-bastion-proxy.sh"],
+    args = [
+        "$(location :gcp_bastion_instance_id)",
+    ],
+    data = [
+        ":gcp_bastion_instance_id",
+    ],
     env = {
         "LOCAL_PORT": "5433",
         "WR_TMP_DATA": "$(WR_TMP_DATA)",

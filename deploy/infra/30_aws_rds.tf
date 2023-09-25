@@ -2,7 +2,7 @@ resource "aws_db_instance" "data_source" {
   identifier             = var.aws_rds_postgres_name
   engine                 = "postgres"
   engine_version         = "15.3"
-  port                   = 5432
+  port                   = var.aws_rds_postgres_port
   instance_class         = "db.t3.micro"
   db_name                = var.aws_rds_postgres_db_name
   username               = var.aws_rds_postgres_username

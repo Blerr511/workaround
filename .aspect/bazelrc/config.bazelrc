@@ -73,6 +73,7 @@ build --action_env=AWS_RDS_POSTGRES_NAME=datasource
 build --action_env=AWS_RDS_POSTGRES_DB_NAME=data_source
 build --action_env=AWS_RDS_POSTGRES_USERNAME=data_source_user
 build --action_env=AWS_RDS_POSTGRES_PASSWORD=$(POSTGRES_PASSWORD) # TODO - move it into .bazelrc.sensetive and save into secrets manager
+build --action_env=AWS_RDS_POSTGRES_PORT=5432
 
 ## IAM
 build --action_env=AWS_IAM_USER_CLOUD_BUILDER=cloud_builder
@@ -100,7 +101,7 @@ build --action_env=WEB_CLIENT_AUTHZ_DOMAIN=$(AUTHZ_DOMAIN)
 build --action_env=WEB_CLIENT_AUTHZ_CLIENT_ID=$(AUTHZ_CLIENT_ID)
 
 # DATA-SOURCE
-build --action_env=DATA_SOURCE_POSTGRES_URL="postgresql://data_source_user:wrpass@datasource.c5kea8amfeci.eu-north-1.rds.amazonaws.com:5432:5432/data_source?schema=public"
+build --action_env=DATA_SOURCE_POSTGRES_URL="postgresql://$(POSTGRES_USERNAME):$(POSTGRES_PASSWORD)@$(POSTGRES_HOST):$(POSTGRES_PORT)/$(POSTGRES_DATABASE)?schema=public"
 
 # AUTH
 build --action_env=AUTH_WEB_EXPOSE_HOST=localhost

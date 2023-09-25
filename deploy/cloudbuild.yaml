@@ -136,6 +136,16 @@ steps:
       - |
         /workspace/deploy/shell/apply-k8s.sh deploy/cluster/backend:backend.apply
 
+  - name: "$_GCP_DOCKER_ARTIFACTS_LOCATION-docker.pkg.dev/$PROJECT_ID/cloudsdktool/cloud-sdk:$_CLOUD_SDK_VERSION"
+    id: migrate-backend-db
+    entrypoint: "bash"
+    env:
+      - "_TAG=${SHORT_SHA}"
+    args:
+      - "-c"
+      - |
+        /workspace/deploy/shell/db-migrate.sh
+
 availableSecrets:
   secretManager:
     - versionName: projects/$PROJECT_ID/secrets/github-ssh-key/versions/latest
