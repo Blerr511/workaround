@@ -24,10 +24,10 @@ HOST=$(aws ec2 describe-instances --instance-ids $INSTANCE_ID --query "Reservati
 
 chmod 400 $SSH_KEY_PATH
 
-ssh -f -N -L -o StrictHostKeyChecking=no $LOCAL_PORT:$RDS_HOST -i $SSH_KEY_PATH ec2-user@$HOST
+ssh -o StrictHostKeyChecking=no -f -N -L $LOCAL_PORT:$RDS_HOST -i $SSH_KEY_PATH ec2-user@$HOST
 
-pid=$(pgrep -n -f "ssh -f -N -L $LOCAL_PORT:$RDS_HOST -i $SSH_KEY_PATH ec2-user@$HOST")
+pid=$(pgrep -n -f "ssh -o StrictHostKeyChecking=no -f -N -L $LOCAL_PORT:$RDS_HOST -i $SSH_KEY_PATH ec2-user@$HOST")
 
 echo "SSH process pid: $pid"
 
-echo $pid > $WR_TMP_DATA/ssh_tunnel_pid.txt
+echo $pid >$WR_TMP_DATA/ssh_tunnel_pid.txt

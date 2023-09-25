@@ -1,15 +1,8 @@
-load("@aspect_rules_js//js:defs.bzl", "js_library", "js_run_devserver", "js_test")
-load("@npm//:defs.bzl", "npm_link_all_packages")
-load("@aspect_rules_ts//ts:defs.bzl", "ts_config", "ts_project")
-load("//tools/utils:js_image.bzl", "js_image")
-
-npm_link_all_packages(name = "node_modules")
-
 genrule(
     name = "env",
     srcs = ["//sandbox:web_client_env_vars.env"],
     outs = [".env"],
     cmd = """
     cp $(location //sandbox:web_client_env_vars.env) $@
-    """
+    """,
 )

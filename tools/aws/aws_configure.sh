@@ -3,6 +3,4 @@ command -v aws >/dev/null 2>&1 || {
     exit 1
 }
 
-printenv | grep AWS
-
 echo -e "$AWS_ACCESS_KEY_ID\n$AWS_ACCESS_KEY_SECRET\n$AWS_DEFAULT_REGION\njson" | aws configure
