@@ -1,4 +1,4 @@
-import { BellIcon, SearchIcon } from '@chakra-ui/icons';
+import { BellIcon, SearchIcon } from "@chakra-ui/icons";
 import {
   Button,
   Flex,
@@ -12,22 +12,22 @@ import {
   MenuList,
   Text,
   useColorModeValue,
-} from '@chakra-ui/react';
-import { ProfileIcon, SettingsIcon } from '@wr/ui';
-import React from 'react';
-import { Link } from '@chakra-ui/next-js';
+} from "@chakra-ui/react";
+import { ProfileIcon, SettingsIcon } from "@wr/ui";
+import React from "react";
+import { Link } from "@chakra-ui/next-js";
 
 export const HeaderContent = () => {
-  let mainTeal = useColorModeValue('teal.300', 'teal.300');
-  let inputBg = useColorModeValue('white', 'gray.800');
-  let mainText = useColorModeValue('gray.700', 'gray.200');
-  let navbarIcon = useColorModeValue('gray.500', 'gray.200');
-  let searchIcon = useColorModeValue('gray.700', 'gray.200');
+  let mainTeal = useColorModeValue("teal.300", "teal.300");
+  let inputBg = useColorModeValue("white", "gray.800");
+  let mainText = useColorModeValue("gray.700", "gray.200");
+  let navbarIcon = useColorModeValue("gray.500", "gray.200");
+  let searchIcon = useColorModeValue("gray.700", "gray.200");
 
   return (
     <Flex
-      pe={{ sm: '0px', md: '16px' }}
-      w={{ sm: '100%', md: 'auto' }}
+      pe={{ sm: "0px", md: "16px" }}
+      w={{ sm: "100%", md: "auto" }}
       alignItems="center"
       flexDirection="row"
     >
@@ -36,10 +36,10 @@ export const HeaderContent = () => {
         bg={inputBg}
         borderRadius="15px"
         w={{
-          sm: '128px',
-          md: '200px',
+          sm: "128px",
+          md: "200px",
         }}
-        me={{ sm: 'auto', md: '20px' }}
+        me={{ sm: "auto", md: "20px" }}
         _focus={{
           borderColor: { mainTeal },
         }}
@@ -47,25 +47,23 @@ export const HeaderContent = () => {
           borderColor: { mainTeal },
         }}
       >
-        <InputLeftElement
-          children={
-            <IconButton
-              aria-label="search"
-              bg="inherit"
-              borderRadius="inherit"
-              _hover={{}}
-              _active={{
-                bg: 'inherit',
-                transform: 'none',
-                borderColor: 'transparent',
-              }}
-              _focus={{
-                boxShadow: 'none',
-              }}
-              icon={<SearchIcon color={searchIcon} w="15px" h="15px" />}
-            ></IconButton>
-          }
-        />
+        <InputLeftElement>
+          <IconButton
+            aria-label="search"
+            bg="inherit"
+            borderRadius="inherit"
+            _hover={{}}
+            _active={{
+              bg: "inherit",
+              transform: "none",
+              borderColor: "transparent",
+            }}
+            _focus={{
+              boxShadow: "none",
+            }}
+            icon={<SearchIcon color={searchIcon} w="15px" h="15px" />}
+          ></IconButton>
+        </InputLeftElement>
         <Input
           fontSize="xs"
           py="11px"
@@ -74,23 +72,23 @@ export const HeaderContent = () => {
           borderRadius="inherit"
         />
       </InputGroup>
-      <Link href={'/auth/signin'}>
+      <Link href={"/auth/signin"}>
         <Button
           ms="0px"
           px="0px"
-          me={{ sm: '2px', md: '16px' }}
+          me={{ sm: "2px", md: "16px" }}
           color={navbarIcon}
           variant="transparent-with-icon"
           rightIcon={
             <ProfileIcon color={navbarIcon} w="22px" h="22px" me="0px" />
           }
         >
-          <Text display={{ sm: 'none', md: 'flex' }}>Sign In</Text>
+          <Text display={{ sm: "none", md: "flex" }}>Sign In</Text>
         </Button>
       </Link>
       <SettingsIcon
         cursor="pointer"
-        ms={{ base: '16px', xl: '0px' }}
+        ms={{ base: "16px", xl: "0px" }}
         me="16px"
         color={navbarIcon}
         w="18px"

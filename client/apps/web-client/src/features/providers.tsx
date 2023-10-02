@@ -1,7 +1,7 @@
-'use client';
+"use client";
 
-import { UIProvider } from '@wr/ui';
-import { RecoilRoot } from 'recoil';
+import { UIProvider } from "@wr/ui";
+import { RecoilRoot } from "recoil";
 
 export function Providers({ children }: { children: React.ReactNode }) {
   return (

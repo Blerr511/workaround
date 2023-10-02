@@ -1,3 +1,29 @@
+load("//tools/utils:js_image.bzl", "js_image")
+
+js_image(
+    name = "web-client",
+    srcs = glob([
+        "src/**/*",
+        "public/**/*",
+        "*.js",
+        "*.json",
+    ]),
+    image = "$(GCP_DOCKER_BACKEND_IMAGE)",
+    package_json = "package.json",
+    post_install = [
+        "cd client/apps/web-client",
+        "ls",
+        "pwd",
+        "pnpm run build",
+    ],
+    start_cmd = "pnpm run start",
+    deps = [
+        "//client/packages/core:core.json",
+        "//client/packages/ui:ui.json",
+        "//server/packages/backend-api:backend-api.json",
+    ],
+)
+
 genrule(
     name = "env",
     srcs = ["//sandbox:web_client_env_vars.env"],

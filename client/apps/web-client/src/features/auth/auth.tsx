@@ -10,5 +10,5 @@ export const Auth: FC = () => {
     setModalState(() => ({ isOpen: false }));
   }, [setModalState]);
 
-  return <Modal isOpen={modalState.isOpen} onClose={onClose}></Modal>;
+  return <Modal isOpen={modalState.isOpen} onClose={onClose}>hello</Modal>;
 };

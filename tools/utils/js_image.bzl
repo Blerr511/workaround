@@ -83,7 +83,7 @@ def js_image(name, srcs, deps, package_json, image, tag = "latest", post_install
         commands = [
             "npm install -g pnpm",
             "mv /app/{package}/prod_package.json /app/{package}/package.json".format(package = native.package_name()),
-            "cd /app && pnpm install --prod",
+            "cd /app && pnpm install",
         ] + post_install,
         image = ":{name}_image_base.tar".format(name = name),
     )

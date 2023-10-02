@@ -1,7 +1,9 @@
-import { createIcon } from "@chakra-ui/icons";
+"use client";
+
+import { IconProps, createIcon } from "@chakra-ui/icons";
 import { FC } from "react";
 
-export const AdobexdLogo: FC = createIcon({
+export const AdobexdLogo: FC<IconProps> = createIcon({
   displayName: "AdobexdLogo",
   viewBox: "0 0 24 24",
   path: (
@@ -18,7 +20,7 @@ export const AdobexdLogo: FC = createIcon({
   ),
 });
 
-export const AtlassianLogo: FC = createIcon({
+export const AtlassianLogo: FC<IconProps> = createIcon({
   displayName: "AtlassianLogo",
   viewBox: "0 0 24 24",
   path: (
@@ -35,7 +37,7 @@ export const AtlassianLogo: FC = createIcon({
   ),
 });
 
-export const CartIcon: FC = createIcon({
+export const CartIcon: FC<IconProps> = createIcon({
   displayName: "CartIcon",
   viewBox: "0 0 24 24",
   path: (
@@ -46,7 +48,7 @@ export const CartIcon: FC = createIcon({
   ),
 });
 
-export const ClockIcon: FC = createIcon({
+export const ClockIcon: FC<IconProps> = createIcon({
   displayName: "ClockIcon",
   viewBox: "0 0 24 24",
   path: (
@@ -67,7 +69,7 @@ export const ClockIcon: FC = createIcon({
     </g>
   ),
 });
-export const CreativeTimLogo: FC = createIcon({
+export const CreativeTimLogo: FC<IconProps> = createIcon({
   displayName: "CreativeTimLogo",
   viewBox: "0 0 100 100",
   path: (
@@ -123,7 +125,7 @@ export const CreativeTimLogo: FC = createIcon({
   // </chakra.svg>
 });
 
-export const CreditIcon: FC = createIcon({
+export const CreditIcon: FC<IconProps> = createIcon({
   displayName: "CreditIcon",
   viewBox: "0 0 24 24",
   path: (
@@ -134,7 +136,7 @@ export const CreditIcon: FC = createIcon({
   ),
 });
 
-export const DashboardLogo: FC = createIcon({
+export const DashboardLogo: FC<IconProps> = createIcon({
   displayName: "DashboardLogo",
   viewBox: "0 0 1000 257",
   path: (
@@ -190,7 +192,7 @@ export const DashboardLogo: FC = createIcon({
   ),
 });
 
-export const DashboardLogoWhite: FC = createIcon({
+export const DashboardLogoWhite: FC<IconProps> = createIcon({
   displayName: "DashboardLogo",
   viewBox: "0 0 163.5 42",
   path: (
@@ -207,7 +209,7 @@ export const DashboardLogoWhite: FC = createIcon({
   ),
 });
 
-export const DocumentIcon: FC = createIcon({
+export const DocumentIcon: FC<IconProps> = createIcon({
   displayName: "DocumentIcon",
   viewBox: "0 0 24 24",
   path: (
@@ -224,7 +226,7 @@ export const DocumentIcon: FC = createIcon({
   ),
 });
 
-export const GlobeIcon: FC = createIcon({
+export const GlobeIcon: FC<IconProps> = createIcon({
   displayName: "GlobeIcon",
   viewBox: "0 0 24 24",
   path: (
@@ -267,7 +269,7 @@ export const GlobeIcon: FC = createIcon({
   ),
 });
 
-export const HelpIcon: FC = createIcon({
+export const HelpIcon: FC<IconProps> = createIcon({
   displayName: "HelpIcon",
   viewBox: "0 0 24 24",
   path: (
@@ -278,7 +280,7 @@ export const HelpIcon: FC = createIcon({
   ),
 });
 
-export const HomeIcon: FC = createIcon({
+export const HomeIcon: FC<IconProps> = createIcon({
   displayName: "HomeIcon",
   viewBox: "0 0 24 24",
   path: (
@@ -295,7 +297,7 @@ export const HomeIcon: FC = createIcon({
   ),
 });
 
-export const InvisionLogo: FC = createIcon({
+export const InvisionLogo: FC<IconProps> = createIcon({
   displayName: "InvisionLogo",
   viewBox: "0 0 24 24",
   path: (
@@ -312,7 +314,7 @@ export const InvisionLogo: FC = createIcon({
   ),
 });
 
-export const JiraLogo: FC = createIcon({
+export const JiraLogo: FC<IconProps> = createIcon({
   displayName: "JiraLogo",
   viewBox: "0 0 24 24",
   path: (
@@ -333,7 +335,7 @@ export const JiraLogo: FC = createIcon({
   ),
 });
 
-export const MastercardIcon: FC = createIcon({
+export const MastercardIcon: FC<IconProps> = createIcon({
   displayName: "MastercardIcon",
   viewBox: "0 0 24 24",
   path: (
@@ -350,7 +352,7 @@ export const MastercardIcon: FC = createIcon({
   ),
 });
 
-export const PayPalIcon: FC = createIcon({
+export const PayPalIcon: FC<IconProps> = createIcon({
   displayName: "PayPalIcon",
   viewBox: "0 0 24 24",
   path: (
@@ -367,7 +369,7 @@ export const PayPalIcon: FC = createIcon({
   ),
 });
 
-export const PersonIcon: FC = createIcon({
+export const PersonIcon: FC<IconProps> = createIcon({
   displayName: "PersonIcon",
   viewBox: "0 0 24 24",
   path: (
@@ -378,7 +380,7 @@ export const PersonIcon: FC = createIcon({
   ),
 });
 
-export const ProfileIcon: FC = createIcon({
+export const ProfileIcon: FC<IconProps> = createIcon({
   displayName: "ProfileIcon",
   viewBox: "0 0 24 24",
   path: (
@@ -392,7 +394,7 @@ export const ProfileIcon: FC = createIcon({
   ),
 });
 
-export const RocketIcon: FC = createIcon({
+export const RocketIcon: FC<IconProps> = createIcon({
   displayName: "RocketIcon",
   viewBox: "0 0 24 24",
   path: (
@@ -409,7 +411,7 @@ export const RocketIcon: FC = createIcon({
   ),
 });
 
-export const SettingsIcon: FC = createIcon({
+export const SettingsIcon: FC<IconProps> = createIcon({
   displayName: "SettingsIcon",
   viewBox: "0 0 24 24",
   // path can also be an array of elements, if you have multiple paths, lines, shapes, etc.
@@ -424,7 +426,7 @@ export const SettingsIcon: FC = createIcon({
   ),
 });
 
-export const SlackLogo: FC = createIcon({
+export const SlackLogo: FC<IconProps> = createIcon({
   displayName: "SlackLogo",
   viewBox: "0 0 24 24",
   path: (
@@ -449,7 +451,7 @@ export const SlackLogo: FC = createIcon({
   ),
 });
 
-export const SpotifyLogo: FC = createIcon({
+export const SpotifyLogo: FC<IconProps> = createIcon({
   displayName: "SpotifyLogo",
   viewBox: "0 0 24 24",
   path: (
@@ -462,7 +464,7 @@ export const SpotifyLogo: FC = createIcon({
   ),
 });
 
-export const SupportIcon: FC = createIcon({
+export const SupportIcon: FC<IconProps> = createIcon({
   // Doesn't display the full icon without w and h being specified
   displayName: "BuildIcon",
   viewBox: "0 0 24 24",
@@ -474,7 +476,7 @@ export const SupportIcon: FC = createIcon({
   ),
 });
 
-export const StatsIcon: FC = createIcon({
+export const StatsIcon: FC<IconProps> = createIcon({
   displayName: "StatsIcon",
   viewBox: "0 0 24 24",
   path: (
@@ -485,7 +487,7 @@ export const StatsIcon: FC = createIcon({
   ),
 });
 
-export const WalletIcon: FC = createIcon({
+export const WalletIcon: FC<IconProps> = createIcon({
   displayName: "WalletIcon",
   viewBox: "0 0 24 24",
   path: (
@@ -502,7 +504,7 @@ export const WalletIcon: FC = createIcon({
   ),
 });
 
-export const VisaIcon: FC = createIcon({
+export const VisaIcon: FC<IconProps> = createIcon({
   displayName: "VisaIcon",
   viewBox: "0 0 24 24",
   path: (

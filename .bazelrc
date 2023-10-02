@@ -30,5 +30,3 @@ try-import %workspace%/.aspect/bazelrc/local.bazelrc
 try-import %workspace%/.aspect/bazelrc/.cloudbuild.bazelrc
 
 try-import %workspace%/.aspect/bazelrc/current/.bazelrc
-
-build --sandbox_writable_path=/home/blerr/.docker
