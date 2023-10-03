@@ -8,8 +8,6 @@ connection_string=$(cat $(bazel build //deploy/cluster/backend:backend_data_sour
 
 echo $connection_string
 
-printenv | grep AWS
-
 bazel run //sandbox/gcp:bastion.proxy
 
 bazel run //server/packages/data-source:migrate --action_env=DATA_SOURCE_POSTGRES_URL=$connection_string
