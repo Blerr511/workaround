@@ -70,73 +70,73 @@ steps:
 
         /workspace/deploy/shell/configure-aws.sh
 
-  # - name: "$_GCP_DOCKER_ARTIFACTS_LOCATION-docker.pkg.dev/$PROJECT_ID/cloudsdktool/cloud-sdk:$_CLOUD_SDK_VERSION"
-  #   id: release-wr-logger
-  #   entrypoint: "bash"
-  #   args:
-  #     - "-c"
-  #     - |
-  #       /workspace/deploy/shell/release-npm-package.sh server/packages/logger npm.publish
+  - name: "$_GCP_DOCKER_ARTIFACTS_LOCATION-docker.pkg.dev/$PROJECT_ID/cloudsdktool/cloud-sdk:$_CLOUD_SDK_VERSION"
+    id: release-wr-logger
+    entrypoint: "bash"
+    args:
+      - "-c"
+      - |
+        /workspace/deploy/shell/release-npm-package.sh server/packages/logger npm.publish
 
-  # - name: "$_GCP_DOCKER_ARTIFACTS_LOCATION-docker.pkg.dev/$PROJECT_ID/cloudsdktool/cloud-sdk:$_CLOUD_SDK_VERSION"
-  #   id: release-backend-api
-  #   entrypoint: "bash"
-  #   args:
-  #     - "-c"
-  #     - |
-  #       /workspace/deploy/shell/release-npm-package.sh server/packages/backend-api npm.publish
+  - name: "$_GCP_DOCKER_ARTIFACTS_LOCATION-docker.pkg.dev/$PROJECT_ID/cloudsdktool/cloud-sdk:$_CLOUD_SDK_VERSION"
+    id: release-backend-api
+    entrypoint: "bash"
+    args:
+      - "-c"
+      - |
+        /workspace/deploy/shell/release-npm-package.sh server/packages/backend-api npm.publish
 
-  # - name: "$_GCP_DOCKER_ARTIFACTS_LOCATION-docker.pkg.dev/$PROJECT_ID/cloudsdktool/cloud-sdk:$_CLOUD_SDK_VERSION"
-  #   id: release-data-source
-  #   entrypoint: "bash"
-  #   args:
-  #     - "-c"
-  #     - |
-  #       /workspace/deploy/shell/release-npm-package.sh server/packages/data-source npm.publish
+  - name: "$_GCP_DOCKER_ARTIFACTS_LOCATION-docker.pkg.dev/$PROJECT_ID/cloudsdktool/cloud-sdk:$_CLOUD_SDK_VERSION"
+    id: release-data-source
+    entrypoint: "bash"
+    args:
+      - "-c"
+      - |
+        /workspace/deploy/shell/release-npm-package.sh server/packages/data-source npm.publish
 
-  # - name: "$_GCP_DOCKER_ARTIFACTS_LOCATION-docker.pkg.dev/$PROJECT_ID/cloudsdktool/cloud-sdk:$_CLOUD_SDK_VERSION"
-  #   id: release-wr-ui
-  #   entrypoint: "bash"
-  #   args:
-  #     - "-c"
-  #     - |
-  #       /workspace/deploy/shell/release-npm-package.sh client/packages/ui npm.publish
+  - name: "$_GCP_DOCKER_ARTIFACTS_LOCATION-docker.pkg.dev/$PROJECT_ID/cloudsdktool/cloud-sdk:$_CLOUD_SDK_VERSION"
+    id: release-wr-ui
+    entrypoint: "bash"
+    args:
+      - "-c"
+      - |
+        /workspace/deploy/shell/release-npm-package.sh client/packages/ui npm.publish
 
-  # - name: "$_GCP_DOCKER_ARTIFACTS_LOCATION-docker.pkg.dev/$PROJECT_ID/cloudsdktool/cloud-sdk:$_CLOUD_SDK_VERSION"
-  #   id: release-wr-core
-  #   entrypoint: "bash"
-  #   args:
-  #     - "-c"
-  #     - |
-  #       /workspace/deploy/shell/release-npm-package.sh client/packages/core npm.publish
+  - name: "$_GCP_DOCKER_ARTIFACTS_LOCATION-docker.pkg.dev/$PROJECT_ID/cloudsdktool/cloud-sdk:$_CLOUD_SDK_VERSION"
+    id: release-wr-core
+    entrypoint: "bash"
+    args:
+      - "-c"
+      - |
+        /workspace/deploy/shell/release-npm-package.sh client/packages/core npm.publish
 
-  # - name: "$_GCP_DOCKER_ARTIFACTS_LOCATION-docker.pkg.dev/$PROJECT_ID/cloudsdktool/cloud-sdk:$_CLOUD_SDK_VERSION"
-  #   id: aws-configure
-  #   entrypoint: "bash"
-  #   args:
-  #     - "-c"
-  #     - |
-  #       /workspace/deploy/shell/configure-aws.sh
+  - name: "$_GCP_DOCKER_ARTIFACTS_LOCATION-docker.pkg.dev/$PROJECT_ID/cloudsdktool/cloud-sdk:$_CLOUD_SDK_VERSION"
+    id: aws-configure
+    entrypoint: "bash"
+    args:
+      - "-c"
+      - |
+        /workspace/deploy/shell/configure-aws.sh
 
-  # - name: "$_GCP_DOCKER_ARTIFACTS_LOCATION-docker.pkg.dev/$PROJECT_ID/cloudsdktool/cloud-sdk:$_CLOUD_SDK_VERSION"
-  #   id: deploy-general
-  #   entrypoint: "bash"
-  #   env:
-  #     - "_TAG=${SHORT_SHA}"
-  #   args:
-  #     - "-c"
-  #     - |
-  #       /workspace/deploy/shell/apply-k8s.sh deploy/cluster/general:general.apply
+  - name: "$_GCP_DOCKER_ARTIFACTS_LOCATION-docker.pkg.dev/$PROJECT_ID/cloudsdktool/cloud-sdk:$_CLOUD_SDK_VERSION"
+    id: deploy-general
+    entrypoint: "bash"
+    env:
+      - "_TAG=${SHORT_SHA}"
+    args:
+      - "-c"
+      - |
+        /workspace/deploy/shell/apply-k8s.sh deploy/cluster/general:general.apply
 
-  # - name: "$_GCP_DOCKER_ARTIFACTS_LOCATION-docker.pkg.dev/$PROJECT_ID/cloudsdktool/cloud-sdk:$_CLOUD_SDK_VERSION"
-  #   id: deploy-backend
-  #   entrypoint: "bash"
-  #   env:
-  #     - "_TAG=${SHORT_SHA}"
-  #   args:
-  #     - "-c"
-  #     - |
-  #       /workspace/deploy/shell/apply-k8s.sh deploy/cluster/backend:backend.apply
+  - name: "$_GCP_DOCKER_ARTIFACTS_LOCATION-docker.pkg.dev/$PROJECT_ID/cloudsdktool/cloud-sdk:$_CLOUD_SDK_VERSION"
+    id: deploy-backend
+    entrypoint: "bash"
+    env:
+      - "_TAG=${SHORT_SHA}"
+    args:
+      - "-c"
+      - |
+        /workspace/deploy/shell/apply-k8s.sh deploy/cluster/backend:backend.apply
 
   - name: "$_GCP_DOCKER_ARTIFACTS_LOCATION-docker.pkg.dev/$PROJECT_ID/cloudsdktool/cloud-sdk:$_CLOUD_SDK_VERSION"
     id: migrate-backend-db
@@ -147,6 +147,16 @@ steps:
       - "-c"
       - |
         /workspace/deploy/shell/db-migrate.sh
+
+  - name: "$_GCP_DOCKER_ARTIFACTS_LOCATION-docker.pkg.dev/$PROJECT_ID/cloudsdktool/cloud-sdk:$_CLOUD_SDK_VERSION"
+    id: deploy-backend
+    entrypoint: "bash"
+    env:
+      - "_TAG=${SHORT_SHA}"
+    args:
+      - "-c"
+      - |
+        /workspace/deploy/shell/apply-k8s.sh deploy/cluster/web-client:web-client.apply
 
 availableSecrets:
   secretManager:
