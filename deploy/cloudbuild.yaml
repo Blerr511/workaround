@@ -149,7 +149,7 @@ steps:
         /workspace/deploy/shell/db-migrate.sh
 
   - name: "$_GCP_DOCKER_ARTIFACTS_LOCATION-docker.pkg.dev/$PROJECT_ID/cloudsdktool/cloud-sdk:$_CLOUD_SDK_VERSION"
-    id: deploy-backend
+    id: deploy-web-client
     entrypoint: "bash"
     env:
       - "_TAG=${SHORT_SHA}"
