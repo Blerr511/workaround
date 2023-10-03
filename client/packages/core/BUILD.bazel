@@ -1,9 +1,9 @@
-load("@aspect_rules_js//js:defs.bzl", "js_binary", "js_library")
-load("@aspect_rules_ts//ts:defs.bzl", "ts_config", "ts_project")
-load("@npm//:defs.bzl", "npm_link_all_packages")
 load("@aspect_rules_js//npm:defs.bzl", "npm_package")
+load("@aspect_rules_swc//swc:defs.bzl", "swc")
 load("@bazel_skylib//lib:partial.bzl", "partial")
-load("//client/bazel:babel.bzl", "babel")
+load("@aspect_rules_ts//ts:defs.bzl", "ts_config", "ts_project")
+load("@bazel_skylib//lib:partial.bzl", "partial")
+load("@npm//:defs.bzl", "npm_link_all_packages")
 
 npm_link_all_packages(name = "node_modules")
 
@@ -25,12 +25,10 @@ ts_project(
     resolve_json_module = True,
     source_map = True,
     transpiler = partial.make(
-        babel,
-        presets = {
-            "@babel/preset-typescript": "//:node_modules/@babel/preset-typescript",
-            "@babel/preset-env": "//:node_modules/@babel/preset-env",
-            "@babel/preset-react": "//:node_modules/@babel/preset-react",
-        },
+        swc,
+        args = ["--env-name=prod"],
+        source_maps = "true",
+        swcrc = ".swcrc",
     ),
     validate = True,
     deps = [
@@ -53,6 +51,7 @@ npm_package(
     srcs = [
         ":prod_package_json",
         ":ts",
+        ":ts_typings",
     ],
     # This is a perf improvement; the default will be flipped to False in rules_js 2.0
     include_runfiles = False,

@@ -19,7 +19,7 @@
     "@types/react": "18.0.37",
     "@wr/backend-api": "workspace:^",
     "@wr/core": "workspace:^",
-    "@wr/ui": "workspace:^",
+    "@wr/ui": "1.0.12",
     "autoprefixer": "10.4.14",
     "eslint": "8.38.0",
     "eslint-config-next": "13.3.0",
