@@ -1,9 +1,8 @@
 #!/bin/bash
 
 SSH_KEY_PATH=$1
-HOST=$(cat $2)
-RDS_HOST=$(cat $3)
-INSTANCE_ID=$(cat $4)
+RDS_HOST=$(cat $2)
+INSTANCE_ID=$(cat $3)
 
 [[ -z "$WR_TMP_DATA" ]] && echo "Error: WR_TMP_DATA is not set" && exit 1
 [[ -z "$RDS_HOST" ]] && echo "Error: RDS_HOST is not set" && exit 1

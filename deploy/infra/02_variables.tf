@@ -53,14 +53,14 @@ variable "gcp_aws_bastion_host_ssh_key_secret" {
   description = "AWS Bastion host ssh key secret name"
 }
 
-variable "gcp_aws_bastion_host_public_ip_secret" {
-  type        = string
-  description = "AWS Bastion host public ip address"
-}
-
 variable "gcp_aws_bastion_instance_id" {
   type        = string
   description = "AWS Bastion host instance id"
+}
+
+variable "gcp_aws_rds_postgres_password_secret" {
+  type        = string
+  description = "AWS RDS postgres db password secret name"
 }
 
 #

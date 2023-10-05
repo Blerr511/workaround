@@ -89,18 +89,16 @@ sh_binary(
     srcs = ["shell/proxy-bastion.sh"],
     args = [
         "$(location :gcp_bastion_ssh_key)",
-        "$(location :gcp_bastion_public_ip)",
         "$(location //deploy/cluster/backend:aws_rds_connection_host)",
         "$(location :gcp_bastion_instance_id)",
     ],
     data = [
         ":gcp_bastion_instance_id",
-        ":gcp_bastion_public_ip",
         ":gcp_bastion_ssh_key",
         "//deploy/cluster/backend:aws_rds_connection_host",
     ],
     env = {
-        "LOCAL_PORT": "5433",
+        "LOCAL_PORT": "7432",
         "WR_TMP_DATA": "$(WR_TMP_DATA)",
         "AWS_CONFIG_FILE": "$(AWS_CONFIG_FILE)",
         "AWS_SHARED_CREDENTIALS_FILE": "$(AWS_SHARED_CREDENTIALS_FILE)",
@@ -118,7 +116,7 @@ sh_binary(
         ":gcp_bastion_instance_id",
     ],
     env = {
-        "LOCAL_PORT": "5433",
+        "LOCAL_PORT": "7432",
         "WR_TMP_DATA": "$(WR_TMP_DATA)",
         "AWS_CONFIG_FILE": "$(AWS_CONFIG_FILE)",
         "AWS_SHARED_CREDENTIALS_FILE": "$(AWS_SHARED_CREDENTIALS_FILE)",

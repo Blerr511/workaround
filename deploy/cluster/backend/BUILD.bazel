@@ -11,6 +11,11 @@ secret_version(
     visibility = ["//visibility:public"],
 )
 
+secret_version(
+    name = "aws_rds_postgres_password",
+    secret = "$(GCP_AWS_RDS_POSTGRES_PASSWORD_SECRET)",
+)
+
 k8s_object(
     name = "config-map",
     cluster = "",
@@ -54,11 +59,15 @@ k8s_object(
 
 genrule(
     name = "backend_data_source_url",
-    srcs = [":aws_rds_connection_host"],
+    srcs = [
+        ":aws_rds_connection_host",
+        ":aws_rds_postgres_password",
+    ],
     outs = ["data_source_connection_string.txt"],
     cmd = """
         export _HOST=$$(cat $(location :aws_rds_connection_host) | awk -F':' '{print $$1}')
-        export CONNECTION_STRING=postgresql://$(AWS_RDS_POSTGRES_USERNAME):$(AWS_RDS_POSTGRES_PASSWORD)@$$_HOST:$(AWS_RDS_POSTGRES_PORT)/$(AWS_RDS_POSTGRES_DB_NAME)?schema=public
+        export _PASSWORD=$$(cat $(location :aws_rds_postgres_password))
+        export CONNECTION_STRING=postgresql://$(AWS_RDS_POSTGRES_USERNAME):$$_PASSWORD@$$_HOST:$(AWS_RDS_POSTGRES_PORT)/$(AWS_RDS_POSTGRES_DB_NAME)?schema=public
 
         echo $$CONNECTION_STRING  > $@
     """,
@@ -67,9 +76,12 @@ genrule(
 
 genrule(
     name = "backend_data_source_url.local",
+    srcs = [":aws_rds_postgres_password"],
     outs = ["data_source_connection_string_local.txt"],
     cmd = """
-        export CONNECTION_STRING=postgresql://$(AWS_RDS_POSTGRES_USERNAME):$(AWS_RDS_POSTGRES_PASSWORD)@localhost:5433/$(AWS_RDS_POSTGRES_DB_NAME)?schema=public
+        export _PASSWORD=$$(cat $(location :aws_rds_postgres_password))
+
+        export CONNECTION_STRING=postgresql://$(AWS_RDS_POSTGRES_USERNAME):$$_PASSWORD@localhost:7432/$(AWS_RDS_POSTGRES_DB_NAME)?schema=public
 
         echo $$CONNECTION_STRING  > $@
     """,
