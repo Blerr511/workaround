@@ -24,6 +24,8 @@ HOST=$(aws ec2 describe-instances --instance-ids $INSTANCE_ID --query "Reservati
 
 chmod 400 $SSH_KEY_PATH
 
+echo "ssh -o StrictHostKeyChecking=no -f -N -L $LOCAL_PORT:$RDS_HOST -i $SSH_KEY_PATH ec2-user@$HOST"
+
 ssh -o StrictHostKeyChecking=no -f -N -L $LOCAL_PORT:$RDS_HOST -i $SSH_KEY_PATH ec2-user@$HOST
 
 pid=$(pgrep -n -f "ssh -o StrictHostKeyChecking=no -f -N -L $LOCAL_PORT:$RDS_HOST -i $SSH_KEY_PATH ec2-user@$HOST")
