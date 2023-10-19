@@ -60,10 +60,6 @@ build --action_env=AWS_DEFAULT_REGION="eu-north-1"
 build --action_env=AWS_DEFAULT_ACCESS_KEY_ID=
 build --action_env=AWS_DEFAULT_ACCESS_KEY_SECRET=
 
-## EC2
-build --action_env=AWS_EC2_INSTANCE_ID=
-build --action_env=AWS_EC2_INSTANCE_SSH_PATH=
-
 # Define it on your local.bazelrc file
 build --action_env=AWS_EC2_SSH_KEY_PATH=
 build --action_env=AWS_EKS_CLUSTER_NAME=wr

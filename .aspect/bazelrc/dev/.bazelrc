@@ -8,10 +8,6 @@ build --action_env=GCP_BAZEL_REMOTE_CACHE_BUCKET=bzl-remote-cache
 # AWS
 build --action_env=AWS_DEFAULT_REGION="eu-north-1"
 
-## AWS EC2
-build --action_env=AWS_EC2_INSTANCE_ID=i-03717b829f59c4e8f
-build --action_env=AWS_EC2_INSTANCE_SSH_PATH=ubuntu@ec2-16-171-224-221.eu-north-1.compute.amazonaws.com
-
 # POSTGRES
 build --action_env=POSTGRES_PASSWORD=wrpass
 

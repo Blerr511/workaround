@@ -65,22 +65,6 @@ sh_binary(
     ],
 )
 
-sh_binary(
-    name = "ec2.ssh",
-    srcs = ["ssh.sh"],
-    env = {
-        "AWS_SHARED_CREDENTIALS_FILE": "$(AWS_SHARED_CREDENTIALS_FILE)",
-        "AWS_CONFIG_FILE": "AWS_CONFIG_FILE",
-        "AWS_DEFAULT_REGION": "AWS_DEFAULT_REGION",
-        "SSH_KEY": "$(AWS_EC2_SSH_KEY_PATH)",
-        "INSTANCE": "$(AWS_EC2_INSTANCE_SSH_PATH)",
-    },
-    toolchains = [
-        "//sandbox:aws_env_vars",
-        "//sandbox:workspace_env_vars",
-    ],
-)
-
 genrule(
     name = "kubeconfig",
     srcs = ["aws.sh"],
