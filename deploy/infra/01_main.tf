@@ -43,3 +43,17 @@ provider "aws" {
 provider "digitalocean" {
   token = var.do_tf_access_key
 }
+
+
+data "digitalocean_kubernetes_cluster" "wr_cluster" {
+  name = var.cluster_name
+}
+
+
+provider "kubernetes" {
+  host  = data.digitalocean_kubernetes_cluster.wr_cluster.endpoint
+  token = data.digitalocean_kubernetes_cluster.wr_cluster.kube_config[0].token
+  cluster_ca_certificate = base64decode(
+    data.digitalocean_kubernetes_cluster.wr_cluster.kube_config[0].cluster_ca_certificate
+  )
+}

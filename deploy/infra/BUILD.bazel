@@ -21,6 +21,7 @@ tf(
         "**/*.tfstate",
         "**/*.tfplan",
     ]) + [
+        "//sandbox/cluster:kubeconfig",
         "//sandbox/gcp/terraform:sa",
     ],
     env = {
@@ -28,7 +29,8 @@ tf(
         "AWS_CONFIG_FILE": "$(AWS_CONFIG_FILE)",
         "AWS_SHARED_CREDENTIALS_FILE": "$(AWS_SHARED_CREDENTIALS_FILE)",
         "AWS_DEFAULT_REGION": "$(AWS_DEFAULT_REGION)",
-        "KUBECONFIG": "$(KUBE_CONFIG)",
+        "KUBECONFIG": "$(location //sandbox/cluster:kubeconfig)",
+        "KUBECONFIGPATH": "$(location //sandbox/cluster:kubeconfig)",
         "CLOUDSDK_CONFIG": "$(GCP_CLOUDSDK_CONFIG)",
         "GOOGLE_APPLICATION_CREDENTIALS": "$(rootpath %s)" % "//sandbox/gcp/terraform:sa",
         "TF_DATA_DIR": "$(TF_DATA_DIR)",
@@ -43,6 +45,8 @@ tf(
     ],
     vars = {
         "sandbox_env": "$(APP_ENV)",
+        "k8s_backend_name": "backend",
+        "k8s_backend_container_port": "3000",
         "gcp_project_id": "$(GCP_PROJECT_ID)",
         "gcp_terraform_bucket": "$(GCP_TERRAFORM_BUCKET)",
         "gcp_region": "$(GCP_REGION)",
@@ -53,6 +57,7 @@ tf(
         "gcp_docker_artifacts_repository": "$(GCP_DOCKER_ARTIFACTS_REPOSITORY)",
         "gcp_github_ssh_key_secret_name": "$(GCP_GITHUB_SSH_KEY_SECRET_NAME)",
         "gcp_do_tf_access_key_secret_name": "$(GCP_DO_TF_ACCESS_KEY_SECRET_NAME)",
+        "gcp_aws_rds_postgres_connection_endpoint_secret_name": "$(GCP_AWS_RDS_POSTGRES_CONNECTION_ENDPOINT_SECRET_NAME)",
         "gcp_npm_artifacts_repository": "$(GCP_NPM_ARTIFACTS_REPOSITORY)",
         "gcp_artifacts_reader_sa_secret": "$(GCP_ARTIFACTS_READER_SA_SECRET)",
         "gcp_artifacts_reader_sa": "$(GCP_ARTIFACTS_READER_SA)",
@@ -66,7 +71,6 @@ tf(
         "aws_iam_user_cloud_builder": "$(AWS_IAM_USER_CLOUD_BUILDER)",
         "do_tf_access_key": "$(DO_TF_ACCESS_KEY)",
         "cluster_name": "$(CLUSTER_NAME)",
-        "kubeconfig": "$(KUBE_CONFIG)",
     },
 )
 

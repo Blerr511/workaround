@@ -35,6 +35,7 @@ build --action_env=GCP_DEVELOPMENT_SA_SECRET="development-sa"
 build --action_env=GCP_ARTIFACTS_READER_SA_SECRET=artifacts-reader-sa
 build --action_env=GCP_GITHUB_SSH_KEY_SECRET_NAME="github-ssh-key"
 build --action_env=GCP_DO_TF_ACCESS_KEY_SECRET_NAME="digital-ocean-access-key"
+build --action_env=GCP_AWS_RDS_POSTGRES_CONNECTION_ENDPOINT_SECRET_NAME="aws-rds-postgres-connection-endpoint"
 
 # GCP Buckets
 build --action_env=GCP_BAZEL_REMOTE_CACHE_BUCKET=

@@ -56,10 +56,6 @@ k8s_object(
 
 genrule(
     name = "backend_data_source_url",
-    srcs = [
-        ":aws_rds_connection_host",
-        ":aws_rds_postgres_password",
-    ],
     outs = ["data_source_connection_string.txt"],
     cmd = """
         export _HOST=$$(cat $(location :aws_rds_connection_host) | awk -F':' '{print $$1}')
@@ -86,6 +82,16 @@ genrule(
 )
 
 substitution_file(
+    name = "get_lb_ip",
+    file = "get-lb-ip.tpl.sh",
+    substitutions = {
+        "name": "backend",
+    },
+    toolchains = ["//sandbox:aws_env_vars"],
+    visibility = ["//visibility:public"],
+)
+
+substitution_file(
     name = "backend_data_source_secret_yaml",
     data = [":backend_data_source_url"],
     file = "k8s-backend-data-source.configmap.yaml",
@@ -108,28 +114,11 @@ k8s_object(
     ],
 )
 
-k8s_object(
-    name = "service",
-    cluster = "",
-    kind = "service",
-    kubeconfig = "//sandbox/cluster:kubeconfig",
-    substitutions = {
-        "{ name }": "backend",
-        "{ backend_port }": "3000",
-    },
-    template = ":k8s-backend.service.yaml",
-    toolchains = [
-        "//sandbox:gcp_env_vars",
-        "//sandbox:workspace_env_vars",
-    ],
-)
-
 k8s_objects(
     name = "backend",
     objects = [
         ":data-source-configmap",
         ":deployement",
-        ":service",
         ":config-map",
     ],
     visibility = ["//visibility:public"],

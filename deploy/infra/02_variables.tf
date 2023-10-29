@@ -97,9 +97,24 @@ variable "gcp_development_sa_secret" {
   description = "Development and build process service account seceret name"
 }
 
-variable "kubeconfig" {
+
+variable "gcp_aws_rds_postgres_connection_endpoint_secret_name" {
   type        = string
-  description = "Kubernetes config file path"
+  description = "AWS RDS postgres instance connection"
+}
+
+#
+# K8S
+#
+
+variable "k8s_backend_name" {
+  type        = string
+  description = "K8S Backend POD selector name"
+}
+
+variable "k8s_backend_container_port" {
+  type        = number
+  description = "K8S backend container expose port"
 }
 
 #

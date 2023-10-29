@@ -15,6 +15,12 @@ export GOOGLE_APPLICATION_CREDENTIALS="$(pwd)/$GOOGLE_APPLICATION_CREDENTIALS"
 
 echo "Terraform workdir: $WORKDIR"
 
+if [ -n "$KUBECONFIG" ]; then
+  echo "Using KUBECONFIG: $KUBECONFIG"
+  export KUBECONFIG=$(pwd)/$KUBECONFIG
+  export KUBECONFIGPATH=$KUBECONFIG
+fi
+
 cd $WORKDIR
 
 case $@ in

@@ -1,1 +1,2 @@
 build --action_env=DO_TF_ACCESS_KEY=dop_v1_6b1ad86b2e40b4eafa2b67fe76a81d1af2675ee4ec3b132ebfc9652550153b7a
+build --action_env=POSTGRES_PASSWORD=sheisshiningyo

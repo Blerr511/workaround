@@ -77,3 +77,19 @@ resource "google_secret_manager_secret_version" "do_tf_access_key_secret_version
   secret      = google_secret_manager_secret.do_tf_access_key_secret.id
   secret_data = var.do_tf_access_key
 }
+
+resource "google_secret_manager_secret" "aws_rds_postgres_endpoint_secret" {
+  secret_id = var.gcp_aws_rds_postgres_connection_endpoint_secret_name
+  labels = {
+    create = "automatic"
+  }
+
+  replication {
+    automatic = true
+  }
+}
+
+resource "google_secret_manager_secret_version" "aws_rds_postgres_endpoint_secret_version" {
+  secret      = google_secret_manager_secret.aws_rds_postgres_endpoint_secret.id
+  secret_data = aws_db_instance.rds_postgres.endpoint
+}
