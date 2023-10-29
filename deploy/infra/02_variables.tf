@@ -43,24 +43,9 @@ variable "gcp_bazel_remote_cache_bucket" {
   description = "Bazel remote cache bucket name"
 }
 
-variable "gcp_aws_rds_host_secret" {
+variable "gcp_do_tf_access_key_secret_name" {
   type        = string
-  description = "AWS Rds database connection host"
-}
-
-variable "gcp_aws_bastion_host_ssh_key_secret" {
-  type        = string
-  description = "AWS Bastion host ssh key secret name"
-}
-
-variable "gcp_aws_bastion_instance_id" {
-  type        = string
-  description = "AWS Bastion host instance id"
-}
-
-variable "gcp_aws_rds_postgres_password_secret" {
-  type        = string
-  description = "AWS RDS postgres db password secret name"
+  description = "Digital Ocean access key secret name"
 }
 
 #
@@ -91,11 +76,6 @@ variable "gcp_docker_artifacts_repository" {
 variable "gcp_npm_artifacts_repository" {
   type        = string
   description = "Npm artifacts repository"
-}
-
-variable "gcp_aws_iam_user_cloud_builder_sa_secret" {
-  type        = string
-  description = "Secret Name of aws cloudbuilder user credentials"
 }
 
 #
@@ -131,11 +111,6 @@ variable "aws_region" {
   description = "AWS region"
 }
 
-variable "aws_eks_cluster_name" {
-  type        = string
-  description = "AWS EKS cluster name"
-}
-
 variable "aws_rds_postgres_name" {
   type        = string
   description = "AWS RDS postgres instance name"
@@ -164,4 +139,19 @@ variable "aws_rds_postgres_port" {
 variable "aws_iam_user_cloud_builder" {
   type        = string
   description = "AWS IAM user for pushing pods into eks"
+}
+
+# DIGITAL OCEAN
+
+variable "do_tf_access_key" {
+  type        = string
+  description = "DIGITAL OCEAN terraform user access key"
+}
+
+
+# CLUSTER
+
+variable "cluster_name" {
+  type        = string
+  description = "K8S Cluster name"
 }

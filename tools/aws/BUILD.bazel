@@ -26,7 +26,6 @@ genrule(
     export AWS_CONFIG_FILE=$(AWS_CONFIG_FILE)
     export AWS_SHARED_CREDENTIALS_FILE=$(AWS_SHARED_CREDENTIALS_FILE)
 
-    export barlus=sdfsf
     " >$@
     """,
     toolchains = [
@@ -38,21 +37,6 @@ genrule(
 sh_binary(
     name = "aws",
     srcs = ["aws.sh"],
-    env = {
-        "AWS_CONFIG_FILE": "$(AWS_CONFIG_FILE)",
-        "AWS_SHARED_CREDENTIALS_FILE": "$(AWS_SHARED_CREDENTIALS_FILE)",
-        "AWS_DEFAULT_REGION": "$(AWS_DEFAULT_REGION)",
-        "KUBECONFIG": "$(KUBE_CONFIG)",
-    },
-    toolchains = [
-        "//sandbox:aws_env_vars",
-        "//sandbox:workspace_env_vars",
-    ],
-)
-
-sh_binary(
-    name = "eksctl",
-    srcs = ["eksctl.sh"],
     env = {
         "AWS_CONFIG_FILE": "$(AWS_CONFIG_FILE)",
         "AWS_SHARED_CREDENTIALS_FILE": "$(AWS_SHARED_CREDENTIALS_FILE)",

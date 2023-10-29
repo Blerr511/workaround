@@ -1,0 +1,6 @@
+load(":defs.bzl", "doctl_binary")
+
+doctl_binary(
+    name = "doctl",
+    srcs = ["doctl.sh"],
+)

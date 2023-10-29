@@ -10,6 +10,8 @@ import_env_vars(
         "GCP_CLOUDSDK_CONFIG": "GCP_CLOUDSDK_CONFIG",
         "AWS_CONFIG_FILE": "AWS_CONFIG_FILE",
         "AWS_SHARED_CREDENTIALS_FILE": "AWS_SHARED_CREDENTIALS_FILE",
+        "TF_DATA_DIR": "TF_DATA_DIR",
+        "XDG_CONFIG_HOME": "XDG_CONFIG_HOME",
     },
     visibility = ["//visibility:public"],
 )
@@ -37,14 +39,27 @@ import_env_vars(
         "GCP_DEVELOPMENT_SA_SECRET": "GCP_DEVELOPMENT_SA_SECRET",
         "GCP_CLOUD_BUILD_SDK_VERSION": "GCP_CLOUD_BUILD_SDK_VERSION",
         "GCP_GITHUB_SSH_KEY_SECRET_NAME": "GCP_GITHUB_SSH_KEY_SECRET_NAME",
+        "GCP_DO_TF_ACCESS_KEY_SECRET_NAME": "GCP_DO_TF_ACCESS_KEY_SECRET_NAME",
         "GCP_ARTIFACTS_READER_SA_SECRET": "GCP_ARTIFACTS_READER_SA_SECRET",
         "GCP_ARTIFACTS_READER_SA": "GCP_ARTIFACTS_READER_SA",
-        "GCP_AWS_IAM_USER_CLOUD_BUILDER_SA_SECRET": "GCP_AWS_IAM_USER_CLOUD_BUILDER_SA_SECRET",
         "GCP_BAZEL_REMOTE_CACHE_BUCKET": "GCP_BAZEL_REMOTE_CACHE_BUCKET",
-        "GCP_AWS_RDS_HOST_SECRET": "GCP_AWS_RDS_HOST_SECRET",
-        "GCP_AWS_BASTION_HOST_SSH_KEY_SECRET": "GCP_AWS_BASTION_HOST_SSH_KEY_SECRET",
-        "GCP_AWS_BASTION_INSTANCE_ID": "GCP_AWS_BASTION_INSTANCE_ID",
-        "GCP_AWS_RDS_POSTGRES_PASSWORD_SECRET": "GCP_AWS_RDS_POSTGRES_PASSWORD_SECRET",
+    },
+    visibility = ["//visibility:public"],
+)
+
+import_env_vars(
+    name = "cluster_env_vars",
+    vars_mapping = {
+        "CLUSTER_NAME": "CLUSTER_NAME",
+    },
+    visibility = ["//visibility:public"],
+)
+
+import_env_vars(
+    name = "do_env_vars",
+    vars_mapping = {
+        "DIGITALOCEAN_CONTEXT": "DIGITALOCEAN_CONTEXT",
+        "DO_TF_ACCESS_KEY": "DO_TF_ACCESS_KEY",
     },
     visibility = ["//visibility:public"],
 )
@@ -53,8 +68,6 @@ import_env_vars(
     name = "aws_env_vars",
     vars_mapping = {
         "AWS_DEFAULT_REGION": "AWS_DEFAULT_REGION",
-        "AWS_EC2_SSH_KEY_PATH": "AWS_EC2_SSH_KEY_PATH",
-        "AWS_EKS_CLUSTER_NAME": "AWS_EKS_CLUSTER_NAME",
         "AWS_DEFAULT_ACCESS_KEY_SECRET": "AWS_DEFAULT_ACCESS_KEY_SECRET",
         "AWS_DEFAULT_ACCESS_KEY_ID": "AWS_DEFAULT_ACCESS_KEY_ID",
         "AWS_RDS_POSTGRES_NAME": "AWS_RDS_POSTGRES_NAME",

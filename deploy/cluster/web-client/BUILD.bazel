@@ -9,7 +9,7 @@ k8s_object(
         "$(GCP_DOCKER_ARTIFACTS_LOCATION)-docker.pkg.dev/$(GCP_PROJECT_ID)/$(GCP_DOCKER_ARTIFACTS_REPOSITORY)/$(GCP_DOCKER_WEB_CLIENT_IMAGE):{tag}".format(tag = "$(_TAG)"): "//client/apps/web-client:web-client_image",
     },
     kind = "deployment",
-    kubeconfig = "//tools/aws:kubeconfig",
+    kubeconfig = "//sandbox/cluster:kubeconfig",
     substitutions = {
         "{ name }": "web-client",
         "{ image }": "$(GCP_DOCKER_ARTIFACTS_LOCATION)-docker.pkg.dev/$(GCP_PROJECT_ID)/$(GCP_DOCKER_ARTIFACTS_REPOSITORY)/$(GCP_DOCKER_WEB_CLIENT_IMAGE):{tag}".format(tag = "$(_TAG)"),
@@ -23,7 +23,7 @@ k8s_object(
     name = "service",
     cluster = "",
     kind = "service",
-    kubeconfig = "//tools/aws:kubeconfig",
+    kubeconfig = "//sandbox/cluster:kubeconfig",
     substitutions = {
         "{ name }": "web-client",
         "{ port }": "3000",

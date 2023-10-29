@@ -1,0 +1,39 @@
+load("//tools/doctl:defs.bzl", "doctl_binary")
+
+doctl_binary(
+    name = "activate",
+    srcs = ["activate-access-key.sh"],
+    data = ["//sandbox/gcp:do_tf_access_key"],
+    env = {
+        "DIGITALOCEAN_ACCESS_TOKEN_PATH": "$(location //sandbox/gcp:do_tf_access_key)",
+        "DIGITALOCEAN_ACCESS_TOKEN": "dop_v1_6b1ad86b2e40b4eafa2b67fe76a81d1af2675ee4ec3b132ebfc9652550153b7a",
+    },
+    tags = ["requires-network"],
+)
+
+genrule(
+    name = "kubeconfig",
+    srcs = [
+        "get-kubeconfig.sh",
+        "//sandbox/gcp:do_tf_access_key",
+    ],
+    outs = ["kubeconfig.yaml"],
+    cmd = """
+        export DIGITALOCEAN_CONTEXT=$(DIGITALOCEAN_CONTEXT)
+        export XDG_CONFIG_HOME=$(XDG_CONFIG_HOME)
+        export DIGITALOCEAN_ACCESS_TOKEN=$$(cat $(location //sandbox/gcp:do_tf_access_key))
+        export CLUSTER_NAME=$(CLUSTER_NAME)
+        $(location get-kubeconfig.sh) $@
+    """,
+    tags = [
+        "no-cache",
+        "no-sandbox",
+        "requires-network",
+    ],
+    toolchains = [
+        "//sandbox:workspace_env_vars",
+        "//sandbox:cluster_env_vars",
+        "//sandbox:do_env_vars",
+    ],
+    visibility = ["//visibility:public"],
+)

@@ -3,24 +3,21 @@ load("@io_bazel_rules_k8s//k8s:objects.bzl", "k8s_objects")
 load("//sandbox/gcp:defs.bzl", "secret_version")
 load("//tools/utils:defs.bzl", "substitution_file")
 
-# Use with inline defining config variables bazel run //.... TAG=...
-
-secret_version(
+# TEMP!!
+genrule(
     name = "aws_rds_connection_host",
-    secret = "$(GCP_AWS_RDS_HOST_SECRET)",
+    outs = ["tempdata.txt"],
+    cmd = """
+    echo "tmp" > $@
+    """,
     visibility = ["//visibility:public"],
-)
-
-secret_version(
-    name = "aws_rds_postgres_password",
-    secret = "$(GCP_AWS_RDS_POSTGRES_PASSWORD_SECRET)",
 )
 
 k8s_object(
     name = "config-map",
     cluster = "",
     kind = "service",
-    kubeconfig = "//tools/aws:kubeconfig",
+    kubeconfig = "//sandbox/cluster:kubeconfig",
     substitutions = {
         "{ name }": "backend",
         "{ DATA_SOURCE_POSTGRES_URL }": "$(DATA_SOURCE_POSTGRES_URL)",
@@ -44,7 +41,7 @@ k8s_object(
         "$(GCP_DOCKER_ARTIFACTS_LOCATION)-docker.pkg.dev/$(GCP_PROJECT_ID)/$(GCP_DOCKER_ARTIFACTS_REPOSITORY)/$(GCP_DOCKER_BACKEND_IMAGE):{tag}".format(tag = "$(_TAG)"): "//server/apps/backend:backend_image",
     },
     kind = "deployment",
-    kubeconfig = "//tools/aws:kubeconfig",
+    kubeconfig = "//sandbox/cluster:kubeconfig",
     substitutions = {
         "{ name }": "backend",
         "{ image }": "$(GCP_DOCKER_ARTIFACTS_LOCATION)-docker.pkg.dev/$(GCP_PROJECT_ID)/$(GCP_DOCKER_ARTIFACTS_REPOSITORY)/$(GCP_DOCKER_BACKEND_IMAGE):{tag}".format(tag = "$(_TAG)"),
@@ -103,7 +100,7 @@ k8s_object(
     name = "data-source-configmap",
     cluster = "",
     kind = "configmap",
-    kubeconfig = "//tools/aws:kubeconfig",
+    kubeconfig = "//sandbox/cluster:kubeconfig",
     template = ":backend_data_source_secret_yaml",
     toolchains = [
         "//sandbox:gcp_env_vars",
@@ -115,7 +112,7 @@ k8s_object(
     name = "service",
     cluster = "",
     kind = "service",
-    kubeconfig = "//tools/aws:kubeconfig",
+    kubeconfig = "//sandbox/cluster:kubeconfig",
     substitutions = {
         "{ name }": "backend",
         "{ backend_port }": "3000",

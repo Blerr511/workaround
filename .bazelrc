@@ -30,3 +30,5 @@ try-import %workspace%/.aspect/bazelrc/local.bazelrc
 try-import %workspace%/.aspect/bazelrc/.cloudbuild.bazelrc
 
 try-import %workspace%/.aspect/bazelrc/current/.bazelrc
+
+try-import %workspace%/.aspect/bazelrc/current/sensetive.bazelrc

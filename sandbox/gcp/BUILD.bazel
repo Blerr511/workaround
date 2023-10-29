@@ -5,6 +5,12 @@ secret_version(
     secret = "$(GCP_AWS_IAM_USER_CLOUD_BUILDER_SA_SECRET)",
 )
 
+secret_version(
+    name = "do_tf_access_key",
+    secret = "$(GCP_DO_TF_ACCESS_KEY_SECRET_NAME)",
+    visibility = ["//visibility:public"],
+)
+
 genrule(
     name = "aws_cloud_builder_ak_id",
     srcs = [":aws_cloud_builder_ak"],
@@ -49,21 +55,6 @@ sh_binary(
         "//sandbox:workspace_env_vars",
         "//sandbox:gcp_env_vars",
     ],
-)
-
-secret_version(
-    name = "gcp_bastion_ssh_key",
-    secret = "$(GCP_AWS_BASTION_HOST_SSH_KEY_SECRET)",
-)
-
-secret_version(
-    name = "gcp_bastion_public_ip",
-    secret = "$(GCP_AWS_BASTION_HOST_PUBLIC_IP_SECRET)",
-)
-
-secret_version(
-    name = "gcp_bastion_instance_id",
-    secret = "$(GCP_AWS_BASTION_INSTANCE_ID)",
 )
 
 sh_binary(

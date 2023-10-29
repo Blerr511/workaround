@@ -16,6 +16,10 @@ terraform {
       source  = "hashicorp/kubernetes"
       version = "~> 2.16.1"
     }
+    digitalocean = {
+      source  = "digitalocean/digitalocean"
+      version = "~> 2.0"
+    }
     google = {
       source  = "hashicorp/google"
       version = "4.47.0"
@@ -34,4 +38,8 @@ provider "google" {
 
 provider "aws" {
   region = var.aws_region
+}
+
+provider "digitalocean" {
+  token = var.do_tf_access_key
 }

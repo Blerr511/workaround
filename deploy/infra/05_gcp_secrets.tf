@@ -61,30 +61,8 @@ resource "google_secret_manager_secret_version" "cloud_build_sa_secret_version" 
   secret_data = base64decode(google_service_account_key.cloudbuild_sa_key.private_key)
 }
 
-
-locals {
-  aws_credentials = {
-    access_key = aws_iam_access_key.cloud_builder_ak.id
-    secret_key = aws_iam_access_key.cloud_builder_ak.secret
-  }
-  aws_credentials_base64 = base64encode(jsonencode(local.aws_credentials))
-}
-
-resource "google_secret_manager_secret" "aws_cloudbuilder_credentials" {
-  secret_id = var.gcp_aws_iam_user_cloud_builder_sa_secret
-
-  replication {
-    automatic = true
-  }
-}
-
-resource "google_secret_manager_secret_version" "aws_cloudbuilder_credentials" {
-  secret      = google_secret_manager_secret.aws_cloudbuilder_credentials.id
-  secret_data = local.aws_credentials_base64
-}
-
-resource "google_secret_manager_secret" "aws_rds_pg_connection_host" {
-  secret_id = var.gcp_aws_rds_host_secret
+resource "google_secret_manager_secret" "do_tf_access_key_secret" {
+  secret_id = var.gcp_do_tf_access_key_secret_name
 
   labels = {
     create = "automatic"
@@ -95,62 +73,7 @@ resource "google_secret_manager_secret" "aws_rds_pg_connection_host" {
   }
 }
 
-resource "google_secret_manager_secret_version" "aws_rds_pg_connection_host_version" {
-  secret      = google_secret_manager_secret.aws_rds_pg_connection_host.id
-  secret_data = aws_db_instance.data_source.endpoint
-}
-
-resource "google_secret_manager_secret" "bastion_ssh_key_secret" {
-  secret_id = var.gcp_aws_bastion_host_ssh_key_secret
-
-  labels = {
-    create = "automatic"
-  }
-
-  replication {
-    automatic = true
-  }
-}
-
-resource "google_secret_manager_secret_version" "bastion_ssh_key_secret_version" {
-  secret      = google_secret_manager_secret.bastion_ssh_key_secret.id
-  secret_data = tls_private_key.bastion_ssh_key.private_key_pem
-}
-
-resource "google_secret_manager_secret" "bastion_instance_id_secret" {
-  secret_id = var.gcp_aws_bastion_instance_id
-
-  project = var.gcp_project_id
-
-  labels = {
-    create = "automatic"
-  }
-
-  replication {
-    automatic = true
-  }
-}
-
-resource "google_secret_manager_secret_version" "bastion_instance_id" {
-  secret      = google_secret_manager_secret.bastion_instance_id_secret.id
-  secret_data = aws_instance.bastion.id
-}
-
-resource "google_secret_manager_secret" "aws_rds_postgres_password" {
-  secret_id = var.gcp_aws_rds_postgres_password_secret
-
-  project = var.gcp_project_id
-
-  labels = {
-    create = "automatic"
-  }
-
-  replication {
-    automatic = true
-  }
-}
-
-resource "google_secret_manager_secret_version" "aws_rds_postgres_password" {
-  secret      = google_secret_manager_secret.aws_rds_postgres_password.id
-  secret_data = var.aws_rds_postgres_password
+resource "google_secret_manager_secret_version" "do_tf_access_key_secret_version" {
+  secret      = google_secret_manager_secret.do_tf_access_key_secret.id
+  secret_data = var.do_tf_access_key
 }

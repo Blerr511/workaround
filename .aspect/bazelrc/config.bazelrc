@@ -6,9 +6,15 @@ build --action_env=KUBE_CONFIG="$(WR_TMP_DATA)/.kube/config"
 build --action_env=GCP_CLOUDSDK_CONFIG="$(WR_TMP_DATA)/.gcloud"
 build --action_env=AWS_CONFIG_FILE=$(WR_TMP_DATA)/.aws_config
 build --action_env=AWS_SHARED_CREDENTIALS_FILE=$(WR_TMP_DATA)/.aws_credentials
-
+build --action_env=TF_DATA_DIR=$(WR_TMP_DATA)/.tf
+build --action_env=XDG_CONFIG_HOME=$(WR_TMP_DATA)/.doctl
+# build --sandbox_writable_path=/tmp/.wr/.doctl
 
 # build --workspace_status_command=./tools/git/commit_hash.sh
+
+# CLUSTER 
+
+build --action_env=CLUSTER_NAME=wr
 
 # GCP
 build --action_env=GCP_PROJECT_ID=
@@ -28,11 +34,7 @@ build --action_env=GCP_CLOUD_BUILD_SA_SECRET="cloud-build-sa"
 build --action_env=GCP_DEVELOPMENT_SA_SECRET="development-sa"
 build --action_env=GCP_ARTIFACTS_READER_SA_SECRET=artifacts-reader-sa
 build --action_env=GCP_GITHUB_SSH_KEY_SECRET_NAME="github-ssh-key"
-build --action_env=GCP_AWS_IAM_USER_CLOUD_BUILDER_SA_SECRET=cloud-builder-sa
-build --action_env=GCP_AWS_RDS_HOST_SECRET=aws-rds-host-secret
-build --action_env=GCP_AWS_BASTION_HOST_SSH_KEY_SECRET=aws-bastion-ssh-secret
-build --action_env=GCP_AWS_BASTION_INSTANCE_ID=aws-bastion-instance-id-secret
-build --action_env=GCP_AWS_RDS_POSTGRES_PASSWORD_SECRET=aws-rds-postgres-password
+build --action_env=GCP_DO_TF_ACCESS_KEY_SECRET_NAME="digital-ocean-access-key"
 
 # GCP Buckets
 build --action_env=GCP_BAZEL_REMOTE_CACHE_BUCKET=
@@ -52,6 +54,10 @@ build --action_env=GCP_DOCKER_BACKEND_IMAGE=wr-backend
 build --action_env=GCP_DOCKER_AUTH_IMAGE=wr-auth
 build --action_env=GCP_DOCKER_WEB_CLIENT_IMAGE=wr-client
 
+# DIGITAL OCEAN
+
+build --action_env=DIGITALOCEAN_CONTEXT=wr
+build --action_env=DO_TF_ACCESS_KEY=
 
 # AWS
 build --action_env=AWS_DEFAULT_REGION="eu-north-1"
@@ -59,10 +65,6 @@ build --action_env=AWS_DEFAULT_REGION="eu-north-1"
 # Specify on your local.bazelrc file
 build --action_env=AWS_DEFAULT_ACCESS_KEY_ID=
 build --action_env=AWS_DEFAULT_ACCESS_KEY_SECRET=
-
-# Define it on your local.bazelrc file
-build --action_env=AWS_EC2_SSH_KEY_PATH=
-build --action_env=AWS_EKS_CLUSTER_NAME=wr
 
 ## RDS
 build --action_env=AWS_RDS_POSTGRES_NAME=datasource

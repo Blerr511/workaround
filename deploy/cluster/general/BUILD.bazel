@@ -47,7 +47,7 @@ k8s_object(
     name = "cloud-builder-role",
     cluster = "",
     kind = "cluster-role",
-    kubeconfig = "//tools/aws:kubeconfig",
+    kubeconfig = "//sandbox/cluster:kubeconfig",
     substitutions = {
         "{ CLOUD_BUILDER_NAME }": "$(AWS_IAM_USER_CLOUD_BUILDER)",
     },
@@ -63,7 +63,7 @@ k8s_object(
     name = "gar-secret",
     cluster = "",
     kind = "secret",
-    kubeconfig = "//tools/aws:kubeconfig",
+    kubeconfig = "//sandbox/cluster:kubeconfig",
     template = ":generate_gar_secret_yaml",
     toolchains = [
         "//sandbox:gcp_env_vars",

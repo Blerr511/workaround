@@ -10,5 +10,3 @@ build --action_env=AWS_DEFAULT_REGION="eu-north-1"
 
 # POSTGRES
 build --action_env=POSTGRES_PASSWORD=wrpass
-
-try-import %workspace%/.aspect/bazelrc/dev/sensetive.bazelrc
