@@ -18,5 +18,6 @@ genrule(
     """,
     toolchains = [
         "//sandbox:workspace_env_vars",
+        "//sandbox:do_env_vars",
     ],
 )

@@ -60,7 +60,6 @@ import_env_vars(
 import_env_vars(
     name = "do_env_vars",
     vars_mapping = {
-        "DIGITALOCEAN_CONTEXT": "DIGITALOCEAN_CONTEXT",
         "DO_TF_ACCESS_KEY": "DO_TF_ACCESS_KEY",
     },
     visibility = ["//visibility:public"],

@@ -1,6 +1,5 @@
 def doctl_binary(name, env = {}, toolchains = [], **kwargs):
     default_env = {
-        "DIGITALOCEAN_CONTEXT": "$(DIGITALOCEAN_CONTEXT)",
         "XDG_CONFIG_HOME": "$(XDG_CONFIG_HOME)",
     }
 

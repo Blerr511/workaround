@@ -58,7 +58,6 @@ build --action_env=GCP_DOCKER_WEB_CLIENT_IMAGE=wr-client
 
 # DIGITAL OCEAN
 
-build --action_env=DIGITALOCEAN_CONTEXT=wr
 build --action_env=DO_TF_ACCESS_KEY=
 
 # AWS

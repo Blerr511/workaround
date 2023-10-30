@@ -8,7 +8,6 @@ genrule(
     ],
     outs = ["kubeconfig.yaml"],
     cmd = """
-        export DIGITALOCEAN_CONTEXT=$(DIGITALOCEAN_CONTEXT)
         export XDG_CONFIG_HOME=$(XDG_CONFIG_HOME)
         export DIGITALOCEAN_ACCESS_TOKEN=$$(cat $(location //sandbox/gcp/secrets:do_tf_access_key))
         export CLUSTER_NAME=$(CLUSTER_NAME)

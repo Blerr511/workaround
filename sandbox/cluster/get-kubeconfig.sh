@@ -14,5 +14,4 @@ if [ -z "$CLUSTER_ID" ]; then
     exit 1
 fi
 
-
-doctl k8s cluster kubeconfig show $CLUSTER_ID > $1
+doctl k8s cluster kubeconfig show $CLUSTER_ID >$1
