@@ -1,7 +1,0 @@
-load("//sandbox/gcp:defs.bzl", "secret_version")
-
-secret_version(
-    name = "sa",
-    secret = "$(GCP_TERRAFORM_SA_SECRET)",
-    visibility = ["//visibility:public"],
-)

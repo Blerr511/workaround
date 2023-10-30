@@ -22,7 +22,7 @@ tf(
         "**/*.tfplan",
     ]) + [
         "//sandbox/cluster:kubeconfig",
-        "//sandbox/gcp/terraform:sa",
+        "//sandbox/gcp/secrets:terraform_sa",
     ],
     env = {
         "WORKDIR": "deploy/infra",
@@ -32,7 +32,7 @@ tf(
         "KUBECONFIG": "$(location //sandbox/cluster:kubeconfig)",
         "KUBECONFIGPATH": "$(location //sandbox/cluster:kubeconfig)",
         "CLOUDSDK_CONFIG": "$(GCP_CLOUDSDK_CONFIG)",
-        "GOOGLE_APPLICATION_CREDENTIALS": "$(rootpath %s)" % "//sandbox/gcp/terraform:sa",
+        "GOOGLE_APPLICATION_CREDENTIALS": "$(rootpath %s)" % "//sandbox/gcp/secrets:terraform_sa",
         "TF_DATA_DIR": "$(TF_DATA_DIR)",
         "XDG_CONFIG_HOME": "$(XDG_CONFIG_HOME)",
     },

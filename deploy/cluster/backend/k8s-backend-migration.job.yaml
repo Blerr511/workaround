@@ -1,0 +1,24 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: data-source-migration
+spec:
+  template:
+    spec:
+      containers:
+        - name: migration
+          image: ${IMAGE}
+          command: ["bash"]
+          args:
+            - -c
+            - cd /app/server/packages/data-source
+            - pnpm run migrate
+          env:
+            - name: DATA_SOURCE_POSTGRES_URL
+              valueFrom:
+                secretKeyRef:
+                  name: ${name}-postgres-db-credentials
+                  key: DATA_SOURCE_POSTGRES_URL
+      restartPolicy: OnFailure
+      imagePullSecrets:
+        - name: gar

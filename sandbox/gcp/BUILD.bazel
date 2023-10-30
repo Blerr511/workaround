@@ -1,41 +1,5 @@
 load("//sandbox/gcp:defs.bzl", "secret_version")
 
-secret_version(
-    name = "aws_cloud_builder_ak",
-    secret = "$(GCP_AWS_IAM_USER_CLOUD_BUILDER_SA_SECRET)",
-)
-
-secret_version(
-    name = "do_tf_access_key",
-    secret = "$(GCP_DO_TF_ACCESS_KEY_SECRET_NAME)",
-    visibility = ["//visibility:public"],
-)
-
-genrule(
-    name = "aws_cloud_builder_ak_id",
-    srcs = [":aws_cloud_builder_ak"],
-    outs = [".aws_cloud_builder_ak_id_secret_data"],
-    cmd = """
-    cat $(location :aws_cloud_builder_ak) | base64 --decode | jq ".access_key" | sed "s/\\"//g" > $@
-    """,
-    visibility = ["//visibility:public"],
-)
-
-genrule(
-    name = "aws_cloud_builder_ak_secret",
-    srcs = [":aws_cloud_builder_ak"],
-    outs = [".aws_cloud_builder_ak_secret_secret_data"],
-    cmd = """
-    cat $(location :aws_cloud_builder_ak) | base64 --decode | jq ".secret_key" | sed "s/\\"//g" > $@
-    """,
-    visibility = ["//visibility:public"],
-)
-
-secret_version(
-    name = "gcp_cloud_builder_sa",
-    secret = "$(GCP_CLOUD_BUILD_SA_SECRET)",
-)
-
 sh_binary(
     name = "active_cloud_builder_sa",
     srcs = ["//tools/gcloud:gcloud_cli"],

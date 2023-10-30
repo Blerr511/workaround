@@ -91,5 +91,5 @@ resource "google_secret_manager_secret" "aws_rds_postgres_endpoint_secret" {
 
 resource "google_secret_manager_secret_version" "aws_rds_postgres_endpoint_secret_version" {
   secret      = google_secret_manager_secret.aws_rds_postgres_endpoint_secret.id
-  secret_data = aws_db_instance.rds_postgres.endpoint
+  secret_data = "postgresql://${var.aws_rds_postgres_username}:${var.aws_rds_postgres_password}@${aws_db_instance.rds_postgres.endpoint}/${var.aws_rds_postgres_db_name}?schema=public"
 }

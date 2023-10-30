@@ -3,21 +3,16 @@ load("@io_bazel_rules_k8s//k8s:objects.bzl", "k8s_objects")
 load("//sandbox/gcp:defs.bzl", "secret_version")
 load("//tools/aws:defs.bzl", "user_arn")
 
-secret_version(
-    name = "artifacts_reader_sa",
-    secret = "$(GCP_ARTIFACTS_READER_SA_SECRET)",
-)
-
 genrule(
     name = "dockerconfigjson",
     srcs = [
         ".dockerconfigjson",
-        ":artifacts_reader_sa",
+        "//sandbox/gcp/secrets:artifacts_reader_sa",
     ],
     outs = [".dockerconfig.json"],
     cmd = """
     export REGION=$(GCP_REGION)
-    export AUTH_STRING=$$(echo _json_key:$$(cat $(location :artifacts_reader_sa)) | base64 | tr -d '\n')
+    export AUTH_STRING=$$(echo _json_key:$$(cat $(location artifacts_reader_sa:artifacts_reader_sa)) | base64 | tr -d '\n')
 
     envsubst < $(location .dockerconfigjson) > $@
     """,

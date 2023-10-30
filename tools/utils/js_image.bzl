@@ -8,7 +8,7 @@ def format_deps(deps):
         deps_str += "$(location {}) ".format(dep)
     return deps_str.rstrip()  # remove trailing space
 
-def js_image(name, srcs, deps, package_json, image, tag = "latest", post_install = [], start_cmd = "node"):
+def js_image(name, srcs, package_json, image, tag = "latest", deps = [], post_install = [], start_cmd = "node"):
     native.filegroup(
         name = "{}_json".format(name),
         srcs = [package_json],
@@ -17,32 +17,45 @@ def js_image(name, srcs, deps, package_json, image, tag = "latest", post_install
 
     deps_str = format_deps(deps)
 
-    native.genrule(
-        name = "{}_prod_package_json".format(name),
-        srcs = [
-            ":{}_json".format(name),
-        ] + deps,  # List all package.json as sources
-        outs = ["prod_package.json"],  # Output file
-        cmd = """
-        SCRIPT_LOC=$(location //tools/shell:prod_deps)
-        VERSION_SCRIPT_LOC=$(location //tools/shell:versions_json)
+    if len(deps) > 0:
+        native.genrule(
+            name = "{}_prod_package_json".format(name),
+            srcs = [
+                ":{}_json".format(name),
+            ] + deps,  # List all package.json as sources
+            outs = ["prod_package.json"],  # Output file
+            cmd = """
+            SCRIPT_LOC=$(location //tools/shell:prod_deps)
+            VERSION_SCRIPT_LOC=$(location //tools/shell:versions_json)
 
-        mkdir tmp
-        touch tmp/version.json
+            mkdir tmp
+            touch tmp/version.json
 
-        VERSION_JSON=tmp/version.json
+            VERSION_JSON=tmp/version.json
 
-        $$VERSION_SCRIPT_LOC {deps_str} > $$VERSION_JSON
+            $$VERSION_SCRIPT_LOC {deps_str} > $$VERSION_JSON
 
-        $$SCRIPT_LOC $(location :{name}_json) $$VERSION_JSON > $@
+            $$SCRIPT_LOC $(location :{name}_json) $$VERSION_JSON > $@
 
-        """.format(name = name, deps_str = deps_str),
-        tools = [
-            "//tools/shell:versions_json",
-            "//tools/shell:prod_deps",
-        ],
-        visibility = ["//visibility:private"],
-    )
+            """.format(name = name, deps_str = deps_str),
+            tools = [
+                "//tools/shell:versions_json",
+                "//tools/shell:prod_deps",
+            ],
+            visibility = ["//visibility:private"],
+        )
+    else:
+        native.genrule(
+            name = "{}_prod_package_json".format(name),
+            srcs = [
+                ":{}_json".format(name),
+            ] + deps,  # List all package.json as sources
+            outs = ["prod_package.json"],  # Output file
+            cmd = """
+            cat $(location :{name}_json) > $@
+            """.format(name = name, deps_str = deps_str),
+            visibility = ["//visibility:private"],
+        )
 
     container_layer(
         name = "{name}_root_layer".format(name = name),

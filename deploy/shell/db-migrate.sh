@@ -4,14 +4,18 @@ set -e
 
 echo "Running Migration"
 
-connection_string=$(cat $(bazel build //deploy/cluster/backend:backend_data_source_url.local 2>&1 | grep data_source_connection_string_local.txt | awk '{print $1}'))
+bazel run //deploy/cluster/backend:data-source-migration-job.apply --define _TAG=$_TAG
 
-echo $connection_string
+JOB_STATUS=""
 
-bazel run //sandbox/gcp:bastion.proxy
+while [[ $JOB_STATUS != "Complete" ]]; do
+    echo "Waiting for migration job to complete..."
+    sleep 10
+    # TODO - replace hardocded job name with variable
+    JOB_STATUS=$(kubectl get jobs data-source-migration -o=jsonpath='{.status.conditions[?(@.type=="Complete")].type}')
+    echo "JOB_STATUS $JOB_STATUS"
+done
 
-bazel run //server/packages/data-source:migrate --action_env=DATA_SOURCE_POSTGRES_URL=$connection_string
+bazel run //deploy/cluster/backend:data-source-migration-job.delete --define _TAG=$_TAG
 
-bazel run //sandbox/gcp:bastion.proxy_drop
-
-echo "DB migration completed"
+echo "DB Migrateion complete!"

@@ -68,8 +68,6 @@ steps:
 
         bazel run //sandbox/gcp:active_cloud_builder_sa
 
-        /workspace/deploy/shell/configure-aws.sh
-
   - name: "$_GCP_DOCKER_ARTIFACTS_LOCATION-docker.pkg.dev/$PROJECT_ID/cloudsdktool/cloud-sdk:$_CLOUD_SDK_VERSION"
     id: release-wr-logger
     entrypoint: "bash"

@@ -3,16 +3,6 @@ load("@io_bazel_rules_k8s//k8s:objects.bzl", "k8s_objects")
 load("//sandbox/gcp:defs.bzl", "secret_version")
 load("//tools/utils:defs.bzl", "substitution_file")
 
-# TEMP!!
-genrule(
-    name = "aws_rds_connection_host",
-    outs = ["tempdata.txt"],
-    cmd = """
-    echo "tmp" > $@
-    """,
-    visibility = ["//visibility:public"],
-)
-
 k8s_object(
     name = "config-map",
     cluster = "",
@@ -54,52 +44,43 @@ k8s_object(
     ],
 )
 
-genrule(
-    name = "backend_data_source_url",
-    outs = ["data_source_connection_string.txt"],
-    cmd = """
-        export _HOST=$$(cat $(location :aws_rds_connection_host) | awk -F':' '{print $$1}')
-        export _PASSWORD=$$(cat $(location :aws_rds_postgres_password))
-        export CONNECTION_STRING=postgresql://$(AWS_RDS_POSTGRES_USERNAME):$$_PASSWORD@$$_HOST:$(AWS_RDS_POSTGRES_PORT)/$(AWS_RDS_POSTGRES_DB_NAME)?schema=public
-
-        echo $$CONNECTION_STRING  > $@
-    """,
-    toolchains = ["//sandbox:aws_env_vars"],
-)
-
-genrule(
-    name = "backend_data_source_url.local",
-    srcs = [":aws_rds_postgres_password"],
-    outs = ["data_source_connection_string_local.txt"],
-    cmd = """
-        export _PASSWORD=$$(cat $(location :aws_rds_postgres_password))
-
-        export CONNECTION_STRING=postgresql://$(AWS_RDS_POSTGRES_USERNAME):$$_PASSWORD@localhost:7432/$(AWS_RDS_POSTGRES_DB_NAME)?schema=public
-
-        echo $$CONNECTION_STRING  > $@
-    """,
-    toolchains = ["//sandbox:aws_env_vars"],
-)
-
-substitution_file(
-    name = "get_lb_ip",
-    file = "get-lb-ip.tpl.sh",
-    substitutions = {
-        "name": "backend",
-    },
-    toolchains = ["//sandbox:aws_env_vars"],
-    visibility = ["//visibility:public"],
-)
-
 substitution_file(
     name = "backend_data_source_secret_yaml",
-    data = [":backend_data_source_url"],
+    data = [
+        "//sandbox/gcp/secrets:backend_data_source_endpoint",
+    ],
     file = "k8s-backend-data-source.configmap.yaml",
     substitutions = {
         "name": "backend",
-        "DATA_SOURCE_POSTGRES_URL": "$$(cat $(location :backend_data_source_url) | base64 | tr -d '[:space:]')",
+        "DATA_SOURCE_POSTGRES_URL": "$$(cat $(location //sandbox/gcp/secrets:backend_data_source_endpoint) | base64 | tr -d '[:space:]')",
     },
     toolchains = ["//sandbox:aws_env_vars"],
+)
+
+substitution_file(
+    name = "data_source_migration_job_yaml",
+    file = "k8s-backend-migration.job.yaml",
+    substitutions = {
+        "name": "backend",
+        "IMAGE": "$(GCP_DOCKER_ARTIFACTS_LOCATION)-docker.pkg.dev/$(GCP_PROJECT_ID)/$(GCP_DOCKER_ARTIFACTS_REPOSITORY)/$(GCP_DOCKER_BACKEND_IMAGE):{tag}".format(tag = "$(_TAG)"),
+    },
+    toolchains = ["//sandbox:gcp_env_vars"],
+)
+
+k8s_object(
+    name = "data-source-migration-job",
+    cluster = "",
+    image_chroot = "$(GCP_DOCKER_ARTIFACTS_LOCATION)-docker.pkg.dev/$(GCP_PROJECT_ID)/$(GCP_DOCKER_ARTIFACTS_REPOSITORY)",
+    images = {
+        "$(GCP_DOCKER_ARTIFACTS_LOCATION)-docker.pkg.dev/$(GCP_PROJECT_ID)/$(GCP_DOCKER_ARTIFACTS_REPOSITORY)/$(GCP_DOCKER_BACKEND_IMAGE):{tag}".format(tag = "$(_TAG)"): "//server/packages/data-source:data-source_image",
+    },
+    kind = "job",
+    kubeconfig = "//sandbox/cluster:kubeconfig",
+    template = ":data_source_migration_job_yaml",
+    toolchains = [
+        "//sandbox:gcp_env_vars",
+        "//sandbox:workspace_env_vars",
+    ],
 )
 
 k8s_object(
