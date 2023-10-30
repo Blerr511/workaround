@@ -2,11 +2,14 @@ load("//sandbox/gcp:defs.bzl", "secret_version")
 
 sh_binary(
     name = "active_cloud_builder_sa",
-    srcs = ["//tools/gcloud:gcloud_cli"],
+    srcs = [
+        "//sandbox/gcp/secrets:gcp_cloud_builder_sa",
+        "//tools/gcloud:gcloud_cli",
+    ],
     args = [
         "auth",
         "activate-service-account",
-        "--key-file=$(location :gcp_cloud_builder_sa)",
+        "--key-file=$(location //sandbox/gcp/secrets:gcp_cloud_builder_sa)",
     ],
     data = [
         ":gcp_cloud_builder_sa",
