@@ -63,6 +63,7 @@ js_binary(
         "POSTGRES_USERNAME": "$(BACKEND_POSTGRES_USERNAME)",
         "POSTGRES_PASSWORD": "$(BACKEND_POSTGRES_PASSWORD)",
         "POSTGRES_DATABASE": "$(BACKEND_POSTGRES_DATABASE)",
+        "WEB_EXPOSE_PORT": "$(BACKEND_WEB_EXPOSE_PORT)",
     },
     toolchains = [
         "//sandbox:data_source_env_vars",

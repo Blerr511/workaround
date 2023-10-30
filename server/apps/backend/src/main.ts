@@ -14,7 +14,7 @@ async function bootstrap() {
 
   app.useGlobalGuards(new AuthGuard(app.get(ModuleRef)));
 
-  const appPort = 3000;
+  const appPort = Number(process.env.WEB_EXPOSE_PORT);
 
   await app.listen(appPort);
 

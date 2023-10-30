@@ -4,3 +4,19 @@ doctl_binary(
     name = "doctl",
     srcs = ["doctl.sh"],
 )
+
+genrule(
+    name = "doctl.export_vars",
+    outs = ["export_vars.sh"],
+    cmd = """
+    echo "
+    #!/bin/bash
+
+    export XDG_CONFIG_HOME=$(XDG_CONFIG_HOME)
+
+    " >$@
+    """,
+    toolchains = [
+        "//sandbox:workspace_env_vars",
+    ],
+)

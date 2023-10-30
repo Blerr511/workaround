@@ -1,30 +1,30 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: "{ name }-deployment"
+  name: "backend-deployment"
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: { name }
+      app: backend
   template:
     metadata:
       labels:
-        app: { name }
+        app: backend
     spec:
       containers:
-        - name: { name }
-          image: { image }
+        - name: backend
+          image: ${IMAGE}
           ports:
-            - containerPort: { backend_port }
+            - containerPort: ${BACKEND_PORT}
           envFrom:
             - configMapRef:
-                name: "{ name }-configmap"
+                name: "backend-configmap"
           env:
             - name: DATA_SOURCE_POSTGRES_URL
               valueFrom:
                 secretKeyRef:
-                  name: "{ name }-postgres-db-credentials"
+                  name: "backend-postgres-db-credentials"
                   key: host
           resources:
             requests:

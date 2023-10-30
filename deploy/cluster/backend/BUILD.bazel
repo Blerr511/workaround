@@ -3,18 +3,17 @@ load("@io_bazel_rules_k8s//k8s:objects.bzl", "k8s_objects")
 load("//sandbox/gcp:defs.bzl", "secret_version")
 load("//tools/utils:defs.bzl", "substitution_file")
 
-k8s_object(
-    name = "config-map",
-    cluster = "",
-    kind = "service",
-    kubeconfig = "//sandbox/cluster:kubeconfig",
+## CONFIGMAP
+
+substitution_file(
+    name = "config_map_yaml",
+    file = "k8s-backend.configmap.yaml",
     substitutions = {
-        "{ name }": "backend",
-        "{ DATA_SOURCE_POSTGRES_URL }": "$(DATA_SOURCE_POSTGRES_URL)",
-        "{ BACKEND_AUTH_VERIFY_WEBHOOK_URL }": "$(BACKEND_AUTH_VERIFY_WEBHOOK_URL)",
-        "{ BACKEND_AUTH_API_URL }": "$(BACKEND_AUTH_API_URL)",
+        "DATA_SOURCE_POSTGRES_URL": "$(DATA_SOURCE_POSTGRES_URL)",
+        "BACKEND_AUTH_VERIFY_WEBHOOK_URL": "$(BACKEND_AUTH_VERIFY_WEBHOOK_URL)",
+        "BACKEND_AUTH_API_URL": "$(BACKEND_AUTH_API_URL)",
+        "WEB_EXPOSE_PORT": "$(BACKEND_WEB_EXPOSE_PORT)",
     },
-    template = ":k8s-backend.configmap.yaml",
     toolchains = [
         "//sandbox:gcp_env_vars",
         "//sandbox:workspace_env_vars",
@@ -24,25 +23,14 @@ k8s_object(
 )
 
 k8s_object(
-    name = "deployement",
+    name = "config-map",
     cluster = "",
-    image_chroot = "$(GCP_DOCKER_ARTIFACTS_LOCATION)-docker.pkg.dev/$(GCP_PROJECT_ID)/$(GCP_DOCKER_ARTIFACTS_REPOSITORY)",
-    images = {
-        "$(GCP_DOCKER_ARTIFACTS_LOCATION)-docker.pkg.dev/$(GCP_PROJECT_ID)/$(GCP_DOCKER_ARTIFACTS_REPOSITORY)/$(GCP_DOCKER_BACKEND_IMAGE):{tag}".format(tag = "$(_TAG)"): "//server/apps/backend:backend_image",
-    },
-    kind = "deployment",
+    kind = "service",
     kubeconfig = "//sandbox/cluster:kubeconfig",
-    substitutions = {
-        "{ name }": "backend",
-        "{ image }": "$(GCP_DOCKER_ARTIFACTS_LOCATION)-docker.pkg.dev/$(GCP_PROJECT_ID)/$(GCP_DOCKER_ARTIFACTS_REPOSITORY)/$(GCP_DOCKER_BACKEND_IMAGE):{tag}".format(tag = "$(_TAG)"),
-        "{ backend_port }": "3000",
-    },
-    template = ":k8s-backend.deployement.yaml",
-    toolchains = [
-        "//sandbox:gcp_env_vars",
-        "//sandbox:workspace_env_vars",
-    ],
+    template = ":config_map_yaml",
 )
+
+## DATA SOURCE CONFIGMAP - TODO move to secret claim
 
 substitution_file(
     name = "backend_data_source_secret_yaml",
@@ -56,6 +44,52 @@ substitution_file(
     },
     toolchains = ["//sandbox:aws_env_vars"],
 )
+
+k8s_object(
+    name = "data-source-configmap",
+    cluster = "",
+    kind = "configmap",
+    kubeconfig = "//sandbox/cluster:kubeconfig",
+    template = ":backend_data_source_secret_yaml",
+    toolchains = [
+        "//sandbox:gcp_env_vars",
+        "//sandbox:workspace_env_vars",
+    ],
+)
+
+## DEPLYOEMENT
+
+substitution_file(
+    name = "backend_deployement_yaml",
+    file = "k8s-backend.deployement.yaml",
+    substitutions = {
+        "BACKEND_PORT": "$(BACKEND_WEB_EXPOSE_PORT)",
+        "IMAGE": "$(GCP_DOCKER_ARTIFACTS_LOCATION)-docker.pkg.dev/$(GCP_PROJECT_ID)/$(GCP_DOCKER_ARTIFACTS_REPOSITORY)/$(GCP_DOCKER_BACKEND_IMAGE):$(_TAG)",
+    },
+    toolchains = [
+        "//sandbox:backend_env_vars",
+        "//sandbox:gcp_env_vars",
+        "//sandbox:workspace_env_vars",
+    ],
+)
+
+k8s_object(
+    name = "deployement",
+    cluster = "",
+    image_chroot = "$(GCP_DOCKER_ARTIFACTS_LOCATION)-docker.pkg.dev/$(GCP_PROJECT_ID)/$(GCP_DOCKER_ARTIFACTS_REPOSITORY)",
+    images = {
+        "$(GCP_DOCKER_ARTIFACTS_LOCATION)-docker.pkg.dev/$(GCP_PROJECT_ID)/$(GCP_DOCKER_ARTIFACTS_REPOSITORY)/$(GCP_DOCKER_BACKEND_IMAGE):{tag}".format(tag = "$(_TAG)"): "//server/apps/backend:backend_image",
+    },
+    kind = "deployment",
+    kubeconfig = "//sandbox/cluster:kubeconfig",
+    template = ":backend_deployement_yaml",
+    toolchains = [
+        "//sandbox:gcp_env_vars",
+        "//sandbox:workspace_env_vars",
+    ],
+)
+
+## Migration Job
 
 substitution_file(
     name = "data_source_migration_job_yaml",
@@ -77,18 +111,6 @@ k8s_object(
     kind = "job",
     kubeconfig = "//sandbox/cluster:kubeconfig",
     template = ":data_source_migration_job_yaml",
-    toolchains = [
-        "//sandbox:gcp_env_vars",
-        "//sandbox:workspace_env_vars",
-    ],
-)
-
-k8s_object(
-    name = "data-source-configmap",
-    cluster = "",
-    kind = "configmap",
-    kubeconfig = "//sandbox/cluster:kubeconfig",
-    template = ":backend_data_source_secret_yaml",
     toolchains = [
         "//sandbox:gcp_env_vars",
         "//sandbox:workspace_env_vars",
