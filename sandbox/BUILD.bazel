@@ -12,6 +12,7 @@ import_env_vars(
         "AWS_SHARED_CREDENTIALS_FILE": "AWS_SHARED_CREDENTIALS_FILE",
         "TF_DATA_DIR": "TF_DATA_DIR",
         "XDG_CONFIG_HOME": "XDG_CONFIG_HOME",
+        "UUID": "UUID",
     },
     visibility = ["//visibility:public"],
 )

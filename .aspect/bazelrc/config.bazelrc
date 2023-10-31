@@ -8,6 +8,8 @@ build --action_env=AWS_CONFIG_FILE=$(WR_TMP_DATA)/.aws_config
 build --action_env=AWS_SHARED_CREDENTIALS_FILE=$(WR_TMP_DATA)/.aws_credentials
 build --action_env=TF_DATA_DIR=$(WR_TMP_DATA)/.tf
 build --action_env=XDG_CONFIG_HOME=$(WR_TMP_DATA)/.doctl
+# unique identifier
+build --action_env=UUID=local
 # build --sandbox_writable_path=/tmp/.wr/.doctl
 
 # build --workspace_status_command=./tools/git/commit_hash.sh

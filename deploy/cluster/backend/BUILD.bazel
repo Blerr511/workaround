@@ -95,10 +95,13 @@ substitution_file(
     name = "data_source_migration_job_yaml",
     file = "k8s-backend-migration.job.yaml",
     substitutions = {
-        "name": "backend",
+        "UUID": "$(UUID)",
         "IMAGE": "$(GCP_DOCKER_ARTIFACTS_LOCATION)-docker.pkg.dev/$(GCP_PROJECT_ID)/$(GCP_DOCKER_ARTIFACTS_REPOSITORY)/$(GCP_DOCKER_BACKEND_IMAGE):{tag}".format(tag = "$(_TAG)"),
     },
-    toolchains = ["//sandbox:gcp_env_vars"],
+    toolchains = [
+        "//sandbox:gcp_env_vars",
+        "//sandbox:workspace_env_vars",
+    ],
 )
 
 k8s_object(
