@@ -6,6 +6,8 @@ export_vars_script=$(bazel build //tools/doctl:doctl.export_vars 2>&1 | grep "ex
 
 source $export_vars_script
 
+export KUBECONFIG=$(bazel build //sandbox/cluster:kubeconfig 2>&1 | grep "kubeconfig.yaml" | awk '{print $1}')
+
 bazel run //deploy/cluster/backend:data-source-migration-job.apply --define _TAG=$_TAG
 
 JOB_STATUS=""
