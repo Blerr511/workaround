@@ -20,7 +20,7 @@ build --action_env=CLUSTER_NAME=wr
 build --action_env=GCP_PROJECT_ID=
 build --action_env=GCP_PROJECT_NAME=
 build --action_env=GCP_REGION=europe-central2
-build --action_env=GCP_CLOUD_BUILD_SDK_VERSION="7.0.2"
+build --action_env=GCP_CLOUD_BUILD_SDK_VERSION="7.0.3"
 
 # GCP Service Accounts
 build --action_env=GCP_TERRAFORM_SA="terraform-sa"

@@ -93,4 +93,12 @@ curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip
 unzip awscliv2.zip
 ./aws/install
 
+# doctl
+
+cd ~
+wget https://github.com/digitalocean/doctl/releases/download/v1.100.0/doctl-1.100.0-linux-amd64.tar.gz
+tar xf ~/doctl-1.100.0-linux-amd64.tar.gz
+sudo mv ~/doctl /usr/local/bin
+
+
 rm -rf /var/lib/apt/lists/*
