@@ -12,7 +12,7 @@ genrule(
     outs = [".dockerconfig.json"],
     cmd = """
     export REGION=$(GCP_REGION)
-    export AUTH_STRING=$$(echo _json_key:$$(cat $(location artifacts_reader_sa:artifacts_reader_sa)) | base64 | tr -d '\n')
+    export AUTH_STRING=$$(echo _json_key:$$(cat $(location //sandbox/gcp/secrets:artifacts_reader_sa)) | base64 | tr -d '\n')
 
     envsubst < $(location .dockerconfigjson) > $@
     """,
