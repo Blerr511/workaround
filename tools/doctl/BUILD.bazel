@@ -13,6 +13,7 @@ genrule(
     #!/bin/bash
 
     export XDG_CONFIG_HOME=$(XDG_CONFIG_HOME)
+    export KUBECONFIG=$(KUBE_CONFIG)
 
     " >$@
     """,

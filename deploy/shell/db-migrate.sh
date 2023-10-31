@@ -2,6 +2,10 @@
 
 echo "Running Migration"
 
+export_vars_script=$(bazel build //tools/doctl:doctl.export_vars 2>&1 | grep "export_vars.sh" | awk '{print $1}')
+
+source $export_vars_script
+
 bazel run //deploy/cluster/backend:data-source-migration-job.apply --define _TAG=$_TAG
 
 JOB_STATUS=""
