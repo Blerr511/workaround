@@ -25,7 +25,7 @@ spec:
               valueFrom:
                 secretKeyRef:
                   name: backend-postgres-db-credentials
-                  key: host
+                  key: DATA_SOURCE_POSTGRES_URL
           resources:
             requests:
               cpu: 25m
