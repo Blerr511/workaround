@@ -42,11 +42,12 @@ tf(
         "//sandbox:aws_env_vars",
         "//sandbox:do_env_vars",
         "//sandbox:cluster_env_vars",
+        "//sandbox:backend_env_vars",
     ],
     vars = {
         "sandbox_env": "$(APP_ENV)",
         "k8s_backend_name": "backend",
-        "k8s_backend_container_port": "3000",
+        "k8s_backend_container_port": "$(BACKEND_WEB_EXPOSE_PORT)",
         "gcp_project_id": "$(GCP_PROJECT_ID)",
         "gcp_terraform_bucket": "$(GCP_TERRAFORM_BUCKET)",
         "gcp_region": "$(GCP_REGION)",

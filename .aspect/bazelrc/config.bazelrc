@@ -1,3 +1,5 @@
+build --define=_TAG=local
+
 # WORKSPACE
 build --action_env=APP_ENV=dev
 build --action_env=WR_TMP_DATA=/tmp/.wr
