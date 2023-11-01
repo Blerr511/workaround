@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: Secret
 metadata:
-  name: "backend-postgres-db-credentials"
+  name: backend-postgres-db-credentials
 type: Opaque
 data:
   DATA_SOURCE_POSTGRES_URL: ${DATA_SOURCE_POSTGRES_URL}
