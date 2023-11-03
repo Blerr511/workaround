@@ -96,7 +96,7 @@ substitution_file(
     file = "k8s-backend-migration.job.yaml",
     substitutions = {
         "UUID": "$(UUID)",
-        "IMAGE": "$(GCP_DOCKER_ARTIFACTS_LOCATION)-docker.pkg.dev/$(GCP_PROJECT_ID)/$(GCP_DOCKER_ARTIFACTS_REPOSITORY)/$(GCP_DOCKER_BACKEND_IMAGE):{tag}".format(tag = "$(_TAG)"),
+        "IMAGE": "$(GCP_DOCKER_ARTIFACTS_LOCATION)-docker.pkg.dev/$(GCP_PROJECT_ID)/$(GCP_DOCKER_ARTIFACTS_REPOSITORY)/$(GCP_DOCKER_DATA_SOURCE_IMAGE):{tag}".format(tag = "$(_TAG)"),
     },
     toolchains = [
         "//sandbox:gcp_env_vars",
@@ -109,7 +109,7 @@ k8s_object(
     cluster = "",
     image_chroot = "$(GCP_DOCKER_ARTIFACTS_LOCATION)-docker.pkg.dev/$(GCP_PROJECT_ID)/$(GCP_DOCKER_ARTIFACTS_REPOSITORY)",
     images = {
-        "$(GCP_DOCKER_ARTIFACTS_LOCATION)-docker.pkg.dev/$(GCP_PROJECT_ID)/$(GCP_DOCKER_ARTIFACTS_REPOSITORY)/$(GCP_DOCKER_BACKEND_IMAGE):{tag}".format(tag = "$(_TAG)"): "//server/packages/data-source:data-source_image",
+        "$(GCP_DOCKER_ARTIFACTS_LOCATION)-docker.pkg.dev/$(GCP_PROJECT_ID)/$(GCP_DOCKER_ARTIFACTS_REPOSITORY)/$(GCP_DOCKER_DATA_SOURCE_IMAGE):{tag}".format(tag = "$(_TAG)"): "//server/packages/data-source:data-source_image",
     },
     kind = "job",
     kubeconfig = "//sandbox/cluster:kubeconfig",
