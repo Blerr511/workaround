@@ -75,9 +75,18 @@ k8s_object(
     template = "k8s-ngnix-ingress.yaml",
 )
 
+k8s_object(
+    name = "cert_manager",
+    cluster = "",
+    kind = "ClusterIssuer",
+    kubeconfig = "//sandbox/cluster:kubeconfig",
+    template = "cert_manager.yaml",
+)
+
 k8s_objects(
     name = "general",
     objects = [
+        ":cert_manager",
         ":ingress",
         ":gar-secret",
         # ":cloud-builder-role",

@@ -1,0 +1,7 @@
+global:
+  podSecurityPolicy:
+    enabled: false
+    useAppArmor: true
+prometheus:
+  enabled: false
+installCRDs: true

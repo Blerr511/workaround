@@ -21,6 +21,7 @@ tf(
         "**/*.tfstate",
         "**/*.tfplan",
         "**/*.yaml.tpl",
+        "**/*.yaml",
     ]) + [
         "//sandbox/cluster:kubeconfig",
         "//sandbox/gcp/secrets:terraform_sa",

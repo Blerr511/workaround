@@ -23,11 +23,13 @@ resource "aws_security_group" "allow_backend" {
 data "digitalocean_droplets" "k8s_nodes" {
 }
 
-resource "aws_security_group_rule" "allow_cluster_ingress" {
+resource "aws_security_group_rule" "allow_k8s_nodes" {
+  description       = "Allow connections from DOKS nodes"
+  count             = length(data.digitalocean_droplets.k8s_nodes.droplets)
   type              = "ingress"
   from_port         = 5432
   to_port           = 5432
   protocol          = "tcp"
-  cidr_blocks       = [format("%s/32", digitalocean_reserved_ip.my_ip.ip_address)]
+  cidr_blocks       = [format("%s/32", data.digitalocean_droplets.k8s_nodes.droplets[count.index].ipv4_address)]
   security_group_id = aws_security_group.allow_backend.id
 }

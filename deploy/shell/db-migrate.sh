@@ -25,12 +25,16 @@ while [[ $JOB_STATUS != "Complete" && $JOB_FAILED -eq 0 && $COUNTER -lt $MAX_ATT
     # TODO - replace hardcoded job name with variable
     JOB_STATUS=$(kubectl get jobs data-source-migration-$DATE_NOW -o=jsonpath='{.status.conditions[?(@.type=="Complete")].type}')
     JOB_FAILED=$(kubectl get jobs data-source-migration-$DATE_NOW -o=jsonpath='{.status.failed}')
+
+    if [[ $JOB_FAILED -eq 0 ]]; then
+        kubectl logs -l job-name=data-source-migration-$DATE_NOW
+    fi
+
     echo "JOB_STATUS $JOB_STATUS"
     ((COUNTER++))
 done
 
 echo "JOB_STATUS $JOB_STATUS"
-
 
 bazel run //deploy/cluster/backend:data-source-migration-job.delete --define _TAG=$_TAG --action_env=UUID=$DATE_NOW
 
