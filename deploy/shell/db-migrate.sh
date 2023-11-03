@@ -29,6 +29,9 @@ while [[ $JOB_STATUS != "Complete" && $JOB_FAILED -eq 0 && $COUNTER -lt $MAX_ATT
     ((COUNTER++))
 done
 
+echo "JOB_STATUS $JOB_STATUS"
+
+
 bazel run //deploy/cluster/backend:data-source-migration-job.delete --define _TAG=$_TAG --action_env=UUID=$DATE_NOW
 
 if [[ $JOB_FAILED -gt 0 ]]; then
