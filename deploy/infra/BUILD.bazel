@@ -20,6 +20,7 @@ tf(
         "**/.*.lock.hcl",
         "**/*.tfstate",
         "**/*.tfplan",
+        "**/*.yaml.tpl",
     ]) + [
         "//sandbox/cluster:kubeconfig",
         "//sandbox/gcp/secrets:terraform_sa",

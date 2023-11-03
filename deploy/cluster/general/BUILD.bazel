@@ -67,9 +67,18 @@ k8s_object(
     ],
 )
 
+k8s_object(
+    name = "ingress",
+    cluster = "",
+    kind = "ingress",
+    kubeconfig = "//sandbox/cluster:kubeconfig",
+    template = "k8s-ngnix-ingress.yaml",
+)
+
 k8s_objects(
     name = "general",
     objects = [
+        ":ingress",
         ":gar-secret",
         # ":cloud-builder-role",
     ],

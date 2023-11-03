@@ -10,3 +10,8 @@ resource "digitalocean_kubernetes_cluster" "wr_cluster" {
     node_count = 2
   }
 }
+
+data "digitalocean_droplet" "cluster_droplets" {
+  count = length(digitalocean_kubernetes_cluster.wr_cluster.node_pool[0].nodes)
+  name  = digitalocean_kubernetes_cluster.wr_cluster.node_pool[0].nodes[count.index].name
+}

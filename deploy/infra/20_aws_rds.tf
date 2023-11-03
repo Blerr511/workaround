@@ -20,24 +20,14 @@ resource "aws_security_group" "allow_backend" {
   description = "Allow inbound traffic from backend container"
 }
 
-resource "aws_security_group_rule" "allow_kubernetes" {
-  type              = "ingress"
-  from_port         = 5432
-  to_port           = 5432
-  protocol          = "tcp"
-  cidr_blocks       = [format("%s/32", kubernetes_service.backend_service.status.0.load_balancer.0.ingress.0.ip)]
-  security_group_id = aws_security_group.allow_backend.id
-}
-
 data "digitalocean_droplets" "k8s_nodes" {
 }
 
-resource "aws_security_group_rule" "allow_k8s_nodes" {
-  count             = length(data.digitalocean_droplets.k8s_nodes.droplets)
+resource "aws_security_group_rule" "allow_cluster_ingress" {
   type              = "ingress"
   from_port         = 5432
   to_port           = 5432
   protocol          = "tcp"
-  cidr_blocks       = [format("%s/32", data.digitalocean_droplets.k8s_nodes.droplets[count.index].ipv4_address)]
+  cidr_blocks       = [format("%s/32", digitalocean_reserved_ip.my_ip.ip_address)]
   security_group_id = aws_security_group.allow_backend.id
 }

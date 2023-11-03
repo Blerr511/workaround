@@ -14,11 +14,16 @@ export GOOGLE_APPLICATION_CREDENTIALS="$(pwd)/$GOOGLE_APPLICATION_CREDENTIALS"
 [[ -z "$TF_VAR_gcp_terraform_bucket" ]] && echo "Error: TF var gcp_terraform_bucket is not set" && exit 1
 
 echo "Terraform workdir: $WORKDIR"
+echo "Terraform DATA DIR: $TF_DATA_DIR"
 
 if [ -n "$KUBECONFIG" ]; then
   echo "Using KUBECONFIG: $KUBECONFIG"
   export KUBECONFIG=$(pwd)/$KUBECONFIG
   export KUBECONFIGPATH=$KUBECONFIG
+fi
+
+if [ -n "$GOOGLE_APPLICATION_CREDENTIALS" ]; then
+  echo "Using GOOGLE_APPLICATION_CREDENTIALS: $GOOGLE_APPLICATION_CREDENTIALS"
 fi
 
 cd $WORKDIR

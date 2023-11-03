@@ -25,7 +25,7 @@ substitution_file(
 k8s_object(
     name = "config-map",
     cluster = "",
-    kind = "service",
+    kind = "configmap",
     kubeconfig = "//sandbox/cluster:kubeconfig",
     template = ":config_map_yaml",
 )
@@ -120,12 +120,34 @@ k8s_object(
     ],
 )
 
+## Service
+
+substitution_file(
+    name = "backend_service_yaml",
+    file = "k8s-backend-service.yaml",
+    substitutions = {
+        "WEB_EXPOSE_PORT": "$(BACKEND_WEB_EXPOSE_PORT)",
+    },
+    toolchains = [
+        "//sandbox:backend_env_vars",
+    ],
+)
+
+k8s_object(
+    name = "backend_lb_service",
+    cluster = "",
+    kind = "service",
+    kubeconfig = "//sandbox/cluster:kubeconfig",
+    template = ":backend_service_yaml",
+)
+
 k8s_objects(
     name = "backend",
     objects = [
         ":data-source-configmap",
         ":deployement",
         ":config-map",
+        ":backend_lb_service",
     ],
     visibility = ["//visibility:public"],
 )
