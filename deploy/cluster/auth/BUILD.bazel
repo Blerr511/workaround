@@ -119,7 +119,7 @@ k8s_object(
 )
 
 k8s_objects(
-    name = "backend",
+    name = "auth",
     objects = [
         ":configmap",
         ":service",

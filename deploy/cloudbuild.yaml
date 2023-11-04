@@ -141,6 +141,17 @@ steps:
         /workspace/deploy/shell/db-migrate.sh
 
   - name: "$_GCP_DOCKER_ARTIFACTS_LOCATION-docker.pkg.dev/$PROJECT_ID/cloudsdktool/cloud-sdk:$_CLOUD_SDK_VERSION"
+    id: deploy-auth-service
+    entrypoint: "bash"
+    env:
+      - "_TAG=${SHORT_SHA}"
+    args:
+      - "-c"
+      - |
+        /workspace/deploy/shell/apply-k8s.sh deploy/cluster/auth:auth.apply
+
+
+  - name: "$_GCP_DOCKER_ARTIFACTS_LOCATION-docker.pkg.dev/$PROJECT_ID/cloudsdktool/cloud-sdk:$_CLOUD_SDK_VERSION"
     id: deploy-backend
     entrypoint: "bash"
     env:
