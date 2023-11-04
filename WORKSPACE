@@ -156,6 +156,20 @@ container_pull(
     tag = "16.19.0",
 )
 
+container_pull(
+    name = "python_base",
+    registry = "index.docker.io",
+    repository = "library/python",
+    tag = "3.9.10",
+)
+
+load(
+    "@io_bazel_rules_docker//python3:image.bzl",
+    _py_image_repos = "repositories",
+)
+
+_py_image_repos()
+
 http_archive(
     name = "io_bazel_rules_k8s",
     sha256 = "ce5b9bc0926681e2e7f2147b49096f143e6cbc783e71bc1d4f36ca76b00e6f4a",

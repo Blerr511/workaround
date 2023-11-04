@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: prompt-configmap
+data:
+  REDIS_PORT: "${PROMPT_REDIS_PORT}"
+  REDIS_DB: "${PROMPT_REDIS_DB}"

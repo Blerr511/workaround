@@ -1,6 +1,6 @@
-
 load("@rules_python//python:defs.bzl", "py_binary")
 load("@prompt_deps//:requirements.bzl", "all_requirements")
+load("@io_bazel_rules_docker//python3:image.bzl", "py3_image")
 
 srcs = glob(["**/*.py"])
 
@@ -16,10 +16,18 @@ env = {
 py_binary(
     name = "start",
     srcs = srcs,
-    main = ":src/main.py",
-    deps = deps,
-    toolchains = ["//sandbox:prompt_env_vars"],
     env = env,
+    main = ":src/main.py",
+    toolchains = ["//sandbox:prompt_env_vars"],
+    deps = deps,
+)
+
+py3_image(
+    name = "prompt_image",
+    srcs = srcs,
+    main = "src/main.py",
+    visibility = ["//visibility:public"],
+    deps = deps,
 )
 
 exports_files(["requirements.txt"])

@@ -1,0 +1,83 @@
+load("@io_bazel_rules_k8s//k8s:object.bzl", "k8s_object")
+load("@io_bazel_rules_k8s//k8s:objects.bzl", "k8s_objects")
+load("//sandbox/gcp:defs.bzl", "secret_version")
+load("//tools/utils:defs.bzl", "substitution_file")
+
+# Deployment
+
+substitution_file(
+    name = "prompt_deployment_yaml",
+    file = "k8s-prompt-deployment.yaml",
+    substitutions = {
+        "IMAGE": "$(GCP_DOCKER_ARTIFACTS_LOCATION)-docker.pkg.dev/$(GCP_PROJECT_ID)/$(GCP_DOCKER_ARTIFACTS_REPOSITORY)/$(GCP_DOCKER_PROMPT_IMAGE):$(_TAG)",
+    },
+    toolchains = ["//sandbox:gcp_env_vars"],
+)
+
+k8s_object(
+    name = "deployment",
+    cluster = "",
+    image_chroot = "$(GCP_DOCKER_ARTIFACTS_LOCATION)-docker.pkg.dev/$(GCP_PROJECT_ID)/$(GCP_DOCKER_ARTIFACTS_REPOSITORY)",
+    images = {
+        "$(GCP_DOCKER_ARTIFACTS_LOCATION)-docker.pkg.dev/$(GCP_PROJECT_ID)/$(GCP_DOCKER_ARTIFACTS_REPOSITORY)/$(GCP_DOCKER_PROMPT_IMAGE):$(_TAG)": "//server/apps/prompt:prompt_image",
+    },
+    kind = "deployment",
+    kubeconfig = "//sandbox/cluster:kubeconfig",
+    template = ":prompt_deployment_yaml",
+    toolchains = ["//sandbox:gcp_env_vars"],
+)
+
+# Secrets
+
+substitution_file(
+    name = "prompt_secrets_yaml",
+    data = [
+        "//sandbox/gcp/secrets:openai_key",
+        "//sandbox/gcp/secrets:redis_endpoint",
+        "//sandbox/gcp/secrets:redis_password",
+    ],
+    file = "k8s-prompt-secrets.yaml",
+    substitutions = {
+        "OPENAI_API_KEY": "$$(cat $(location //sandbox/gcp/secrets:openai_key) | base64 | tr -d '[:space:]')",
+        "REDIS_HOST": "$$(cat $(location //sandbox/gcp/secrets:redis_endpoint) | base64 | tr -d '[:space:]')",
+        "REDIS_PASSWORD": "$$(cat $(location //sandbox/gcp/secrets:redis_password) | base64 | tr -d '[:space:]')",
+    },
+)
+
+k8s_object(
+    name = "secret",
+    cluster = "",
+    kind = "secret",
+    kubeconfig = "//sandbox/cluster:kubeconfig",
+    template = ":prompt_secrets_yaml",
+)
+
+# Configmap
+
+substitution_file(
+    name = "prompt_configmap_yaml",
+    file = "k8s-prompt-configmap.yaml",
+    substitutions = {
+        "PROMPT_REDIS_PORT": "$(PROMPT_REDIS_PORT)",
+        "PROMPT_REDIS_DB": "$(PROMPT_REDIS_DB)",
+    },
+    toolchains = ["//sandbox:prompt_env_vars"],
+)
+
+k8s_object(
+    name = "configmap",
+    cluster = "",
+    kind = "configmap",
+    kubeconfig = "//sandbox/cluster:kubeconfig",
+    template = ":prompt_configmap_yaml",
+)
+
+k8s_objects(
+    name = "prompt",
+    objects = [
+        ":deployment",
+        ":secret",
+        ":configmap",
+    ],
+    visibility = ["//visibility:public"],
+)

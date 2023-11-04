@@ -109,3 +109,54 @@ resource "google_secret_manager_secret_version" "aws_rds_postgres_auth_service_e
   secret      = google_secret_manager_secret.aws_rds_postgres_auth_service_endpoint_secret.id
   secret_data = "postgresql://${var.aws_rds_postgres_username}:${var.aws_rds_postgres_password}@${aws_db_instance.rds_postgres.endpoint}/${var.auth_postgres_database}?schema=public"
 }
+
+resource "google_secret_manager_secret" "aws_ecs_redis_endpoinit_secret" {
+  secret_id = var.gcp_aws_redis_endpoint_secret_name
+
+  labels = {
+    create = "automatic"
+  }
+
+  replication {
+    automatic = true
+  }
+}
+
+resource "google_secret_manager_secret_version" "aws_ecs_redis_endpoinit_secret_version" {
+  secret      = google_secret_manager_secret.aws_ecs_redis_endpoinit_secret.id
+  secret_data = aws_elasticache_cluster.redis_cluster.cache_nodes[0].address
+}
+
+resource "google_secret_manager_secret" "aws_ecs_redis_password_secret" {
+  secret_id = var.gcp_aws_redis_password_secret_name
+
+  labels = {
+    create = "automatic"
+  }
+
+  replication {
+    automatic = true
+  }
+}
+
+resource "google_secret_manager_secret_version" "aws_ecs_redis_password_secret_version" {
+  secret      = google_secret_manager_secret.aws_ecs_redis_password_secret.id
+  secret_data = var.aws_redis_password
+}
+
+resource "google_secret_manager_secret" "openapi_key_secret" {
+  secret_id = var.gcp_openai_key_secret_name
+
+  labels = {
+    create = "automatic"
+  }
+
+  replication {
+    automatic = true
+  }
+}
+
+resource "google_secret_manager_secret_version" "openapi_key_secret_version" {
+  secret      = google_secret_manager_secret.openapi_key_secret.id
+  secret_data = var.prompt_openai_api_key
+}

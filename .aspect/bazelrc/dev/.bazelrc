@@ -14,3 +14,5 @@ build --action_env=POSTGRES_PASSWORD=wrpass
 # BACKEND
 
 build --action_env=BACKEND_AUTH_VERIFY_WEBHOOK_URL=http://auth-service:$(AUTH_WEB_EXPOSE_PORT)/api/authentication/verify
+
+build --action_env=REDIS_PASSWORD=$(AWS_REDIS_PASSWORD)

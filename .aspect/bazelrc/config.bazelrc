@@ -41,6 +41,9 @@ build --action_env=GCP_GITHUB_SSH_KEY_SECRET_NAME="github-ssh-key"
 build --action_env=GCP_DO_TF_ACCESS_KEY_SECRET_NAME="digital-ocean-access-key"
 build --action_env=GCP_AWS_RDS_POSTGRES_CONNECTION_ENDPOINT_SECRET_NAME="aws-rds-postgres-connection-endpoint"
 build --action_env=GCP_AWS_RDS_AUTH_SERVICE_POSTGRES_CONNECTION_ENDPOINT_SECRET_NAME="aws-rds-auth-service-postgres-connection-endpoint"
+build --action_env=GCP_AWS_REDIS_ENDPOINT_SECRET_NAME="aws-ecs-redis-endpoint-secret"
+build --action_env=GCP_AWS_REDIS_PASSWORD_SECRET_NAME="aws-ecs-redis-password-secret"
+build --action_env=GCP_OPENAI_KEY_SECRET_NAME="openai-key-secret"
 
 # GCP Buckets
 build --action_env=GCP_BAZEL_REMOTE_CACHE_BUCKET=
@@ -60,6 +63,7 @@ build --action_env=GCP_DOCKER_BACKEND_IMAGE=wr-backend
 build --action_env=GCP_DOCKER_DATA_SOURCE_IMAGE=wr-data-source
 build --action_env=GCP_DOCKER_AUTH_IMAGE=wr-auth
 build --action_env=GCP_DOCKER_WEB_CLIENT_IMAGE=wr-client
+build --action_env=GCP_DOCKER_PROMPT_IMAGE=wr-prompt
 
 # DIGITAL OCEAN
 
@@ -67,6 +71,9 @@ build --action_env=DO_TF_ACCESS_KEY=
 
 # AWS
 build --action_env=AWS_DEFAULT_REGION="eu-north-1"
+build --action_env=AWS_REDIS_PORT=8379
+## .bazelrc.sensetive
+build --action_env=AWS_REDIS_PASSWORD=""
 
 # Specify on your local.bazelrc file
 build --action_env=AWS_DEFAULT_ACCESS_KEY_ID=
@@ -97,7 +104,9 @@ build --action_env=POSTGRES_URL="postgresql://$(POSTGRES_USERNAME):$(POSTGRES_PA
 
 # REDIS
 build --action_env=REDIS_HOST=localhost
-build --action_env=REDIS_PORT=8379
+build --action_env=REDIS_PORT=$(AWS_REDIS_PORT)
+build --action_env=REDIS_PASSWORD=
+
 
 # WEB-CLIENT
 
@@ -147,5 +156,5 @@ build --action_env=IMAGE_GEN_OPENAI_API_KEY=
 # Fill it in your local.bazelrc file
 build --action_env=PROMPT_OPENAI_API_KEY=
 build --action_env=PROMPT_REDIS_HOST=$(REDIS_HOST)
-build --action_env=PROMPT_REDIS_PORT=$(REDIS_PORT)
+build --action_env=PROMPT_REDIS_PORT=$(AWS_REDIS_PORT)
 build --action_env=PROMPT_REDIS_DB=1

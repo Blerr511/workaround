@@ -48,6 +48,27 @@ variable "gcp_do_tf_access_key_secret_name" {
   description = "Digital Ocean access key secret name"
 }
 
+variable "gcp_aws_redis_endpoint_secret_name" {
+  type        = string
+  description = "GCP secret name for AWS redis instance endpoint"
+}
+
+variable "gcp_aws_redis_password_secret_name" {
+  type        = string
+  description = "GCP secret name for AWS redis instance password"
+}
+
+
+variable "prompt_openai_api_key" {
+  type        = string
+  description = "OPENAPI api key"
+}
+
+variable "gcp_openai_key_secret_name" {
+  type = string
+  description = "GCP secret name for OPENAPI api key"
+}
+
 #
 # Backend
 #
@@ -104,7 +125,7 @@ variable "gcp_aws_rds_postgres_connection_endpoint_secret_name" {
 }
 
 variable "gcp_aws_rds_auth_service_postgres_connection_endpoint_secret_name" {
-  type =  string
+  type        = string
   description = "AWS RDS auth service postgres instance connection secret name"
 }
 #
@@ -163,6 +184,16 @@ variable "aws_iam_user_cloud_builder" {
 variable "auth_postgres_database" {
   type        = string
   description = "AWS RDS database name for auth service"
+}
+
+variable "aws_redis_password" {
+  type        = string
+  description = "AWS elasticchache redis security password"
+}
+
+variable "aws_redis_port" {
+  type        = number
+  description = "AWS elasticcache redist port"
 }
 
 # DIGITAL OCEAN
