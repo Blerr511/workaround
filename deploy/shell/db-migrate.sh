@@ -74,7 +74,7 @@ done
 
 echo "JOB_STATUS $JOB_STATUS"
 
-bazel run //deploy/cluster/backend:auth-db-migration-job.delete --define _TAG=$_TAG --action_env=UUID=$DATE_NOW
+bazel run //deploy/cluster/auth:auth-db-migration-job.delete --define _TAG=$_TAG --action_env=UUID=$DATE_NOW
 
 if [[ $JOB_FAILED -gt 0 ]]; then
     echo "Migration job failed!"
