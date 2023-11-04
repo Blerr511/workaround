@@ -15,6 +15,26 @@ resource "aws_db_instance" "rds_postgres" {
 }
 
 
+resource "null_resource" "create_additional_databases" {
+  triggers = {
+    rds_address = aws_db_instance.rds_postgres.address
+  }
+
+  provisioner "local-exec" {
+    command = <<EOL
+      export PGPASSWORD=${var.aws_rds_postgres_password}
+      psql -h ${aws_db_instance.rds_postgres.address} \
+           -U ${var.aws_rds_postgres_username} \
+           ${var.aws_rds_postgres_db_name} \
+           -c "CREATE DATABASE ${var.auth_postgres_database};"
+EOL
+  }
+
+  depends_on = [aws_db_instance.rds_postgres]
+}
+
+
+
 resource "aws_security_group" "allow_backend" {
   name        = "allow_backend"
   description = "Allow inbound traffic from backend container"

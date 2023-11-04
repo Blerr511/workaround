@@ -100,9 +100,13 @@ variable "gcp_development_sa_secret" {
 
 variable "gcp_aws_rds_postgres_connection_endpoint_secret_name" {
   type        = string
-  description = "AWS RDS postgres instance connection"
+  description = "AWS RDS postgres instance connection secret name"
 }
 
+variable "gcp_aws_rds_auth_service_postgres_connection_endpoint_secret_name" {
+  type =  string
+  description = "AWS RDS auth service postgres instance connection secret name"
+}
 #
 # K8S
 #
@@ -154,6 +158,11 @@ variable "aws_rds_postgres_port" {
 variable "aws_iam_user_cloud_builder" {
   type        = string
   description = "AWS IAM user for pushing pods into eks"
+}
+
+variable "auth_postgres_database" {
+  type        = string
+  description = "AWS RDS database name for auth service"
 }
 
 # DIGITAL OCEAN

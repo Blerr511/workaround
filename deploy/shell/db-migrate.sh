@@ -26,13 +26,13 @@ while [[ $JOB_STATUS != "Complete" && $JOB_FAILED -eq 0 && $COUNTER -lt $MAX_ATT
     JOB_STATUS=$(kubectl get jobs data-source-migration-$DATE_NOW -o=jsonpath='{.status.conditions[?(@.type=="Complete")].type}')
     JOB_FAILED=$(kubectl get jobs data-source-migration-$DATE_NOW -o=jsonpath='{.status.failed}')
 
-    if [[ $JOB_FAILED -eq 0 ]]; then
-        kubectl logs -l job-name=data-source-migration-$DATE_NOW
-    fi
-
     echo "JOB_STATUS $JOB_STATUS"
     ((COUNTER++))
 done
+
+if [[ $JOB_FAILED -eq 0 ]]; then
+    kubectl logs -l job-name=data-source-migration-$DATE_NOW
+fi
 
 echo "JOB_STATUS $JOB_STATUS"
 
@@ -46,4 +46,44 @@ elif [[ $COUNTER -eq $MAX_ATTEMPTS ]]; then
     exit 1
 fi
 
-echo "DB Migration complete!"
+echo "DATA SOURCE Migration complete!"
+
+bazel run //deploy/cluster/auth:auth-db-migration-job.apply --define _TAG=$_TAG --action_env=UUID=$DATE_NOW
+
+echo "Running job id: auth-db-migration-job-$DATE_NOW"
+
+JOB_STATUS=""
+JOB_FAILED=0
+COUNTER=0
+MAX_ATTEMPTS=60
+
+while [[ $JOB_STATUS != "Complete" && $JOB_FAILED -eq 0 && $COUNTER -lt $MAX_ATTEMPTS ]]; do
+    echo "Waiting for migration job to complete..."
+    sleep 10
+    # TODO - replace hardcoded job name with variable
+    JOB_STATUS=$(kubectl get jobs auth-db-migration-$DATE_NOW -o=jsonpath='{.status.conditions[?(@.type=="Complete")].type}')
+    JOB_FAILED=$(kubectl get jobs auth-db-migration-$DATE_NOW -o=jsonpath='{.status.failed}')
+
+    if [[ $JOB_FAILED -eq 0 ]]; then
+        kubectl logs -l job-name=auth-db-migration-$DATE_NOW
+    fi
+
+    echo "JOB_STATUS $JOB_STATUS"
+    ((COUNTER++))
+done
+
+echo "JOB_STATUS $JOB_STATUS"
+
+bazel run //deploy/cluster/backend:auth-db-migration-job.delete --define _TAG=$_TAG --action_env=UUID=$DATE_NOW
+
+if [[ $JOB_FAILED -gt 0 ]]; then
+    echo "Migration job failed!"
+    exit 1
+elif [[ $COUNTER -eq $MAX_ATTEMPTS ]]; then
+    echo "Migration job timed out!"
+    exit 1
+fi
+
+if [[ $JOB_FAILED -eq 0 ]]; then
+    kubectl logs -l job-name=auth-db-migration-job-$DATE_NOW
+fi

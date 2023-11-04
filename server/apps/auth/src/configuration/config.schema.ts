@@ -61,18 +61,12 @@ export class ConfigSchema {
   @Expose()
   JWT_LIFE_SECONDS: number;
 
-  @IsNotEmpty()
-  @IsString()
   @Expose()
   AUTHZ_DOMAIN: string;
 
-  @IsNotEmpty()
-  @IsString()
   @Expose()
   AUTHZ_CLIENT_ID: string;
 
-  @IsNotEmpty()
-  @IsString()
   @Expose()
   AUTHZ_CLIENT_SECRET: string;
 

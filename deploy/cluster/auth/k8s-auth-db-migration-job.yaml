@@ -1,0 +1,22 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: auth-db-migration-${UUID}
+spec:
+  backoffLimit: 0
+  template:
+    spec:
+      containers:
+        - name: migration
+          image: ${IMAGE}
+          command:
+            ["bash", "-c", "cd /app/server/apps/auth && pnpm run migration:up"]
+          env:
+            - name: DATA_SOURCE_POSTGRES_URL
+              valueFrom:
+                secretKeyRef:
+                  name: auth-postgres-db-credentials
+                  key: DATA_SOURCE_POSTGRES_URL
+      restartPolicy: Never
+      imagePullSecrets:
+        - name: gar

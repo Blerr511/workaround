@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: "auth-deployment"
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: auth
+  template:
+    metadata:
+      labels:
+        app: auth
+    spec:
+      containers:
+        - name: auth
+          image: ${IMAGE}
+          ports:
+            - containerPort: ${WEB_EXPOSE_PORT}
+          envFrom:
+            - configMapRef:
+                name: "auth-configmap"
+          env:
+            - name: DATA_SOURCE_POSTGRES_URL
+              valueFrom:
+                secretKeyRef:
+                  name: auth-postgres-db-credentials
+                  key: DATA_SOURCE_POSTGRES_URL
+          resources:
+            requests:
+              cpu: 25m
+              memory: 64Mi
+              ephemeral-storage: 2Gi
+            limits:
+              cpu: 410m
+              memory: "1.5Gi"
+              ephemeral-storage: 4Gi
+      imagePullSecrets:
+        - name: gar

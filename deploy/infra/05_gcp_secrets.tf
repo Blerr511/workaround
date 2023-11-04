@@ -93,3 +93,19 @@ resource "google_secret_manager_secret_version" "aws_rds_postgres_endpoint_secre
   secret      = google_secret_manager_secret.aws_rds_postgres_endpoint_secret.id
   secret_data = "postgresql://${var.aws_rds_postgres_username}:${var.aws_rds_postgres_password}@${aws_db_instance.rds_postgres.endpoint}/${var.aws_rds_postgres_db_name}?schema=public"
 }
+
+resource "google_secret_manager_secret" "aws_rds_postgres_auth_service_endpoint_secret" {
+  secret_id = var.gcp_aws_rds_auth_service_postgres_connection_endpoint_secret_name
+  labels = {
+    create = "automatic"
+  }
+
+  replication {
+    automatic = true
+  }
+}
+
+resource "google_secret_manager_secret_version" "aws_rds_postgres_auth_service_endpoint_secret_version" {
+  secret      = google_secret_manager_secret.aws_rds_postgres_auth_service_endpoint_secret.id
+  secret_data = "postgresql://${var.aws_rds_postgres_username}:${var.aws_rds_postgres_password}@${aws_db_instance.rds_postgres.endpoint}/${var.auth_postgres_database}?schema=public"
+}

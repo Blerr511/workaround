@@ -1,0 +1,9 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: "auth-configmap"
+data:
+  WEB_EXPOSE_PORT: "${AUTH_WEB_EXPOSE_PORT}"
+  WEB_EXPOSE_HOST: "${AUTH_WEB_EXPOSE_HOST}"
+  JWT_SECRET: "${AUTH_JWT_SECRET}"
+  JWT_LIFE_SECONDS: "${AUTH_JWT_LIFE_SECONDS}"

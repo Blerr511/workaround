@@ -1,0 +1,130 @@
+load("@io_bazel_rules_k8s//k8s:object.bzl", "k8s_object")
+load("@io_bazel_rules_k8s//k8s:objects.bzl", "k8s_objects")
+load("//sandbox/gcp:defs.bzl", "secret_version")
+load("//tools/utils:defs.bzl", "substitution_file")
+
+# Deployment
+
+substitution_file(
+    name = "auth_deployment_yaml",
+    file = "k8s-auth-deployment.yaml",
+    substitutions = {
+        "WEB_EXPOSE_PORT": "$(AUTH_WEB_EXPOSE_PORT)",
+        "IMAGE": "$(GCP_DOCKER_ARTIFACTS_LOCATION)-docker.pkg.dev/$(GCP_PROJECT_ID)/$(GCP_DOCKER_ARTIFACTS_REPOSITORY)/$(GCP_DOCKER_AUTH_IMAGE):$(_TAG)",
+    },
+    toolchains = [
+        "//sandbox:gcp_env_vars",
+        "//sandbox:auth_env_vars",
+    ],
+)
+
+k8s_object(
+    name = "deployment",
+    cluster = "",
+    image_chroot = "$(GCP_DOCKER_ARTIFACTS_LOCATION)-docker.pkg.dev/$(GCP_PROJECT_ID)/$(GCP_DOCKER_ARTIFACTS_REPOSITORY)",
+    images = {
+        "$(GCP_DOCKER_ARTIFACTS_LOCATION)-docker.pkg.dev/$(GCP_PROJECT_ID)/$(GCP_DOCKER_ARTIFACTS_REPOSITORY)/$(GCP_DOCKER_AUTH_IMAGE):$(_TAG)": "//server/apps/auth:auth_image",
+    },
+    kind = "deployment",
+    kubeconfig = "//sandbox/cluster:kubeconfig",
+    template = "auth_deployment_yaml",
+)
+
+# Service
+
+substitution_file(
+    name = "auth_service_yaml",
+    file = "k8s-auth-service.yaml",
+    substitutions = {
+        "WEB_EXPOSE_PORT": "$(AUTH_WEB_EXPOSE_PORT)",
+    },
+    toolchains = ["//sandbox:auth_env_vars"],
+)
+
+k8s_object(
+    name = "service",
+    cluster = "",
+    kind = "service",
+    kubeconfig = "//sandbox/cluster:kubeconfig",
+    template = "auth_service_yaml",
+)
+
+# DataSource secret
+
+substitution_file(
+    name = "auth_data_source_secret_yaml",
+    data = ["//sandbox/gcp/secrets:auth_data_source_endpoint"],
+    file = "k8s-auth-db-secret.yaml",
+    substitutions = {
+        "DATA_SOURCE_POSTGRES_URL": "$$(cat $(location //sandbox/gcp/secrets:auth_data_source_endpoint) | base64 | tr -d '[:space:]')",
+    },
+)
+
+k8s_object(
+    name = "auth-data-source-secret",
+    cluster = "",
+    kind = "secret",
+    kubeconfig = "//sandbox/cluster:kubeconfig",
+    template = ":auth_data_source_secret_yaml",
+)
+
+# Auth ConfigMap
+
+substitution_file(
+    name = "auth_configmap_yaml",
+    file = "k8s-auth-configmap.yaml",
+    substitutions = {
+        "WEB_EXPOSE_PORT": "$(AUTH_WEB_EXPOSE_PORT)",
+        "WEB_EXPOSE_HOST": "$(AUTH_WEB_EXPOSE_HOST)",
+        "JWT_SECRET": "$(AUTH_JWT_SECRET)",
+        "JWT_LIFE_SECONDS": "$(AUTH_JWT_LIFE_SECONDS)",
+    },
+    toolchains = ["//sandbox:auth_env_vars"],
+)
+
+k8s_object(
+    name = "configmap",
+    cluster = "",
+    kind = "configmap",
+    kubeconfig = "//sandbox/cluster:kubeconfig",
+    template = ":auth_configmap_yaml",
+)
+
+# DB migration job
+
+substitution_file(
+    name = "auth_db_migration_job_yaml",
+    file = "k8s-auth-db-migration-job.yaml",
+    substitutions = {
+        "UUID": "$(UUID)",
+        "IMAGE": "$(GCP_DOCKER_ARTIFACTS_LOCATION)-docker.pkg.dev/$(GCP_PROJECT_ID)/$(GCP_DOCKER_ARTIFACTS_REPOSITORY)/$(GCP_DOCKER_AUTH_IMAGE):$(_TAG)",
+    },
+    toolchains = [
+        "//sandbox:gcp_env_vars",
+        "//sandbox:workspace_env_vars",
+    ],
+)
+
+k8s_object(
+    name = "auth-db-migration-job",
+    cluster = "",
+    image_chroot = "$(GCP_DOCKER_ARTIFACTS_LOCATION)-docker.pkg.dev/$(GCP_PROJECT_ID)/$(GCP_DOCKER_ARTIFACTS_REPOSITORY)",
+    images = {
+        "$(GCP_DOCKER_ARTIFACTS_LOCATION)-docker.pkg.dev/$(GCP_PROJECT_ID)/$(GCP_DOCKER_ARTIFACTS_REPOSITORY)/$(GCP_DOCKER_AUTH_IMAGE):$(_TAG)": "//server/apps/auth:auth_image",
+    },
+    kind = "job",
+    kubeconfig = "//sandbox/cluster:kubeconfig",
+    template = ":auth_db_migration_job_yaml",
+    toolchains = ["//sandbox:gcp_env_vars"],
+)
+
+k8s_objects(
+    name = "backend",
+    objects = [
+        ":configmap",
+        ":service",
+        ":deployment",
+        ":auth-data-source-secret",
+    ],
+    visibility = ["//visibility:public"],
+)
