@@ -1,25 +1,30 @@
 import { DataSource } from 'typeorm';
 
 function extractConfig(connectionString) {
-  const regex = /^postgresql:\/\/([^:]+):([^@]+)@([^:]+):([^/]+)\/(.+)$/;
+  // Parse the connection string using a regular expression
+  const regex =
+    /^postgresql:\/\/([^:]+):([^@]+)@([^:]+):([^\/]+)\/([^?]+)(?:\?schema=(.+))?$/;
   const match = connectionString.match(regex);
 
   if (match) {
-    const [, user, password, host, port, database] = match;
+    // Extract and return the configuration details
+    const [, user, password, host, port, database, schema] = match;
     return {
       host,
       port,
       user,
       password,
       database,
+      schema,
     };
   } else {
+    // If the string doesn't match the expected format, throw an error
     throw new Error('Invalid connection string');
   }
 }
 
 if (process.env.DATA_SOURCE_POSTGRES_URL) {
-  const { host, password, port, user, database } = extractConfig(
+  const { host, password, port, user, database, schema } = extractConfig(
     process.env.DATA_SOURCE_POSTGRES_URL,
   );
 
@@ -29,7 +34,7 @@ if (process.env.DATA_SOURCE_POSTGRES_URL) {
   process.env.POSTGRES_USERNAME = user;
   process.env.POSTGRES_DATABASE = database;
 
-  if (!process.env.POSTGRES_SCHEMA) process.env.POSTGRES_SCHEMA = 'public';
+  process.env.POSTGRES_SCHEMA = schema;
 }
 
 export default new DataSource({
