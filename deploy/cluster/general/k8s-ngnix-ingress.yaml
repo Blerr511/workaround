@@ -8,8 +8,7 @@ metadata:
     nginx.ingress.kubernetes.io/rewrite-target: /
 spec:
   rules:
-    - host: wr-type.dev
-      http:
+    - http:
         paths:
           - pathType: Prefix
             path: /*
