@@ -65,7 +65,7 @@ variable "prompt_openai_api_key" {
 }
 
 variable "gcp_openai_key_secret_name" {
-  type = string
+  type        = string
   description = "GCP secret name for OPENAPI api key"
 }
 
@@ -181,10 +181,7 @@ variable "aws_iam_user_cloud_builder" {
   description = "AWS IAM user for pushing pods into eks"
 }
 
-variable "auth_postgres_database" {
-  type        = string
-  description = "AWS RDS database name for auth service"
-}
+
 
 variable "aws_redis_password" {
   type        = string
@@ -194,6 +191,21 @@ variable "aws_redis_password" {
 variable "aws_redis_port" {
   type        = number
   description = "AWS elasticcache redist port"
+}
+
+variable "auth_postgres_username" {
+  type        = string
+  description = "Auth service postgres username"
+}
+
+variable "auth_postgres_password" {
+  type        = string
+  description = "Auth service postgres password"
+}
+
+variable "auth_postgres_database" {
+  type        = string
+  description = "AWS RDS database name for auth service"
 }
 
 # DIGITAL OCEAN

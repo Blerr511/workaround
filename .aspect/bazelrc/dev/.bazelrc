@@ -9,7 +9,7 @@ build --action_env=GCP_BAZEL_REMOTE_CACHE_BUCKET=bzl-remote-cache
 build --action_env=AWS_DEFAULT_REGION="eu-north-1"
 
 # POSTGRES
-build --action_env=POSTGRES_PASSWORD=wrpass
+build --action_env=AUTH_POSTGRES_USERNAME=auth_user
 
 # BACKEND
 

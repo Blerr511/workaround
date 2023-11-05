@@ -77,13 +77,15 @@ tf(
         "aws_iam_user_cloud_builder": "$(AWS_IAM_USER_CLOUD_BUILDER)",
         "do_tf_access_key": "$(DO_TF_ACCESS_KEY)",
         "cluster_name": "$(CLUSTER_NAME)",
-        "auth_postgres_database": "$(AUTH_POSTGRES_DATABASE)",
         "gcp_aws_redis_endpoint_secret_name": "$(GCP_AWS_REDIS_ENDPOINT_SECRET_NAME)",
         "gcp_aws_redis_password_secret_name": "$(GCP_AWS_REDIS_PASSWORD_SECRET_NAME)",
         "aws_redis_port": "$(AWS_REDIS_PORT)",
         "aws_redis_password": "$(AWS_REDIS_PASSWORD)",
         "gcp_openai_key_secret_name": "$(GCP_OPENAI_KEY_SECRET_NAME)",
         "prompt_openai_api_key": "$(PROMPT_OPENAI_API_KEY)",
+        "auth_postgres_password": "$(AUTH_POSTGRES_PASSWORD)",
+        "auth_postgres_username": "$(AUTH_POSTGRES_USERNAME)",
+        "auth_postgres_database": "$(AUTH_POSTGRES_DATABASE)",
     },
 )
 

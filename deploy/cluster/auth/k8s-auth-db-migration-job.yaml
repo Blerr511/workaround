@@ -10,7 +10,7 @@ spec:
         - name: migration
           image: ${IMAGE}
           command:
-            ["bash", "-c", "cd /app/server/apps/auth && pnpm run migration:up"]
+            ["bash", "-c", "sleep 100000"]
           env:
             - name: DATA_SOURCE_POSTGRES_URL
               valueFrom:

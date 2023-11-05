@@ -107,7 +107,7 @@ resource "google_secret_manager_secret" "aws_rds_postgres_auth_service_endpoint_
 
 resource "google_secret_manager_secret_version" "aws_rds_postgres_auth_service_endpoint_secret_version" {
   secret      = google_secret_manager_secret.aws_rds_postgres_auth_service_endpoint_secret.id
-  secret_data = "postgresql://${var.aws_rds_postgres_username}:${var.aws_rds_postgres_password}@${aws_db_instance.rds_postgres.endpoint}/${var.auth_postgres_database}?schema=public"
+  secret_data = "postgresql://${var.auth_postgres_username}:${var.auth_postgres_password}@${aws_db_instance.rds_postgres.endpoint}/${var.auth_postgres_database}?schema=public"
 }
 
 resource "google_secret_manager_secret" "aws_ecs_redis_endpoinit_secret" {

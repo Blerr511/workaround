@@ -8,7 +8,7 @@ def secret_version(name, secret, toolchains = [], visibility = [], version = "la
         export PROJECT_ID=$(GCP_PROJECT_ID)
         $(location //tools/gcloud:gcloud.sh) secrets versions access {version} --secret="{secret}" --out-file=$@
         """.format(version = version, secret = secret),
-        tags = ["requires-network"],
+        tags = ["requires-network", "gcp-secret"],
         toolchains = [
             "//sandbox:gcp_env_vars",
             "//sandbox:workspace_env_vars",
