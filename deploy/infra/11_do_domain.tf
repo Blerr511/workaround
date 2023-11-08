@@ -1,5 +1,5 @@
 resource "digitalocean_domain" "main" {
-  name = "wr-type.dev"
+  name = "wr-type.com"
 }
 
 data "kubernetes_service" "ing" {

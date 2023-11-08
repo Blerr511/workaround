@@ -77,29 +77,6 @@ EOL
   depends_on = [null_resource.create_db_user]
 }
 
-resource "null_resource" "create_db_user_and_grant_permissions" {
-  triggers = {
-    user        = var.auth_postgres_username
-    db_name     = var.auth_postgres_database
-    rds_address = aws_db_instance.rds_postgres.address
-  }
-
-  provisioner "local-exec" {
-    command = <<EOL
-      export PGPASSWORD=${var.aws_rds_postgres_password}
-      psql -h ${aws_db_instance.rds_postgres.address} \
-           -U ${var.aws_rds_postgres_username} \
-           ${var.aws_rds_postgres_db_name} \
-           -c "GRANT ALL PRIVILEGES ON DATABASE ${var.auth_postgres_database} TO ${var.auth_postgres_username};"
-EOL
-  }
-
-  depends_on = [null_resource.create_db_user]
-}
-
-
-
-
 resource "aws_security_group" "allow_backend" {
   name        = "allow_backend"
   description = "Allow inbound traffic from backend container"
