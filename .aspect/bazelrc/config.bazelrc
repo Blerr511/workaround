@@ -64,6 +64,7 @@ build --action_env=GCP_DOCKER_DATA_SOURCE_IMAGE=wr-data-source
 build --action_env=GCP_DOCKER_AUTH_IMAGE=wr-auth
 build --action_env=GCP_DOCKER_WEB_CLIENT_IMAGE=wr-client
 build --action_env=GCP_DOCKER_PROMPT_IMAGE=wr-prompt
+build --action_env=GCP_DOCKER_GATEWAY_IMAGE=wr-gateway
 
 # DIGITAL OCEAN
 
@@ -145,6 +146,11 @@ build --action_env=BACKEND_POSTGRES_PASSWORD=$(POSTGRES_PASSWORD)
 build --action_env=BACKEND_POSTGRES_DATABASE=$(POSTGRES_DATABASE)
 build --action_env=BACKEND_AUTH_API_URL=http://$(AUTH_WEB_EXPOSE_HOST):$(AUTH_WEB_EXPOSE_PORT)/api
 build --action_env=BACKEND_AUTH_VERIFY_WEBHOOK_URL=http://$(AUTH_WEB_EXPOSE_HOST):$(AUTH_WEB_EXPOSE_PORT)/api/authentication/verify
+
+# GATEWAY
+build --action_env=GATEWAY_WEB_EXPOSE_HOST=localhost
+build --action_env=GATEWAY_WEB_EXPOSE_PORT=3300
+build --action_env=GATEWAY_SERVICE_BACKEND_URL=http://$(BACKEND_WEB_EXPOSE_HOST):$(BACKEND_WEB_EXPOSE_PORT)/graphql
 
 # Image Gen service
 

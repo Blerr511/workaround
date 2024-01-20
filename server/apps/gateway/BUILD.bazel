@@ -1,0 +1,93 @@
+load("@aspect_rules_js//js:defs.bzl", "js_binary")
+load("@aspect_rules_ts//ts:defs.bzl", "ts_config", "ts_project")
+load("@npm//:defs.bzl", "npm_link_all_packages")
+load("//tools/utils:js_image.bzl", "js_image")
+
+npm_link_all_packages(name = "node_modules")
+
+filegroup(
+    name = "project_support_files",
+    srcs = glob([
+        "*.js",
+        ".*.js",
+        "*.json",
+        "*.yaml",
+    ]),
+)
+
+srcs = glob(
+    [
+        "src/**/*.ts",
+    ],
+)
+
+data = ["project_support_files"]
+
+deps = [
+    ":node_modules",
+]
+
+ts_config(
+    name = "tsconfig",
+    src = "tsconfig.json",
+)
+
+ts_project(
+    name = "ts",
+    srcs = srcs,
+    data = data,
+    declaration = False,
+    incremental = False,
+    source_map = True,
+    tsconfig = ":tsconfig",
+    validate = True,
+    visibility = ["//visibility:public"],
+    deps = deps,
+)
+
+js_binary(
+    name = "start",
+    args = ["-r tsconfig-paths/register"],
+    data = [
+        ":ts",
+    ],
+    entry_point = ":src/main.js",
+    env = {
+        "WEB_EXPOSE_HOST": "$(GATEWAY_WEB_EXPOSE_HOST)",
+        "WEB_EXPOSE_PORT": "$(GATEWAY_WEB_EXPOSE_PORT)",
+        "SERVICE_BACKEND_URL": "$(GATEWAY_SERVICE_BACKEND_URL)",
+    },
+    toolchains = [
+        "//sandbox:gateway_env_vars",
+    ],
+)
+
+js_binary(
+    name = "run_schema_generator",
+    data = [":ts"],
+    entry_point = ":src/cli/generate-schema.js",
+)
+
+genrule(
+    name = "schema",
+    srcs = [":ts"],
+    outs = ["schema.gql"],  # the output file
+    cmd = """
+    export BAZEL_BINDIR="."
+    $(execpath :run_schema_generator)
+    cp schema.gql $@
+    """,
+    tools = [":run_schema_generator"],
+    visibility = ["//visibility:public"],
+)
+
+js_image(
+    name = "gateway",
+    srcs = [":ts"],
+    image = "$(GCP_DOCKER_GATEWAY_IMAGE)",
+    package_json = "package.json",
+    start_cmd = "node src/main.js",
+    deps = [
+        "//server/packages/logger:logger.json",
+    ],
+)
