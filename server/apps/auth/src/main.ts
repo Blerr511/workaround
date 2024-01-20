@@ -7,7 +7,7 @@ import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import * as session from 'express-session';
 
 async function bootstrap() {
-  const mainLogger = new Logger('APP');
+  const mainLogger = new Logger('AUTH');
 
   const app = await NestFactory.create(AppModule, { logger: mainLogger });
 

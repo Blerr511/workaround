@@ -4,7 +4,7 @@ import { Logger } from '@wr/logger';
 import { AuthGuard } from './app/guards/auth-guard';
 
 async function bootstrap() {
-  const mainLogger = new Logger('APP');
+  const mainLogger = new Logger('BACKEND');
 
   const app = await NestFactory.create(AppModule, {
     logger: mainLogger,
