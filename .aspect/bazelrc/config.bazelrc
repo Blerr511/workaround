@@ -108,6 +108,11 @@ build --action_env=REDIS_HOST=localhost
 build --action_env=REDIS_PORT=$(AWS_REDIS_PORT)
 build --action_env=REDIS_PASSWORD=
 
+# RABBITMQ
+build --action_env=RABBITMQ_HOST=localhost
+build --action_env=RABBITMQ_PORT=5672
+build --action_env=RABBITMQ_DEFAULT_USER=carrot
+build --action_env=RABBITMQ_DEFAULT_PASS=thisiscarrot
 
 # WEB-CLIENT
 

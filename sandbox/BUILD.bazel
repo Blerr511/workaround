@@ -122,6 +122,9 @@ import_env_vars(
         "POSTGRES_DATABASE": "POSTGRES_DATABASE",
         "REDIS_HOST": "REDIS_HOST",
         "REDIS_PORT": "REDIS_PORT",
+        "RABBITMQ_PORT": "RABBITMQ_PORT",
+        "RABBITMQ_DEFAULT_USER": "RABBITMQ_DEFAULT_USER",
+        "RABBITMQ_DEFAULT_PASS": "RABBITMQ_DEFAULT_PASS",
     },
     visibility = ["//visibility:public"],
 )
@@ -208,4 +211,14 @@ import_env_vars(
         "GATEWAY_SERVICE_BACKEND_URL": "GATEWAY_SERVICE_BACKEND_URL",
     },
     visibility = ["//visibility:public"],
+)
+
+import_env_vars(
+    name = "rabbitmq_env_vars",
+    vars_mapping = {
+        "RABBITMQ_HOST": "RABBITMQ_HOST",
+        "RABBITMQ_PORT": "RABBITMQ_PORT",
+        "RABBITMQ_DEFAULT_USER": "RABBITMQ_DEFAULT_USER",
+        "RABBITMQ_DEFAULT_PASS": "RABBITMQ_DEFAULT_PASS",
+    },
 )
