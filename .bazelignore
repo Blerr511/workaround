@@ -8,3 +8,4 @@ client/packages/ui/node_modules
 server/packages/backend-api/node_modules
 server/apps/auth/node_modules
 client/packages/core/node_modules
+server/apps/gateway/node_modules

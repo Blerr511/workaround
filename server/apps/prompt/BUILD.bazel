@@ -7,7 +7,7 @@ srcs = glob(["**/*.py"])
 deps = all_requirements
 
 env = {
-    "OPENAI_API_KEY": "$(PROMPT_OPENAI_API_KEY)",
+    "OPENAI_API_KEY": "file:$(location //sandbox/gcp/secrets:openai_key)",
     "REDIS_HOST": "$(PROMPT_REDIS_HOST)",
     "REDIS_PORT": "$(PROMPT_REDIS_PORT)",
     "REDIS_DB": "$(PROMPT_REDIS_DB)",
@@ -16,6 +16,7 @@ env = {
 py_binary(
     name = "start",
     srcs = srcs,
+    data = ["//sandbox/gcp/secrets:openai_key"],
     env = env,
     main = ":src/main.py",
     toolchains = ["//sandbox:prompt_env_vars"],

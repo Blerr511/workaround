@@ -7,12 +7,13 @@ srcs = glob(["**/*.py"])
 deps = all_requirements
 
 env = {
-    "OPENAI_API_KEY": "$(IMAGE_GEN_OPENAI_API_KEY)"
+    "OPENAI_API_KEY": "file:$(location //sandbox/gcp/secrets:openai_key)"
 }
 
 py_binary(
     name = "start",
     srcs = srcs,
+    data = ["//sandbox/gcp/secrets:openai_key"],
     main = ":src/main.py",
     deps = deps,
     toolchains = ["//sandbox:image_gen_env_vars"],

@@ -1,5 +1,3 @@
-import { ApolloServerPluginLandingPageLocalDefault } from '@apollo/server/plugin/landingPage/default';
-import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { Module, OnApplicationBootstrap } from '@nestjs/common';
 import { GraphQLModule } from '@nestjs/graphql';
 import { PrismaClient, PrismaModule } from '@wr/data-source';
@@ -15,6 +13,10 @@ import {
 import { Request } from 'express';
 import { AuthModule } from './auth/auth.module';
 import { WorkspaceModule } from './workspace/workspace.module';
+import {
+  MercuriusFederationDriver,
+  MercuriusFederationDriverConfig,
+} from '@nestjs/mercurius';
 
 const internalModules = [
   AppUserModule,
@@ -29,10 +31,8 @@ const internalModules = [
       ignoreValidation: false,
     }),
     PrismaModule.forRootAsync(),
-    GraphQLModule.forRoot<ApolloDriverConfig>({
-      driver: ApolloDriver,
-      playground: false,
-      plugins: [ApolloServerPluginLandingPageLocalDefault()],
+    GraphQLModule.forRoot<MercuriusFederationDriverConfig>({
+      driver: MercuriusFederationDriver,
       autoSchemaFile: join(process.cwd(), 'schema.gql'),
       context: async (ctx) => {
         const request: Request = ctx.req;

@@ -52,10 +52,10 @@ js_binary(
     name = "generate",
     data = [
         ":ts",
-    ] + ["//server/apps/backend:schema"],
+    ] + ["//server/apps/gateway:schema"],
     entry_point = ":src/generate.js",
     env = {
-        "SCHEMA_PATH": "server/apps/backend/schema.gql)",
+        "SCHEMA_PATH": "server/apps/gateway/schema.gql)",
         "OUTPUT": "src/__generated__/gql-types.ts",
     },
 )

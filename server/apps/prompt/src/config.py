@@ -1,11 +1,22 @@
 import os
 
-openai_api_key = os.getenv("OPENAI_API_KEY")
 
-redis_host = os.getenv("REDIS_HOST")
+def get_config(key: str):
+    value = os.getenv(key)
 
-redis_port = int(os.getenv("REDIS_PORT"))
+    if value is not None and value.startswith("file:"):
+        d = open(value.replace("file:", ""))
+        value = d.read()
 
-redis_password = os.getenv("REDIS_PASSWORD")
+    return value
 
-redis_db = int(os.getenv("REDIS_DB"))
+
+openai_api_key = get_config("OPENAI_API_KEY")
+
+redis_host = get_config("REDIS_HOST")
+
+redis_port = int(get_config("REDIS_PORT"))
+
+redis_password = get_config("REDIS_PASSWORD")
+
+redis_db = int(get_config("REDIS_DB"))
