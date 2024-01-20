@@ -1,8 +1,14 @@
-import { Field, ObjectType, registerEnumType } from '@nestjs/graphql';
+import {
+  Directive,
+  Field,
+  ObjectType,
+  registerEnumType,
+} from '@nestjs/graphql';
 import { AuthApiProviderType } from '../../../app/auth-api/auth-api.types';
 import { Expose, Type } from 'class-transformer';
 
 @ObjectType('AuthUser')
+@Directive('@key(fields: "uid")')
 export class AuthUserGql {
   @Field()
   @Expose()
@@ -24,6 +30,7 @@ registerEnumType(AuthApiProviderType, {
 });
 
 @ObjectType('AuthProvider')
+@Directive('@key(fields: "providerId")')
 export class AuthProviderGql {
   @Field()
   @Expose()

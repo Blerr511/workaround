@@ -21,6 +21,5 @@
       "@wr/logger": ["../../packages/logger/src"],
       "@wr/data-source": ["../../packages/data-source/src"]
     }
-  },
-  "exclude": ["node_modules/@fastify/send/test/**"]
+  }
 }

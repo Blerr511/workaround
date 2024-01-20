@@ -14,9 +14,9 @@ import { Request } from 'express';
 import { AuthModule } from './auth/auth.module';
 import { WorkspaceModule } from './workspace/workspace.module';
 import {
-  MercuriusFederationDriver,
-  MercuriusFederationDriverConfig,
-} from '@nestjs/mercurius';
+  ApolloFederationDriver,
+  ApolloFederationDriverConfig,
+} from '@nestjs/apollo';
 
 const internalModules = [
   AppUserModule,
@@ -31,21 +31,10 @@ const internalModules = [
       ignoreValidation: false,
     }),
     PrismaModule.forRootAsync(),
-    GraphQLModule.forRoot<MercuriusFederationDriverConfig>({
-      driver: MercuriusFederationDriver,
-      autoSchemaFile: join(process.cwd(), 'schema.gql'),
-      context: async (ctx) => {
-        const request: Request = ctx.req;
-
-        let user = null;
-
-        const authToken = request.headers.authorization;
-
-        if (authToken) {
-          user = await verifyAccessToken(authToken);
-        }
-
-        return { user };
+    GraphQLModule.forRoot<ApolloFederationDriverConfig>({
+      driver: ApolloFederationDriver,
+      autoSchemaFile: {
+        federation: 2,
       },
     }),
     ...internalModules,
