@@ -1,6 +1,6 @@
 // import { DynamicModule, Module, Provider } from '@nestjs/common';
 import { PrismaClient } from "../prisma/prisma-client";
-import { createSoftDeleteMiddleware } from "prisma-soft-delete-middleware";
+// import { createSoftDeleteMiddleware } from "prisma-soft-delete-middleware";
 
 export interface PrismaModuleOptions {
   client: PrismaClient;
@@ -18,20 +18,20 @@ export class PrismaModule {
       },
     ];
 
-    client.$use(
-      createSoftDeleteMiddleware({
-        models: {
-          Upload: true,
-        },
-        defaultConfig: {
-          field: "deletedAt",
-          createValue: (deleted) => {
-            if (deleted) return new Date();
-            return null;
-          },
-        },
-      })
-    );
+    // client.$use(
+    //   createSoftDeleteMiddleware({
+    //     models: {
+    //       Upload: true,
+    //     },
+    //     defaultConfig: {
+    //       field: "deletedAt",
+    //       createValue: (deleted) => {
+    //         if (deleted) return new Date();
+    //         return null;
+    //       },
+    //     },
+    //   })
+    // );
 
     return {
       module: PrismaModule,
