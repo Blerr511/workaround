@@ -35,6 +35,11 @@ export class ConfigSchema {
   @Expose()
   RMQ_URL: string;
 
+  @IsNotEmpty()
+  @IsString()
+  @Expose()
+  GCP_MEDIA_DATA_BUCKET: string;
+
   get auth() {
     return {
       apiUrl: this.AUTH_API_URL,
@@ -45,6 +50,16 @@ export class ConfigSchema {
   get rmqQueues() {
     return {
       saveFragments: this.RMQ_QUEUE_SAVE_FRAGMENTS,
+    };
+  }
+
+  get gcp() {
+    return {
+      storageBuckets: {
+        media: {
+          name: this.GCP_MEDIA_DATA_BUCKET,
+        },
+      },
     };
   }
 }

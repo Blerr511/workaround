@@ -4,6 +4,7 @@ import { ApolloGatewayDriver, ApolloGatewayDriverConfig } from '@nestjs/apollo';
 import { IntrospectAndCompose } from '@apollo/gateway';
 import { ConfigModule } from './app/configuration/config.module';
 import { ConfigService } from './app/configuration';
+import { ApolloServerPluginLandingPageLocalDefault } from '@apollo/server/plugin/landingPage/default';
 
 @Module({
   imports: [
@@ -14,7 +15,12 @@ import { ConfigService } from './app/configuration';
       useFactory: (configService: ConfigService) => {
         return {
           driver: ApolloGatewayDriver,
-          server: {},
+          server: {
+            playground: false,
+            plugins: [
+              ApolloServerPluginLandingPageLocalDefault({ embed: true }),
+            ],
+          },
           gateway: {
             supergraphSdl: new IntrospectAndCompose({
               subgraphs: [

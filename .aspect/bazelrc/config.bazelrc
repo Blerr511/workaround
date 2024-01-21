@@ -48,6 +48,7 @@ build --action_env=GCP_OPENAI_KEY_SECRET_NAME="openai-key-secret"
 # GCP Buckets
 build --action_env=GCP_BAZEL_REMOTE_CACHE_BUCKET=
 build --action_env=GCP_TERRAFORM_BUCKET="$(GCP_PROJECT_NAME)-terraform"
+build --action_env=GCP_MEDIA_DATA_BUCKET="wr_media_data"
 
 # GCP artifacts
 build --action_env=GCP_NPM_ARTIFACTS_SCOPE=@wr
@@ -154,7 +155,8 @@ build --action_env=BACKEND_POSTGRES_DATABASE=$(POSTGRES_DATABASE)
 build --action_env=BACKEND_AUTH_API_URL=http://$(AUTH_WEB_EXPOSE_HOST):$(AUTH_WEB_EXPOSE_PORT)/api
 build --action_env=BACKEND_AUTH_VERIFY_WEBHOOK_URL=http://$(AUTH_WEB_EXPOSE_HOST):$(AUTH_WEB_EXPOSE_PORT)/api/authentication/verify
 build --action_env=BACKEND_RMQ_QUEUE_SAVE_FRAGMENTS=$(RABBITMQ_QUEUE_SAVE_FRAGMENTS)
-build --action_env=BACKEND_RMQ_URL="amqp://$(RABBITMQ_HOST):$(RABBITMQ_PORT)"
+build --action_env=BACKEND_RMQ_URL="amqp://$(RABBITMQ_DEFAULT_USER):$(RABBITMQ_DEFAULT_PASS)@$(RABBITMQ_HOST):$(RABBITMQ_PORT)"
+build --action_env=BACKEND_GCP_MEDIA_DATA_BUCKET=$(GCP_MEDIA_DATA_BUCKET)
 
 # GATEWAY
 build --action_env=GATEWAY_WEB_EXPOSE_HOST=localhost

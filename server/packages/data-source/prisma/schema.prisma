@@ -15,6 +15,17 @@ model MyUser {
   email    String @unique
 }
 
+model Upload {
+  id           Int       @id @default(autoincrement())
+  type         String
+  objectId     String
+  storageClass String
+  directory    String
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+  deletedAt    DateTime?
+}
+
 enum VideoEntityType {
   VIDEO
   IMAGE
@@ -61,5 +72,5 @@ model VideoProject {
   id    Int             @id @default(autoincrement())
   name  String          @default("")
   video VideoFragment[]
-  audio  AudoFragment[]
+  audio AudoFragment[]
 }

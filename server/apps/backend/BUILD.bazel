@@ -52,20 +52,18 @@ js_binary(
     args = ["-r tsconfig-paths/register"],
     data = [
         ":ts",
+        "//sandbox/gcp/secrets:gcp_development_sa",
     ],
     entry_point = ":src/main.js",
     env = {
         "DATA_SOURCE_POSTGRES_URL": "$(DATA_SOURCE_POSTGRES_URL)",
         "AUTH_VERIFY_WEBHOOK_URL": "$(BACKEND_AUTH_VERIFY_WEBHOOK_URL)",
         "AUTH_API_URL": "$(BACKEND_AUTH_API_URL)",
-        "POSTGRES_HOST": "$(BACKEND_POSTGRES_HOST)",
-        "POSTGRES_PORT": "$(BACKEND_POSTGRES_PORT)",
-        "POSTGRES_USERNAME": "$(BACKEND_POSTGRES_USERNAME)",
-        "POSTGRES_PASSWORD": "$(BACKEND_POSTGRES_PASSWORD)",
-        "POSTGRES_DATABASE": "$(BACKEND_POSTGRES_DATABASE)",
         "WEB_EXPOSE_PORT": "$(BACKEND_WEB_EXPOSE_PORT)",
         "RMQ_QUEUE_SAVE_FRAGMENTS": "$(BACKEND_RMQ_QUEUE_SAVE_FRAGMENTS)",
         "RMQ_URL": "$(BACKEND_RMQ_URL)",
+        "GOOGLE_APPLICATION_CREDENTIALS": "$$(pwd)/$(rootpath //sandbox/gcp/secrets:gcp_development_sa)",
+        "GCP_MEDIA_DATA_BUCKET": "$(BACKEND_GCP_MEDIA_DATA_BUCKET)",
     },
     toolchains = [
         "//sandbox:data_source_env_vars",
@@ -99,8 +97,8 @@ js_image(
     package_json = "package.json",
     start_cmd = "node src/main.js",
     deps = [
+        "//server/packages/app-types:app-types.json",
         "//server/packages/data-source:data-source.json",
         "//server/packages/logger:logger.json",
-        "//server/packages/app-types:app-types.json",
     ],
 )

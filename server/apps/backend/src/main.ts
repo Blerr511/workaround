@@ -3,6 +3,8 @@ import { AppModule } from './modules/app.module';
 import { Logger } from '@wr/logger';
 import { AuthGuard } from './app/guards/auth-guard';
 
+console.log(process.env.GOOGLE_APPLICATION_CREDENTIALS);
+
 async function bootstrap() {
   const mainLogger = new Logger('BACKEND');
 
