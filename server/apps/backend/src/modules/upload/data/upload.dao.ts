@@ -41,7 +41,7 @@ export class UploadDao {
     const uploads = await this.prisma.upload.findMany(selector);
 
     const count = await this.prisma.upload.count({ where: selector.where });
-    this.prisma.upload.delete({ where: {} });
+
     return [uploads, count];
   }
 }
