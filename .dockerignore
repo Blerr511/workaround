@@ -1,5 +1,4 @@
 node_modules
-**/node_modules/
 server/apps/backend/node_modules
 server/packages/logger/node_modules
 server/packages/data-source/node_modules
@@ -7,3 +6,7 @@ server/packages/data-source/prisma/prisma-client/node_modules
 client/apps/web-client/node_modules
 client/packages/ui/node_modules
 server/packages/backend-api/node_modules
+server/apps/auth/node_modules
+client/packages/core/node_modules
+server/apps/gateway/node_modules
+server/packages/app-types/node_modules

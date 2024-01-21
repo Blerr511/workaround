@@ -30,6 +30,7 @@
     "@nestjs/graphql": "^11.0.6",
     "@nestjs/microservices": "^10.3.0",
     "@nestjs/platform-express": "9.3.8",
+    "@wr/app-types": "workspace:^",
     "@wr/data-source": "workspace:^",
     "@wr/logger": "workspace:^",
     "amqp-connection-manager": "^4.1.14",

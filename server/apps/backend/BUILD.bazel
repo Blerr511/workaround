@@ -101,5 +101,6 @@ js_image(
     deps = [
         "//server/packages/data-source:data-source.json",
         "//server/packages/logger:logger.json",
+        "//server/packages/app-types:app-types.json",
     ],
 )
