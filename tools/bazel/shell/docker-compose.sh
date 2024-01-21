@@ -7,4 +7,4 @@ command -v docker-compose >/dev/null 2>&1 || {
   exit 1
 }
 
-docker-compose $@
+docker compose $@

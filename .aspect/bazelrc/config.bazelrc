@@ -114,6 +114,8 @@ build --action_env=RABBITMQ_PORT=5672
 build --action_env=RABBITMQ_DEFAULT_USER=carrot
 build --action_env=RABBITMQ_DEFAULT_PASS=thisiscarrot
 
+build --action_env=RABBITMQ_QUEUE_SAVE_FRAGMENTS="save-fragments"
+
 # WEB-CLIENT
 
 build --action_env=WEB_CLIENT_AUTHZ_DOMAIN=$(AUTHZ_DOMAIN)
@@ -151,6 +153,8 @@ build --action_env=BACKEND_POSTGRES_PASSWORD=$(POSTGRES_PASSWORD)
 build --action_env=BACKEND_POSTGRES_DATABASE=$(POSTGRES_DATABASE)
 build --action_env=BACKEND_AUTH_API_URL=http://$(AUTH_WEB_EXPOSE_HOST):$(AUTH_WEB_EXPOSE_PORT)/api
 build --action_env=BACKEND_AUTH_VERIFY_WEBHOOK_URL=http://$(AUTH_WEB_EXPOSE_HOST):$(AUTH_WEB_EXPOSE_PORT)/api/authentication/verify
+build --action_env=BACKEND_RMQ_QUEUE_SAVE_FRAGMENTS=$(RABBITMQ_QUEUE_SAVE_FRAGMENTS)
+build --action_env=BACKEND_RMQ_URL="amqp://$(RABBITMQ_HOST):$(RABBITMQ_PORT)"
 
 # GATEWAY
 build --action_env=GATEWAY_WEB_EXPOSE_HOST=localhost

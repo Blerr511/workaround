@@ -64,6 +64,8 @@ js_binary(
         "POSTGRES_PASSWORD": "$(BACKEND_POSTGRES_PASSWORD)",
         "POSTGRES_DATABASE": "$(BACKEND_POSTGRES_DATABASE)",
         "WEB_EXPOSE_PORT": "$(BACKEND_WEB_EXPOSE_PORT)",
+        "RMQ_QUEUE_SAVE_FRAGMENTS": "$(BACKEND_RMQ_QUEUE_SAVE_FRAGMENTS)",
+        "RMQ_URL": "$(BACKEND_RMQ_URL)",
     },
     toolchains = [
         "//sandbox:data_source_env_vars",

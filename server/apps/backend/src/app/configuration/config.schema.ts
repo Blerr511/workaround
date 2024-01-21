@@ -25,10 +25,26 @@ export class ConfigSchema {
   @Expose()
   AUTH_API_URL: string;
 
+  @IsNotEmpty()
+  @IsString()
+  @Expose()
+  RMQ_QUEUE_SAVE_FRAGMENTS: string;
+
+  @IsNotEmpty()
+  @IsString()
+  @Expose()
+  RMQ_URL: string;
+
   get auth() {
     return {
       apiUrl: this.AUTH_API_URL,
       verifyUrl: this.AUTH_VERIFY_WEBHOOK_URL,
+    };
+  }
+
+  get rmqQueues() {
+    return {
+      saveFragments: this.RMQ_QUEUE_SAVE_FRAGMENTS,
     };
   }
 }

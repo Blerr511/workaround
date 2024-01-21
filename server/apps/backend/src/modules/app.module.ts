@@ -17,6 +17,8 @@ import {
   ApolloFederationDriver,
   ApolloFederationDriverConfig,
 } from '@nestjs/apollo';
+import { RabbitMQModule } from '@golevelup/nestjs-rabbitmq';
+import { ConfigService } from 'src/app/configuration';
 
 const internalModules = [
   AppUserModule,
@@ -36,6 +38,23 @@ const internalModules = [
       autoSchemaFile: {
         federation: 2,
       },
+    }),
+    RabbitMQModule.forRootAsync(RabbitMQModule, {
+      useFactory: (configService: ConfigService) => {
+        return {
+          uri: configService.safeGet('RMQ_URL'),
+          exchanges: [
+            {
+              name: 'dev',
+              type: 'topic',
+            },
+          ],
+          connectionInitOptions: {
+            wait: true,
+          },
+        };
+      },
+      inject: [ConfigService],
     }),
     ...internalModules,
   ],
