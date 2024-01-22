@@ -6,4 +6,4 @@ next_cmd=$package_name/node_modules/.bin/next
 
 cd $package_name
 
-next_cmd
+$next_cmd
