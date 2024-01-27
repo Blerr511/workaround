@@ -2,7 +2,7 @@
 
 package_name=client/apps/web-client
 
-next_cmd=$package_name/node_modules/.bin/next
+next_cmd=node_modules/.bin/next
 
 cd $package_name
 

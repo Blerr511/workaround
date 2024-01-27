@@ -1,5 +1,5 @@
 {
-  "name": "@wr/ui1",
+  "name": "@wr/ui",
   "version": "1.0.12",
   "description": "",
   "main": "src/index.ts",
@@ -36,6 +36,8 @@
     "@emotion/react": "^11.11.1",
     "@emotion/server": "^11.11.0",
     "@emotion/styled": "^11.11.0",
-    "framer-motion": "^10.16.2"
+    "@types/react-beautiful-dnd": "^13.1.8",
+    "framer-motion": "^10.16.2",
+    "react-beautiful-dnd": "^13.1.1"
   }
 }
