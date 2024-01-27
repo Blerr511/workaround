@@ -1,1 +1,1 @@
-export * from './ui-provider';
+export { UIProvider } from "./ui-provider";

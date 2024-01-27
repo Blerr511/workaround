@@ -1,4 +1,3 @@
-
 "use client";
 
 import { useEffect, useState } from "react";
@@ -36,7 +35,14 @@ export const FragmentLine = ({
     <Droppable droppableId={`droppable-${type}`} direction="horizontal">
       {(provided) => (
         <div ref={provided.innerRef} {...provided.droppableProps}>
-          <Box ref={provided.innerRef} position="relative" height="40px" mb={2}>
+          <Box
+            ref={provided.innerRef}
+            position="relative"
+            height="40px"
+            mb={2}
+            display="flex"
+            width="100%"
+          >
             {fragments.map((fragment, index) => (
               <Fragment
                 id={fragment.id}

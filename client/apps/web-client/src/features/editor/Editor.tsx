@@ -1,3 +1,5 @@
+"use client";
+
 import { Timeline } from "@wr/ui";
 import VideoView from "./VideoView";
 

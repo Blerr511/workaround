@@ -1,4 +1,3 @@
-import { BellIcon, SearchIcon } from "@chakra-ui/icons";
 import {
   Button,
   Flex,
@@ -14,8 +13,8 @@ import {
   useColorModeValue,
 } from "@chakra-ui/react";
 import { ProfileIcon, SettingsIcon } from "@wr/ui";
+import Link from "next/link";
 import React from "react";
-import { Link } from "@chakra-ui/next-js";
 
 export const HeaderContent = () => {
   let mainTeal = useColorModeValue("teal.300", "teal.300");
@@ -61,7 +60,6 @@ export const HeaderContent = () => {
             _focus={{
               boxShadow: "none",
             }}
-            icon={<SearchIcon color={searchIcon} w="15px" h="15px" />}
           ></IconButton>
         </InputLeftElement>
         <Input
@@ -95,9 +93,7 @@ export const HeaderContent = () => {
         h="18px"
       />
       <Menu>
-        <MenuButton>
-          <BellIcon color={navbarIcon} w="18px" h="18px" />
-        </MenuButton>
+        <MenuButton></MenuButton>
       </Menu>
     </Flex>
   );

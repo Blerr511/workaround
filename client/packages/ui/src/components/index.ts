@@ -1,3 +1,39 @@
-export * from "./modal";
-export * from "./icons";
-export * from "./video-editor";
+export { Modal, type ModalProps, useModalControl } from "./modal";
+export {
+  AdobexdLogo,
+  AtlassianLogo,
+  CartIcon,
+  ClockIcon,
+  CreativeTimLogo,
+  CreditIcon,
+  DashboardLogo,
+  DashboardLogoWhite,
+  DocumentIcon,
+  GlobeIcon,
+  HelpIcon,
+  HomeIcon,
+  InvisionLogo,
+  JiraLogo,
+  MastercardIcon,
+  PayPalIcon,
+  PersonIcon,
+  ProfileIcon,
+  RocketIcon,
+  SettingsIcon,
+  SlackLogo,
+  SpotifyLogo,
+  StatsIcon,
+  SupportIcon,
+  VisaIcon,
+  WalletIcon,
+} from "./icons";
+export {
+  Fragment,
+  Timeline,
+  FragmentLine,
+  type FragmentData,
+  type FragmentLineProps,
+  type FragmentProps,
+  type TimelineProps,
+  type TimelineType,
+} from "./video-editor";

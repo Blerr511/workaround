@@ -1,1 +1,1 @@
-export * from './modal';
+export { Modal, useModalControl, type ModalProps } from "./modal";

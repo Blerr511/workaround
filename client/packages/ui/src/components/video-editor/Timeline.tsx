@@ -1,4 +1,4 @@
-import React from "react";
+"use client";
 import { Box } from "@chakra-ui/react";
 import { DragDropContext } from "react-beautiful-dnd";
 import { FragmentLine } from "./FragmentLine";
@@ -30,7 +30,7 @@ export const Timeline = ({
 
   return (
     <DragDropContext onDragEnd={onDragEnd}>
-      <Box bg="gray.900" p={4} borderRadius="md" overflow="hidden">
+      <Box bg="gray.900" p={4} borderRadius="md" overflow="hidden" width={900}>
         {/* ... Time indicators ... */}
 
         {/* Draggable fragment lines for different types */}

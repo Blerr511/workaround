@@ -1,2 +1,1 @@
-export * from './emotion-cache';
-export * from './color-mode-script';
+export { ColorModeScript } from "./color-mode-script";
