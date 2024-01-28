@@ -38,6 +38,7 @@ export {
   VisaIcon,
   WalletIcon,
   useModalControl,
+  VideoTimeline,
 } from "./components";
 export {
   ContainerLayout,

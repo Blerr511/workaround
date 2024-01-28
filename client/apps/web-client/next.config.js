@@ -21,6 +21,8 @@ const nextConfig = {
       ],
     });
 
+    config.externals = [...config.externals, { canvas: "canvas" }];
+
     return config;
   },
   eslint: {

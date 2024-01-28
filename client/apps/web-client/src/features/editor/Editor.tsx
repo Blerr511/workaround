@@ -2,12 +2,18 @@
 
 import { Timeline } from "@wr/ui";
 import VideoView from "./VideoView";
+import dynamic from "next/dynamic";
+
+const VideoTimeline = dynamic(() =>
+  import("@wr/ui").then((module) => module.VideoTimeline)
+);
 
 const Editor = () => {
   return (
     <div>
       <VideoView />
       <Timeline
+        onFragmentDrag={() => {}}
         totalDuration={2000}
         audioFragments={[{ duration: 500, start: 100, id: 1 }]}
         currentTime={0}
@@ -19,6 +25,7 @@ const Editor = () => {
           { duration: 100, start: 501, id: 5 },
         ]}
       />
+      <VideoTimeline />
     </div>
   );
 };

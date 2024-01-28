@@ -38,6 +38,8 @@
     "@emotion/styled": "^11.11.0",
     "@types/react-beautiful-dnd": "^13.1.8",
     "framer-motion": "^10.16.2",
-    "react-beautiful-dnd": "^13.1.1"
+    "konva": "^9.3.2",
+    "react-beautiful-dnd": "^13.1.1",
+    "react-konva": "^18.2.10"
   }
 }

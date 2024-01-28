@@ -2,65 +2,66 @@
 import { Box } from "@chakra-ui/react";
 import { FragmentData, TimelineType } from "./const";
 import { Draggable } from "react-beautiful-dnd";
+import React, { useCallback } from "react";
+import { Rect, Text } from "react-konva";
+import { getWidth } from "./utils";
+import { KonvaEventObject } from "konva/lib/Node";
 
 export interface FragmentProps extends FragmentData {
-  type: TimelineType;
   totalDuration: number;
-  index: number;
+  type: TimelineType;
+  onDrag: OnFragmentDrag;
 }
 
+export type OnFragmentDrag = (
+  pos: Pick<FragmentData, "id" | "start"> & { type: TimelineType }
+) => void;
+
 const fragmentColors: Record<TimelineType, string> = {
-  [TimelineType.video]: "blue.500",
-  [TimelineType.audio]: "teal.500",
-  [TimelineType.text]: "purple.500",
+  [TimelineType.video]: "blu",
+  [TimelineType.audio]: "teal",
+  [TimelineType.text]: "purple",
 } as const;
 
 export const Fragment = ({
-  type,
   duration,
   totalDuration,
   thumbnail,
   start,
   id,
-  index,
+  onDrag,
+  type,
 }: FragmentProps) => {
+  const onDragEnd = useCallback(
+    (e: KonvaEventObject<DragEvent>) => {
+      onDrag({ id, start: e.target.x(), type });
+    },
+    [onDrag, id, type]
+  );
+
   return (
-    <Draggable draggableId={`draggable-${type}-${id}`} index={index}>
-      {(provided) => {
-        console.log(provided);
-        return (
-          <div
-            ref={provided.innerRef}
-            {...provided.draggableProps}
-            {...provided.dragHandleProps}
-          >
-            <Box
-              ref={provided.innerRef}
-              width={`${Math.round((duration / totalDuration) * 100)}%`}
-              height="20px"
-              display={"inline-block"}
-              // left={`${Math.round((start / totalDuration) * 100)}%`}
-              bg={fragmentColors[type]}
-              borderRadius="md"
-              // left={`${thumbnail.start}%`} // Use the start position to place the fragment
-              _before={
-                thumbnail
-                  ? {
-                      content: `url(${thumbnail})`,
-                      position: "absolute",
-                      top: 0,
-                      left: 0,
-                      height: "100%",
-                      width: "100%",
-                      borderRadius: "md",
-                      objectFit: "cover",
-                    }
-                  : {}
-              }
-            />
-          </div>
-        );
-      }}
-    </Draggable>
+    <React.Fragment key={id}>
+      <Rect
+        x={getWidth(start, totalDuration)}
+        y={0}
+        width={getWidth(duration, totalDuration)}
+        height={30}
+        fill={fragmentColors[type]}
+        draggable
+        onDragEnd={onDragEnd}
+        dragBoundFunc={function (pos) {
+          return {
+            x: pos.x > 0 ? pos.x : 0, // Limit drag to the right side
+            y: this.getParent()?.y() || 0,
+          };
+        }}
+      />
+      <Text
+        text={id.toString()}
+        x={getWidth(start, totalDuration)}
+        y={30}
+        fontSize={15}
+      />
+    </React.Fragment>
   );
 };
