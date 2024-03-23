@@ -36,5 +36,6 @@ export {
   type FragmentProps,
   type TimelineProps,
   type TimelineType,
-  VideoTimeline,
 } from "./video-editor";
+
+export { ProjectItem, type ProjectItemProps } from "./project";

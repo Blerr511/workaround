@@ -38,7 +38,6 @@ export {
   VisaIcon,
   WalletIcon,
   useModalControl,
-  VideoTimeline,
 } from "./components";
 export {
   ContainerLayout,
@@ -46,3 +45,8 @@ export {
   type HeaderLayoutProps,
 } from "./layout";
 export { UIProvider } from "./providers";
+export {
+  C,
+  type KnownComponents,
+  registerComponents,
+} from "./utils/registerComponents";

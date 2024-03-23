@@ -3,6 +3,12 @@ import type { Metadata } from "next";
 import { Providers } from "../features/providers";
 import { Header } from "@/features/header";
 import Editor from "@/features/editor/Editor";
+import { registerComponents } from "@wr/ui";
+import NextLink from "next/link";
+
+registerComponents({
+  Link: NextLink,
+});
 
 export const metadata: Metadata = {
   title: "Workaround",
@@ -18,10 +24,7 @@ export default function RootLayout({
     <html lang="en">
       <body>
         <Providers>
-          <main>
-            <Header />
-            <Editor />
-          </main>
+          <main>{children}</main>
         </Providers>
       </body>
     </html>
