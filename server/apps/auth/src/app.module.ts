@@ -16,7 +16,9 @@ const INTERNAL = [AuthenticationModule, RegistrationModule];
   imports: [
     ConfigModule.forRoot({
       prefix: process.env.BAZEL_CONFIG_PREFIX,
-      ignoreValidation: false,
+      ignoreValidation: ['yes', 'true', '1'].includes(
+        process.env.__SKIP_CONFIG_VALIDATION,
+      ),
     }),
     AuthzModule,
     TypeOrmModule.forRootAsync({

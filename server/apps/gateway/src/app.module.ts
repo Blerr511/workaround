@@ -8,7 +8,11 @@ import { ApolloServerPluginLandingPageLocalDefault } from '@apollo/server/plugin
 
 @Module({
   imports: [
-    ConfigModule.forRoot(),
+    ConfigModule.forRoot({
+      ignoreValidation: ['yes', 'true', '1'].includes(
+        process.env.__SKIP_CONFIG_VALIDATION,
+      ),
+    }),
     GraphQLModule.forRootAsync<ApolloGatewayDriverConfig>({
       driver: ApolloGatewayDriver,
 

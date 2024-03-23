@@ -1,24 +1,24 @@
-import { buildSchema, printSchema, parse, GraphQLSchema } from 'graphql';
-import * as typescriptPlugin from '@graphql-codegen/typescript';
-import { readFileSync, writeFileSync } from 'fs';
-import { join, resolve } from 'path';
-import { codegen } from '@graphql-codegen/core';
+import { buildSchema, printSchema, parse, GraphQLSchema } from "graphql";
+import * as typescriptPlugin from "@graphql-codegen/typescript";
+import { readFileSync, writeFileSync } from "fs";
+import { join, resolve } from "path";
+import { codegen } from "@graphql-codegen/core";
 
 if (!process.env.SCHEMA_PATH)
-  throw new Error('SCHEMA_PATH env variable not found in env');
+  throw new Error("SCHEMA_PATH env variable not found in env");
 
-if (!process.env.OUTPUT) throw new Error('OUTPUT path not found in env');
+if (!process.env.OUTPUT) throw new Error("OUTPUT path not found in env");
 
 const schemaPath = process.env.SCHEMA_PATH;
 const absoluteSchemaPath = resolve(
   process.cwd(),
-  'server/apps/backend/schema.gql'
+  "server/apps/backend/schema.gql"
 );
 
 console.log(`Reading schema from ${schemaPath}`);
 
 const schema: GraphQLSchema = buildSchema(
-  readFileSync(absoluteSchemaPath, 'utf8')
+  readFileSync(absoluteSchemaPath, "utf8")
 );
 
 const config = {
@@ -32,6 +32,8 @@ const config = {
     // Each plugin should be an object
     {
       typescript: {}, // Here you can pass configuration to the plugin
+      "typescript-operations": {},
+      "typescript-react-apollo": {},
     },
   ],
   pluginMap: {

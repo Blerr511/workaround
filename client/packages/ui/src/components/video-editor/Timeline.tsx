@@ -42,21 +42,24 @@ export const Timeline = ({
         totalDuration={totalDuration}
         type={TimelineType.video}
         onDrag={onDragEnd}
-        position={1}
+        y={0}
+        height={50}
       />
       <FragmentLine
         fragments={audioFragments}
         totalDuration={totalDuration}
         type={TimelineType.audio}
         onDrag={onDragEnd}
-        position={2}
+        y={50}
+        height={30}
       />
       <FragmentLine
         fragments={textFragments}
         totalDuration={totalDuration}
         type={TimelineType.text}
         onDrag={onDragEnd}
-        position={3}
+        y={80}
+        height={30}
       />
     </Stage>
   );

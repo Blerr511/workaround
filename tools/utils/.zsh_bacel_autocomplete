@@ -1,0 +1,59 @@
+#!/bin/bash
+# Bazel autocomplete with project-specific cache
+function _bazel_autocomplete() {
+
+    local positional_args=()
+
+    for ((i = 2; i <= ${#words[@]}; i++)); do
+        local word="${words[i]}"
+        if [[ ! "$word" =~ ^- ]]; then
+            positional_args+=("$word")
+        fi
+    done
+
+    local ctx="${positional_args[1]}"
+
+    if [[ "t$ctx" == "t" ]]; then
+        local comp=("run" "build" "query" "test")
+        _describe -t commands "Bazel commands" comp
+        return 0
+    fi
+
+    local pack=$(echo ${positional_args[2]} | sed 's|\(.*\/\).*|\1|')
+
+    local current_dir=$(pwd)
+    local project_root=$(bazel info workspace 2>/dev/null)
+    local cache_root="$HOME/.cache/bazel"
+    local cache_dir="$cache_root/$(echo "$project_root" | md5sum | cut -d' ' -f1)"
+    local cache_file="${cache_dir}/${ctx}_cache"
+
+    mkdir -p "$cache_dir"
+
+    # Determine the cache file validity duration
+
+    # Update cache if necessary
+    if [[ ! -f "$cache_file" || $(($(date +%s) - $(stat -c %Y "$cache_file"))) -ge $cache_ttl ]]; then
+        if [[ -d "$project_root" && "$current_dir" == "$project_root"* ]]; then
+            case "$ctx" in
+            run)
+                bazel query 'kind(".*_binary", //...)' 2>&1 | grep // >"$cache_file"
+                ;;
+            build)
+                bazel query 'filter(".*", kind(rule, //...:*)) - filter(".*node_modules.*", kind(rule, //...:*))' 2>&1 | grep // >"$cache_file"
+                ;;
+            test)
+                bazel query 'kind(".*_test", //...)' 2>&1 | grep // >"$cache_file"
+                ;;
+            esac
+        fi
+    fi
+
+    if [[ -f "$cache_file" ]]; then
+        local completions=(${$(grep -F "$pack" "$cache_file" | sed 's/:/\:/g')//\\n/})
+
+        _multi_parts : completions
+
+    fi
+}
+
+compdef "_bazel_autocomplete" bazel

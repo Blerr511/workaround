@@ -11,6 +11,7 @@ export interface FragmentProps extends FragmentData {
   totalDuration: number;
   type: TimelineType;
   onDrag: OnFragmentDrag;
+  height: number;
 }
 
 export type OnFragmentDrag = (
@@ -18,9 +19,9 @@ export type OnFragmentDrag = (
 ) => void;
 
 const fragmentColors: Record<TimelineType, string> = {
-  [TimelineType.video]: "blu",
-  [TimelineType.audio]: "teal",
-  [TimelineType.text]: "purple",
+  [TimelineType.video]: "#5756D5",
+  [TimelineType.audio]: "#249150",
+  [TimelineType.text]: "#35A9DC",
 } as const;
 
 export const Fragment = ({
@@ -31,6 +32,7 @@ export const Fragment = ({
   id,
   onDrag,
   type,
+  height,
 }: FragmentProps) => {
   const onDragEnd = useCallback(
     (e: KonvaEventObject<DragEvent>) => {
@@ -45,7 +47,8 @@ export const Fragment = ({
         x={getWidth(start, totalDuration)}
         y={0}
         width={getWidth(duration, totalDuration)}
-        height={30}
+        height={height}
+        cornerRadius={5}
         fill={fragmentColors[type]}
         draggable
         onDragEnd={onDragEnd}
@@ -59,7 +62,7 @@ export const Fragment = ({
       <Text
         text={id.toString()}
         x={getWidth(start, totalDuration)}
-        y={30}
+        y={height - 17}
         fontSize={15}
       />
     </React.Fragment>

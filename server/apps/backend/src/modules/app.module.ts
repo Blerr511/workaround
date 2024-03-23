@@ -3,7 +3,6 @@ import { GraphQLModule } from '@nestjs/graphql';
 import { PrismaClient, PrismaModule } from '@wr/data-source';
 
 import { AppUserModule } from './auth/entities';
-import { MyUserModule } from './my-user/my-user.module';
 import { ConfigModule } from '../app/configuration/config.module';
 import { VerifyTokenService } from '../app/authorization/verify-token.service';
 import { AuthModule } from './auth/auth.module';
@@ -12,20 +11,15 @@ import {
   ApolloFederationDriver,
   ApolloFederationDriverConfig,
 } from '@nestjs/apollo';
-import { UploadModule } from './upload/upload.module';
 
-const internalModules = [
-  AppUserModule,
-  MyUserModule,
-  AuthModule,
-  WorkspaceModule,
-  UploadModule,
-];
+const internalModules = [AppUserModule, AuthModule, WorkspaceModule];
 
 @Module({
   imports: [
     ConfigModule.forRoot({
-      ignoreValidation: false,
+      ignoreValidation: ['yes', 'true', '1'].includes(
+        process.env.__SKIP_CONFIG_VALIDATION,
+      ),
     }),
     PrismaModule.forRootAsync(),
     GraphQLModule.forRoot<ApolloFederationDriverConfig>({

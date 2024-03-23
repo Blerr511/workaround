@@ -2,11 +2,6 @@
 
 import { Timeline } from "@wr/ui";
 import VideoView from "./VideoView";
-import dynamic from "next/dynamic";
-
-const VideoTimeline = dynamic(() =>
-  import("@wr/ui").then((module) => module.VideoTimeline)
-);
 
 const Editor = () => {
   return (
@@ -25,7 +20,6 @@ const Editor = () => {
           { duration: 100, start: 501, id: 5 },
         ]}
       />
-      <VideoTimeline />
     </div>
   );
 };

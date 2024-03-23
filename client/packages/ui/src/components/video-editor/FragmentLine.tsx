@@ -10,7 +10,8 @@ export interface FragmentLineProps {
   totalDuration: number;
   fragments: FragmentData[];
   onDrag: OnFragmentDrag;
-  position: number;
+  y: number;
+  height: number;
 }
 
 export const FragmentLine = ({
@@ -18,13 +19,15 @@ export const FragmentLine = ({
   fragments,
   totalDuration,
   onDrag,
-  position,
+  y,
+  height,
 }: FragmentLineProps) => {
   return (
-    <Layer y={position * 30}>
+    <Layer y={y} height={height}>
       {fragments.map((fragment) => (
         <Fragment
           id={fragment.id}
+          height={height}
           duration={fragment.duration}
           start={fragment.start}
           totalDuration={totalDuration}

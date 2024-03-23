@@ -1,76 +1,43 @@
-datasource db {
-  provider = "postgresql"
-  url      = env("DATA_SOURCE_POSTGRES_URL")
-}
-
 generator client {
   provider = "prisma-client-js"
   output   = "prisma-client"
 }
 
-model MyUser {
-  id       Int    @id @default(autoincrement())
-  name     String
-  lastName String
-  email    String @unique
+datasource db {
+  provider = "postgresql"
+  url      = env("DATA_SOURCE_POSTGRES_URL")
 }
 
-model Upload {
-  id           Int       @id @default(autoincrement())
-  type         String
-  objectId     String
-  storageClass String
-  directory    String
-  createdAt    DateTime  @default(now())
-  updatedAt    DateTime  @updatedAt
-  deletedAt    DateTime?
-}
-
-enum VideoEntityType {
-  VIDEO
-  IMAGE
-}
-
-model VideoEntity {
-  id              Int             @id @default(autoincrement())
-  type            VideoEntityType
+model Fragment {
+  id              Int           @id @default(autoincrement())
+  type            FragmentType
   path            String
-  VideoFragment   VideoFragment?  @relation(fields: [videoFragmentId], references: [id])
   videoFragmentId Int?
   duration        Int
   order           Int
+  VideoFragment   FragmentLine? @relation(fields: [videoFragmentId], references: [id])
 
   @@unique([videoFragmentId, order])
 }
 
-model VideoFragment {
-  id        Int           @id @default(autoincrement())
-  start     Float?
-  end       Float?
-  entities  VideoEntity[]
-  project   VideoProject  @relation(fields: [projectId], references: [id])
-  projectId Int
-}
-
-model AudoEntity {
-  id             Int          @id @default(autoincrement())
-  path           String
-  fragment       AudoFragment @relation(fields: [audoFragmentId], references: [id])
-  audoFragmentId Int          @unique
-}
-
-model AudoFragment {
+model FragmentLine {
   id        Int          @id @default(autoincrement())
+  type      FragmentType
   start     Float?
   end       Float?
-  entity    AudoEntity?
   projectId Int
+  entities  Fragment[]
   project   VideoProject @relation(fields: [projectId], references: [id])
 }
 
 model VideoProject {
-  id    Int             @id @default(autoincrement())
-  name  String          @default("")
-  video VideoFragment[]
-  audio AudoFragment[]
+  id    Int            @id @default(autoincrement())
+  name  String         @default("")
+  lines FragmentLine[]
+}
+
+enum FragmentType {
+  VIDEO
+  IMAGE
+  TEXT
 }
