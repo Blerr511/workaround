@@ -98,7 +98,7 @@ swc_register_toolchains(
 
 load("@rules_nodejs//nodejs:repositories.bzl", "nodejs_register_toolchains")
 
-node_version = "17.9.1"
+node_version = "18.18.0"
 
 nodejs_register_toolchains(
     name = "nodejs",
@@ -153,7 +153,7 @@ container_pull(
     name = "node_base",
     registry = "index.docker.io",
     repository = "library/node",
-    tag = "16.19.0",
+    tag = "18.18.0",
 )
 
 container_pull(
