@@ -19,6 +19,8 @@
     "paths": {
       "@wr/logger": ["../../packages/logger/src"],
       "@wr/data-source": ["../../packages/data-source/src"]
-    }
-  }
+    },
+    "types": []
+  },
+  "exclude": ["node_modules"]
 }

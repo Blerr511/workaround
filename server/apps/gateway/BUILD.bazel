@@ -25,6 +25,7 @@ data = ["project_support_files"]
 
 deps = [
     ":node_modules",
+    "//:node_modules",
 ]
 
 ts_config(
@@ -70,10 +71,15 @@ js_binary(
 
 genrule(
     name = "schema",
-    srcs = [":ts"],
+    srcs = [
+        ":ts",
+        "//server/apps/backend:schema",
+    ],
     outs = ["schema.gql"],  # the output file
     cmd = """
     export BAZEL_BINDIR="."
+    export __SKIP_CONFIG_VALIDATION=yes
+    export SUBGRAPHS="backend:$(location //server/apps/backend:schema)"
     $(execpath :run_schema_generator)
     cp schema.gql $@
     """,

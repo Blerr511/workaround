@@ -1,18 +1,35 @@
-import { NestFactory } from '@nestjs/core';
-import { GraphQLSchemaHost } from '@nestjs/graphql';
-import { printSchema } from 'graphql';
-import { writeFileSync } from 'fs';
+import { composeAndValidate, normalizeTypeDefs } from '@apollo/federation';
+import assert from 'assert';
+import { readFile, writeFile } from 'fs/promises';
+import { parse, printSchema } from 'graphql';
 
-import { AppModule } from '../app.module';
+assert(
+  process.env.SUBGRAPHS,
+  'SUBGRAPHS env variable should be set with format of name:graph1,name:graph2,...',
+);
 
 async function generateSchema() {
-  const app = await NestFactory.createApplicationContext(AppModule, {});
+  const subGraphPaths = String(process.env.SUBGRAPHS)
+    .split(',')
+    .map((nameNPath) => ({
+      name: nameNPath.split(':')[0],
+      path: nameNPath.split(':')[1],
+    }));
 
-  const { schema } = app.get(GraphQLSchemaHost);
+  const subgraphs = await Promise.all(
+    subGraphPaths.map(({ name, path }) =>
+      readFile(path, 'utf-8')
+        .then((buffer) => buffer.toString())
+        .then((typeDefsRaw) => ({
+          name,
+          typeDefs: normalizeTypeDefs(parse(typeDefsRaw)),
+        })),
+    ),
+  );
 
-  writeFileSync('schema.gql', printSchema(schema));
+  const { schema } = composeAndValidate(subgraphs);
 
-  await app.close();
+  await writeFile('schema.gql', printSchema(schema));
 }
 
 generateSchema();

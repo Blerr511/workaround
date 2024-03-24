@@ -67,7 +67,7 @@ apt-get install -qqy gettext-base jq
 # Required by Cypress
 apt-get install -qqy libgtk2.0-0 libgtk-3-0 libgbm-dev libnotify-dev libgconf-2-4 libnss3 libxss1 libasound2 libxtst6 xauth xvfb
 # Install required node packages
-npm install -g typescript @types/node@ ts-node wait-on pnpm@8.3.1
+npm install -g typescript @types/node@18.18.0 ts-node wait-on pnpm@8.3.1
 
 # Install bazel
 echo "Installing bazel"

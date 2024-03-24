@@ -28,7 +28,7 @@ _prisma.prisma(
     srcs = [
         "prisma/schema.prisma",
         ":node_modules",
-        "//:node_modules/typescript",
+        "//:node_modules",
     ],
     args = [
         "generate",
@@ -60,7 +60,7 @@ _prisma.prisma_binary(
     data = [
         "prisma/schema.prisma",
         ":node_modules",
-        "//:node_modules/typescript",
+        "//:node_modules",
     ],
     env = {
         "DATA_SOURCE_POSTGRES_URL": "$(DATA_SOURCE_POSTGRES_URL)",
@@ -74,7 +74,7 @@ js_library(
     srcs = [":generate"],
     deps = [
         ":node_modules",
-        "//:node_modules/typescript",
+        "//:node_modules",
     ],
 )
 

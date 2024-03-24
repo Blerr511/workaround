@@ -25,6 +25,7 @@ data = ["project_support_files"]
 
 deps = [
     ":node_modules",
+    "//:node_modules",
 ]
 
 ts_config(
@@ -43,9 +44,7 @@ ts_project(
     source_map = True,
     tsconfig = ":tsconfig",
     validate = True,
-    deps = [
-        ":node_modules",
-    ],
+    deps = deps
 )
 
 js_binary(

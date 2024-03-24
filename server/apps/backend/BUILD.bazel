@@ -27,6 +27,7 @@ data = ["project_support_files"]
 
 deps = [
     ":node_modules",
+    "//:node_modules",
 ]
 
 ts_config(
@@ -83,6 +84,7 @@ genrule(
     outs = ["schema.gql"],  # the output file
     cmd = """
     export BAZEL_BINDIR="."
+    export __SKIP_CONFIG_VALIDATION=yes
     $(execpath :run_schema_generator)
     cp schema.gql $@
     """,

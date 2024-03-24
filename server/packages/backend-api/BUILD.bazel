@@ -2,6 +2,9 @@ load("@npm//:defs.bzl", "npm_link_all_packages")
 load("@aspect_rules_js//js:defs.bzl", "js_binary")
 load("@aspect_rules_ts//ts:defs.bzl", "ts_config", "ts_project")
 load("@aspect_rules_js//npm:defs.bzl", "npm_package")
+load("@npm//server/packages/backend-api:@graphql-codegen/cli/package_json.bzl", codegen = "bin")
+load("//tools/bazel/copy-to-source:defs.bzl", "copy_to_source")
+load("@aspect_rules_js//js:defs.bzl", "js_binary", "js_run_binary")
 
 npm_link_all_packages(name = "node_modules")
 
@@ -24,7 +27,8 @@ srcs = glob(
 data = ["project_support_files"]
 
 deps = [
-    ":node_modules",
+    ":node_modules/@graphql-codegen/cli",
+    "//:node_modules",
 ]
 
 ts_config(
@@ -34,7 +38,9 @@ ts_config(
 
 ts_project(
     name = "ts",
-    srcs = glob(["src/**"]),
+    srcs = [
+        "src/generate.ts",
+    ],
     data = [
         ":tsconfig",
     ],
@@ -43,19 +49,18 @@ ts_project(
     source_map = True,
     tsconfig = ":tsconfig",
     validate = True,
-    deps = [
-        ":node_modules",
-    ],
+    deps = deps,
 )
 
 js_binary(
     name = "generate",
+    # chdir = "../../..",
     data = [
         ":ts",
     ] + ["//server/apps/gateway:schema"],
     entry_point = ":src/generate.js",
     env = {
-        "SCHEMA_PATH": "server/apps/gateway/schema.gql)",
+        "SCHEMA_PATH": "$(rootpath //server/apps/gateway:schema)",
         "OUTPUT": "src/__generated__/gql-types.ts",
     },
 )
@@ -96,4 +101,31 @@ filegroup(
     name = "backend-api.json",
     srcs = [":package.json"],
     visibility = ["//visibility:public"],
+)
+
+codegen.gql_gen_binary(
+    name = "codegen",
+)
+
+js_run_binary(
+    name = "gen",
+    copy_srcs_to_bin= False,
+    srcs = [
+        "codegen.yaml",
+        "//server/apps/gateway:schema",
+    ],
+    outs = ["__generated__/apollo-gql.ts"],
+    args = [
+        "-c",
+        "$(location codegen.yaml)",
+    ],
+    include_npm_linked_packages = False,
+    tool = ":codegen",
+)
+
+copy_to_source(
+    name = "genn",
+    data = [":gen"],
+    destionation = "{}/src/__generated__".format(package_name()),
+    source = "$(location :gen)",
 )

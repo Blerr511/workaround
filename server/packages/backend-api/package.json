@@ -14,11 +14,9 @@
     "@graphql-codegen/client-preset": "4.0.0",
     "@graphql-codegen/introspection": "4.0.0",
     "@graphql-codegen/typescript": "^4.0.0",
-    "@graphql-codegen/typescript-resolvers": "^4.0.0",
-    "@types/node": "17.0.41"
+    "@graphql-codegen/typescript-resolvers": "^4.0.0"
   },
   "dependencies": {
-    "@graphql-codegen/core": "^4.0.0",
-    "graphql": "^16.6.0"
+    "@graphql-codegen/core": "^4.0.0"
   }
 }
