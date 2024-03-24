@@ -110,75 +110,75 @@ steps:
       - |
         /workspace/deploy/shell/release-npm-package.sh client/packages/core npm.publish
 
-  - name: "$_GCP_DOCKER_ARTIFACTS_LOCATION-docker.pkg.dev/$PROJECT_ID/cloudsdktool/cloud-sdk:$_CLOUD_SDK_VERSION"
-    id: migrate-backend-db
-    entrypoint: "bash"
-    env:
-      - "_TAG=${SHORT_SHA}"
-    args:
-      - "-c"
-      - |
-        /workspace/deploy/shell/db-migrate.sh
+  # - name: "$_GCP_DOCKER_ARTIFACTS_LOCATION-docker.pkg.dev/$PROJECT_ID/cloudsdktool/cloud-sdk:$_CLOUD_SDK_VERSION"
+  #   id: migrate-backend-db
+  #   entrypoint: "bash"
+  #   env:
+  #     - "_TAG=${SHORT_SHA}"
+  #   args:
+  #     - "-c"
+  #     - |
+  #       /workspace/deploy/shell/db-migrate.sh
 
-  - name: "$_GCP_DOCKER_ARTIFACTS_LOCATION-docker.pkg.dev/$PROJECT_ID/cloudsdktool/cloud-sdk:$_CLOUD_SDK_VERSION"
-    id: deploy-general
-    entrypoint: "bash"
-    env:
-      - "_TAG=${SHORT_SHA}"
-    args:
-      - "-c"
-      - |
-        /workspace/deploy/shell/apply-k8s.sh deploy/cluster/general:general.apply
+  # - name: "$_GCP_DOCKER_ARTIFACTS_LOCATION-docker.pkg.dev/$PROJECT_ID/cloudsdktool/cloud-sdk:$_CLOUD_SDK_VERSION"
+  #   id: deploy-general
+  #   entrypoint: "bash"
+  #   env:
+  #     - "_TAG=${SHORT_SHA}"
+  #   args:
+  #     - "-c"
+  #     - |
+  #       /workspace/deploy/shell/apply-k8s.sh deploy/cluster/general:general.apply
 
-  - name: "$_GCP_DOCKER_ARTIFACTS_LOCATION-docker.pkg.dev/$PROJECT_ID/cloudsdktool/cloud-sdk:$_CLOUD_SDK_VERSION"
-    id: data-source-migrate
-    entrypoint: "bash"
-    env:
-      - "_TAG=${SHORT_SHA}"
-    args:
-      - "-c"
-      - |
-        /workspace/deploy/shell/db-migrate.sh
+  # - name: "$_GCP_DOCKER_ARTIFACTS_LOCATION-docker.pkg.dev/$PROJECT_ID/cloudsdktool/cloud-sdk:$_CLOUD_SDK_VERSION"
+  #   id: data-source-migrate
+  #   entrypoint: "bash"
+  #   env:
+  #     - "_TAG=${SHORT_SHA}"
+  #   args:
+  #     - "-c"
+  #     - |
+  #       /workspace/deploy/shell/db-migrate.sh
 
-  - name: "$_GCP_DOCKER_ARTIFACTS_LOCATION-docker.pkg.dev/$PROJECT_ID/cloudsdktool/cloud-sdk:$_CLOUD_SDK_VERSION"
-    id: deploy-auth-service
-    entrypoint: "bash"
-    env:
-      - "_TAG=${SHORT_SHA}"
-    args:
-      - "-c"
-      - |
-        /workspace/deploy/shell/apply-k8s.sh deploy/cluster/auth:auth.apply
+  # - name: "$_GCP_DOCKER_ARTIFACTS_LOCATION-docker.pkg.dev/$PROJECT_ID/cloudsdktool/cloud-sdk:$_CLOUD_SDK_VERSION"
+  #   id: deploy-auth-service
+  #   entrypoint: "bash"
+  #   env:
+  #     - "_TAG=${SHORT_SHA}"
+  #   args:
+  #     - "-c"
+  #     - |
+  #       /workspace/deploy/shell/apply-k8s.sh deploy/cluster/auth:auth.apply
 
-  - name: "$_GCP_DOCKER_ARTIFACTS_LOCATION-docker.pkg.dev/$PROJECT_ID/cloudsdktool/cloud-sdk:$_CLOUD_SDK_VERSION"
-    id: deploy-prompt-service
-    entrypoint: "bash"
-    env:
-      - "_TAG=${SHORT_SHA}"
-    args:
-      - "-c"
-      - |
-        /workspace/deploy/shell/apply-k8s.sh deploy/cluster/prompt:prompt.apply
+  # - name: "$_GCP_DOCKER_ARTIFACTS_LOCATION-docker.pkg.dev/$PROJECT_ID/cloudsdktool/cloud-sdk:$_CLOUD_SDK_VERSION"
+  #   id: deploy-prompt-service
+  #   entrypoint: "bash"
+  #   env:
+  #     - "_TAG=${SHORT_SHA}"
+  #   args:
+  #     - "-c"
+  #     - |
+  #       /workspace/deploy/shell/apply-k8s.sh deploy/cluster/prompt:prompt.apply
 
-  - name: "$_GCP_DOCKER_ARTIFACTS_LOCATION-docker.pkg.dev/$PROJECT_ID/cloudsdktool/cloud-sdk:$_CLOUD_SDK_VERSION"
-    id: deploy-backend
-    entrypoint: "bash"
-    env:
-      - "_TAG=${SHORT_SHA}"
-    args:
-      - "-c"
-      - |
-        /workspace/deploy/shell/apply-k8s.sh deploy/cluster/backend:backend.apply
+  # - name: "$_GCP_DOCKER_ARTIFACTS_LOCATION-docker.pkg.dev/$PROJECT_ID/cloudsdktool/cloud-sdk:$_CLOUD_SDK_VERSION"
+  #   id: deploy-backend
+  #   entrypoint: "bash"
+  #   env:
+  #     - "_TAG=${SHORT_SHA}"
+  #   args:
+  #     - "-c"
+  #     - |
+  #       /workspace/deploy/shell/apply-k8s.sh deploy/cluster/backend:backend.apply
 
-  - name: "$_GCP_DOCKER_ARTIFACTS_LOCATION-docker.pkg.dev/$PROJECT_ID/cloudsdktool/cloud-sdk:$_CLOUD_SDK_VERSION"
-    id: deploy-web-client
-    entrypoint: "bash"
-    env:
-      - "_TAG=${SHORT_SHA}"
-    args:
-      - "-c"
-      - |
-        /workspace/deploy/shell/apply-k8s.sh deploy/cluster/web-client:web-client.apply
+  # - name: "$_GCP_DOCKER_ARTIFACTS_LOCATION-docker.pkg.dev/$PROJECT_ID/cloudsdktool/cloud-sdk:$_CLOUD_SDK_VERSION"
+  #   id: deploy-web-client
+  #   entrypoint: "bash"
+  #   env:
+  #     - "_TAG=${SHORT_SHA}"
+  #   args:
+  #     - "-c"
+  #     - |
+  #       /workspace/deploy/shell/apply-k8s.sh deploy/cluster/web-client:web-client.apply
 
 availableSecrets:
   secretManager:
