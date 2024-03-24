@@ -16,5 +16,10 @@
   "peerDependencies": {
     "@types/react": "18.x.x",
     "react": "18.x.x"
+  },
+  "dependencies": {
+    "@apollo/client": "^3.9.9",
+    "@wr/backend-api": "workspace:^",
+    "zod": "^3.22.4"
   }
 }

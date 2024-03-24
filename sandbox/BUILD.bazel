@@ -203,7 +203,7 @@ import_env_vars(
     vars_mapping = {
         "WEB_CLIENT_AUTHZ_DOMAIN": "WEB_CLIENT_AUTHZ_DOMAIN",
         "WEB_CLIENT_AUTHZ_CLIENT_ID": "WEB_CLIENT_AUTHZ_CLIENT_ID",
-        "WEB_CLIENT_API_URL": "WEB_CLIENT_API_URL",
+        "NEXT_PUBLIC_WEB_CLIENT_API_URL": "NEXT_PUBLIC_WEB_CLIENT_API_URL",
     },
     visibility = ["//visibility:public"],
 )

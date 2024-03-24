@@ -27,15 +27,5 @@ export {
   VisaIcon,
   WalletIcon,
 } from "./icons";
-export {
-  Fragment,
-  Timeline,
-  FragmentLine,
-  type FragmentData,
-  type FragmentLineProps,
-  type FragmentProps,
-  type TimelineProps,
-  type TimelineType,
-} from "./video-editor";
 
 export { ProjectItem, type ProjectItemProps } from "./project";

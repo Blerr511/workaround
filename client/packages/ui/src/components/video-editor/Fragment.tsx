@@ -1,11 +1,11 @@
 "use client";
-import { Box } from "@chakra-ui/react";
-import { FragmentData, TimelineType } from "./const";
-import { Draggable } from "react-beautiful-dnd";
+
+import { KonvaEventObject } from "konva/lib/Node";
 import React, { useCallback } from "react";
 import { Rect, Text } from "react-konva";
+
+import { FragmentData, TimelineType } from "./const";
 import { getWidth } from "./utils";
-import { KonvaEventObject } from "konva/lib/Node";
 
 export interface FragmentProps extends FragmentData {
   totalDuration: number;

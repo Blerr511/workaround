@@ -1,12 +1,11 @@
-import { Link } from "@chakra-ui/react";
 import { FC, PropsWithChildren } from "react";
 
 export interface KnownComponents {
-  Link: FC<PropsWithChildren<{ href: string }>>;
+  Link?: FC<PropsWithChildren<{ href: string }>>;
 }
 
 export const C: KnownComponents = {
-  Link,
+  Link: undefined,
 };
 
 export const registerComponents = (components: Partial<KnownComponents>) => {

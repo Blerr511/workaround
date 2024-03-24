@@ -1,0 +1,6 @@
+query getWorkspace($workspace: GetWorkspaceInput!) {
+  getWorkspace(workspace: $workspace) {
+    id
+    name
+  }
+}

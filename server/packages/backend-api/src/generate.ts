@@ -1,83 +1,51 @@
 import { CodegenConfig, executeCodegen } from "@graphql-codegen/cli";
 import { readFileSync } from "fs";
+import { writeFile } from "fs/promises";
 import { resolve } from "path";
 
 if (!process.env.SCHEMA_PATH)
   throw new Error("SCHEMA_PATH env variable not found in env");
 
+if (!process.env.OPERATIONS)
+  throw new Error("OPERATIONS env variable not found in env");
+
 if (!process.env.OUTPUT) throw new Error("OUTPUT path not found in env");
 
 const schemaPath = process.env.SCHEMA_PATH;
-const absoluteSchemaPath = schemaPath
 
-console.log(`Reading schema from ${absoluteSchemaPath}`);
+const operationsPath = process.env.OPERATIONS;
 
-// const schema: GraphQLSchema = buildSchema(
+const output = process.env.OUTPUT;
 
-// const config = {
-//   documents: [],
-//   config: {},
-//   // used by a plugin internally, although the 'typescript' plugin currently
-//   // returns the string output, rather than writing to a file
-//   filename: process.env.OUTPUT,
-//   // schema: parse(printSchema(schema)),
-//   plugins: [
-//     // Each plugin should be an object
+console.log(
+  `Reading schema from ${schemaPath}, operations from: ${operationsPath}`
+);
 
-//     {
-//       "typescript-react-apollo": {
-//         withHooks: true,
-//         reactApolloVersion: 3,
-//         useTypeImports: true,
-//       },
-//     },
-//     {
-//       "typescript-operations": {},
-//     },
-//     {
-//       typescript: {}, // Here you can pass configuration to the plugin
-//     },
-//   ],
-//   pluginMap: {
-//     typescript: typescriptPlugin,
-//     "typescript-react-apollo": reactApolloPlugin,
-//     "typescript-operations": typescriptOperationsPlugin,
-//   },
-// };
-
-// const generate = async () => {
-//   const output = await codegen(config);
-
-//   const workspaceDir = process.env.BUILD_WORKSPACE_DIRECTORY;
-
-//   const packagePath = process.env.JS_BINARY__PACKAGE;
-
-//   writeFileSync(join(workspaceDir, packagePath, config.filename), output);
-// };
-
-// generate();
-
-const c: CodegenConfig = {
-  schema: readFileSync(absoluteSchemaPath, "utf8"),
+const config: CodegenConfig = {
+  schema: readFileSync(schemaPath, "utf-8"),
+  documents: operationsPath,
   generates: {
-    "./generated-types.ts": {
+    [output]: {
       plugins: [
         "typescript",
         "typescript-operations",
-        "typescript-react-apollo",
+        { "typescript-react-apollo": { withHooks: true } },
+        "typescript-apollo-client-helpers",
       ],
-      config: {
-        withComponent: true,
-        withHooks: true,
-      },
     },
   },
 };
 
 const gen = async () => {
-  const r = await executeCodegen(c);
+  const result = await executeCodegen(config);
 
-  console.log(r);
+  await Promise.all(
+    result.map((result) =>
+      writeFile(result.filename, '"use client"\n' + result.content)
+    )
+  );
+
+  console.log("Generation completed");
 };
 
 gen();

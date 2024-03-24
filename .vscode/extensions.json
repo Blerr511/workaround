@@ -1,0 +1,9 @@
+{
+  "recommendations": [
+    "apollographql.vscode-apollo",
+    "graphql.vscode-graphql",
+    "graphql.vscode-graphql-syntax",
+    "bazelbuild.vscode-bazel",
+    "devondcarew.bazel-code"
+  ]
+}

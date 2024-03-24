@@ -1,10 +1,10 @@
 "use client";
-import { Box } from "@chakra-ui/react";
-import { DragDropContext } from "react-beautiful-dnd";
-import { FragmentLine } from "./FragmentLine";
+
+import { Stage } from "react-konva";
+
 import { FragmentData, TimelineType } from "./const";
-import { Stage, Layer, Rect, Text } from "react-konva";
 import { OnFragmentDrag } from "./Fragment";
+import { FragmentLine } from "./FragmentLine";
 
 export interface TimelineProps {
   currentTime: number;

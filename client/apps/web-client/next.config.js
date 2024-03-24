@@ -4,6 +4,8 @@ const path = require("path");
 const nextConfig = {
   reactStrictMode: true,
   webpack(config, options) {
+    config.resolve.symlinks = true;
+
     config.resolve.alias["@"] = require("path").resolve(__dirname, "src");
 
     config.module.rules.push({
@@ -13,7 +15,6 @@ const nextConfig = {
         {
           loader: "swc-loader",
           options: {
-            // Load the .swcrc file from the specified location
             configFile: path.resolve(__dirname, "../../packages/ui/.swcrc"),
             sourceMaps: false,
           },
@@ -21,12 +22,48 @@ const nextConfig = {
       ],
     });
 
-    config.externals = [...config.externals, { canvas: "canvas" }];
+    config.module.rules.push({
+      test: /\.tsx?$/,
+      include: [path.resolve(__dirname, "../../packages/core/src")],
+      use: [
+        {
+          loader: "swc-loader",
+          options: {
+            configFile: path.resolve(__dirname, "../../packages/core/.swcrc"),
+            sourceMaps: false,
+          },
+        },
+      ],
+    });
+
+    config.module.rules.push({
+      test: /\.tsx?$/,
+      include: [
+        path.resolve(__dirname, "../../../server/packages/backend-api/src"),
+      ],
+      use: [
+        {
+          loader: "swc-loader",
+          options: {
+            configFile: path.resolve(
+              __dirname,
+              "../../../server/packages/backend-api/.swcrc"
+            ),
+            sourceMaps: false,
+          },
+        },
+      ],
+    });
+
+    // config.externals = [...config.externals, { canvas: "canvas" }];
 
     return config;
   },
   eslint: {
     ignoreDuringBuilds: true,
+  },
+  experimental: {
+    externalDir: true,
   },
 };
 

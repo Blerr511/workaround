@@ -1,1 +1,1 @@
-export * from './__generated__/gql-types';
+export * from "./__generated__/apollo";

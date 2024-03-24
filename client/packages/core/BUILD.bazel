@@ -85,3 +85,25 @@ filegroup(
     srcs = [":package.json"],
     visibility = ["//visibility:public"],
 )
+
+filegroup(
+    name = "gql_operations",
+    srcs = glob([
+        "src/operations/**/*.ts",
+        "src/operations/**/*.gql",
+        "src/operations/**/*.tsx",
+    ]),
+    visibility = ["//visibility:public"],
+)
+
+genrule(
+    name = "gql_operations_paths",
+    srcs = [":gql_operations"],
+    outs = ["locations.txt"],
+    cmd = """
+
+    echo $(locations :gql_operations) > $@
+
+    """,
+    visibility = ["//visibility:public"],
+)

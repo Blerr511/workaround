@@ -13,5 +13,9 @@ async function bootstrap() {
   const configService = app.get(ConfigService);
 
   await app.listen(configService.safeGet('web').expose.port);
+
+  mainLogger.log(
+    `Application is running on: http://localhost:${configService.safeGet('web').expose.port}/`,
+  );
 }
 bootstrap();

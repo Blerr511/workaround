@@ -1,7 +1,15 @@
 "use client";
 
-import { Timeline } from "@wr/ui";
 import VideoView from "./VideoView";
+import dynamic from "next/dynamic";
+
+const Timeline = dynamic(
+  () =>
+    import("@wr/ui/src/components/video-editor").then(
+      (module) => module.Timeline
+    ),
+  { ssr: false }
+);
 
 const Editor = () => {
   return (
