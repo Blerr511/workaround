@@ -32,6 +32,10 @@ import { ApolloServerPluginLandingPageLocalDefault } from '@apollo/server/plugin
                   name: 'backend',
                   url: configService.safeGet('services').backend,
                 },
+                {
+                  name: 'auth',
+                  url: configService.safeGet('services').auth,
+                },
               ],
             }),
           },

@@ -1,11 +1,12 @@
 import { Expose, Type } from 'class-transformer';
-import { AuthProviderBaseDto } from './auth-provider-base.dto';
-import { UserBaseDto } from './user-base.dto';
-import { ApiProperty } from '@nestjs/swagger';
+import { AuthProviderBaseResponse } from './auth-provider-base.dto';
+import { UserBaseResponse } from './user-base.dto';
+import { Field, ObjectType } from '@nestjs/graphql';
 
-export class UserWithProvidersDto extends UserBaseDto {
-  @ApiProperty({ type: [AuthProviderBaseDto] })
-  @Type(() => AuthProviderBaseDto)
+@ObjectType()
+export class UserWithProvidersResponse extends UserBaseResponse {
+  @Field(() => [AuthProviderBaseResponse])
+  @Type(() => AuthProviderBaseResponse)
   @Expose()
-  providers: AuthProviderBaseDto[];
+  providers: AuthProviderBaseResponse[];
 }

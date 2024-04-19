@@ -1,5 +1,5 @@
 import { Module } from '@nestjs/common';
-import { RegistrationController } from './registration.controller';
+import { RegistrationResolver } from './registration.resolver';
 import { RegistrationService } from './registration.service';
 import { DataModule } from '../../data/data.module';
 import { UserDao } from '../../data/user';
@@ -8,7 +8,6 @@ import { AuthProviderDao } from '../../data/auth-provider/auth-provider.dao';
 
 @Module({
   imports: [CryptoModule, DataModule.forFeature(UserDao, AuthProviderDao)],
-  controllers: [RegistrationController],
-  providers: [RegistrationService],
+  providers: [RegistrationResolver, RegistrationService],
 })
 export class RegistrationModule {}

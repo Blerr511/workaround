@@ -1,51 +1,28 @@
 import { Module } from '@nestjs/common';
-import { AppController } from './app.controller';
+import { AppResolver } from './app.resolver';
 import { AppService } from './app.service';
-import { ConfigModule } from './configuration/config.module';
-import { TypeOrmModule } from '@nestjs/typeorm';
-import { ConfigService } from './configuration/config.service';
-import { AuthenticationModule } from './modules/authentication/authentication.module';
-import { RegistrationModule } from './modules/registration/registration.module';
 import { APP_GUARD } from '@nestjs/core';
 import { AuthGuard } from './app/auth';
 import { AuthzModule } from './app/authz/authz.module';
-
-const INTERNAL = [AuthenticationModule, RegistrationModule];
+import {
+  INTERNAL_MODULES,
+  MODULE_CONFIG,
+  MODULE_GRAPHQL,
+  MODULE_TYPEORM,
+} from './modules';
 
 @Module({
   imports: [
-    ConfigModule.forRoot({
-      prefix: process.env.BAZEL_CONFIG_PREFIX,
-      ignoreValidation: ['yes', 'true', '1'].includes(
-        process.env.__SKIP_CONFIG_VALIDATION,
-      ),
-    }),
+    MODULE_CONFIG,
+    MODULE_GRAPHQL,
+    MODULE_TYPEORM,
+    ...INTERNAL_MODULES,
     AuthzModule,
-    TypeOrmModule.forRootAsync({
-      inject: [ConfigService],
-      useFactory(configService: ConfigService) {
-        const { database, host, password, port, schema, username } =
-          configService.safeGet('postgres');
-
-        return {
-          type: 'postgres',
-          host,
-          port,
-          database,
-          username,
-          password,
-          schema,
-          autoLoadEntities: true,
-          entities: ['*.entity.{ts,js}'],
-          synchronize: false,
-        };
-      },
-    }),
-    ...INTERNAL,
   ],
-  controllers: [AppController],
+  controllers: [],
   providers: [
     AppService,
+    AppResolver,
     {
       provide: APP_GUARD,
       useClass: AuthGuard,

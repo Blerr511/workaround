@@ -99,10 +99,8 @@ build --action_env=AUTHZ_CLIENT_SECRET=
 # POSTGRES SERVICE
 build --action_env=POSTGRES_HOST=localhost
 build --action_env=POSTGRES_PORT=6444
-build --action_env=POSTGRES_USERNAME=wruser
+build --action_env=POSTGRES_USERNAME=postgres
 build --action_env=POSTGRES_PASSWORD=wrpass
-build --action_env=POSTGRES_DATABASE=wr
-build --action_env=POSTGRES_URL="postgresql://$(POSTGRES_USERNAME):$(POSTGRES_PASSWORD)@$(POSTGRES_HOST):$(POSTGRES_PORT)/$(POSTGRES_DATABASE)"
 
 # REDIS
 build --action_env=REDIS_HOST=localhost
@@ -124,15 +122,15 @@ build --action_env=WEB_CLIENT_AUTHZ_CLIENT_ID=$(AUTHZ_CLIENT_ID)
 build --action_env=NEXT_PUBLIC_WEB_CLIENT_API_URL=http://$(GATEWAY_WEB_EXPOSE_HOST):$(GATEWAY_WEB_EXPOSE_PORT)/graphql
 
 # DATA-SOURCE
-build --action_env=DATA_SOURCE_POSTGRES_URL="postgresql://$(POSTGRES_USERNAME):$(POSTGRES_PASSWORD)@$(POSTGRES_HOST):$(POSTGRES_PORT)/$(POSTGRES_DATABASE)?schema=public"
+build --action_env=DATA_SOURCE_POSTGRES_URL="postgresql://$(BACKEND_POSTGRES_USERNAME):$(BACKEND_POSTGRES_PASSWORD)@$(POSTGRES_HOST):$(POSTGRES_PORT)/$(BACKEND_POSTGRES_DATABASE)?schema=$(BACKEND_POSTGRES_SCHEMA)"
 
 # AUTH
 build --action_env=AUTH_WEB_EXPOSE_HOST=localhost
 build --action_env=AUTH_WEB_EXPOSE_PORT=3002
 build --action_env=AUTH_POSTGRES_HOST=$(POSTGRES_HOST)
 build --action_env=AUTH_POSTGRES_PORT=$(POSTGRES_PORT)
-build --action_env=AUTH_POSTGRES_USERNAME=$(POSTGRES_USERNAME)
-build --action_env=AUTH_POSTGRES_PASSWORD=$(POSTGRES_PASSWORD)
+build --action_env=AUTH_POSTGRES_USERNAME=wrauth
+build --action_env=AUTH_POSTGRES_PASSWORD=wrauthpass
 build --action_env=AUTH_POSTGRES_DATABASE=wrauth
 build --action_env=AUTH_POSTGRES_SCHEMA=public
 build --action_env=AUTH_JWT_SECRET=qazedfrtgb4567
@@ -150,9 +148,10 @@ build --action_env=BACKEND_AUTH_API_HOST=$(AUTH_WEB_EXPOSE_HOST)
 build --action_env=BACKEND_AUTH_API_PORT=$(AUTH_WEB_EXPOSE_PORT)
 build --action_env=BACKEND_POSTGRES_HOST=$(POSTGRES_HOST)
 build --action_env=BACKEND_POSTGRES_PORT=$(POSTGRES_PORT)
-build --action_env=BACKEND_POSTGRES_USERNAME=$(POSTGRES_USERNAME)
-build --action_env=BACKEND_POSTGRES_PASSWORD=$(POSTGRES_PASSWORD)
-build --action_env=BACKEND_POSTGRES_DATABASE=$(POSTGRES_DATABASE)
+build --action_env=BACKEND_POSTGRES_USERNAME=backenduser
+build --action_env=BACKEND_POSTGRES_PASSWORD=backenduserpassword
+build --action_env=BACKEND_POSTGRES_DATABASE=wrbackend
+build --action_env=BACKEND_POSTGRES_SCHEMA=public
 build --action_env=BACKEND_AUTH_API_URL=http://$(AUTH_WEB_EXPOSE_HOST):$(AUTH_WEB_EXPOSE_PORT)/api
 build --action_env=BACKEND_AUTH_VERIFY_WEBHOOK_URL=http://$(AUTH_WEB_EXPOSE_HOST):$(AUTH_WEB_EXPOSE_PORT)/api/authentication/verify
 build --action_env=BACKEND_RMQ_QUEUE_SAVE_FRAGMENTS=$(RABBITMQ_QUEUE_SAVE_FRAGMENTS)
@@ -163,6 +162,7 @@ build --action_env=BACKEND_GCP_MEDIA_DATA_BUCKET=$(GCP_MEDIA_DATA_BUCKET)
 build --action_env=GATEWAY_WEB_EXPOSE_HOST=localhost
 build --action_env=GATEWAY_WEB_EXPOSE_PORT=3300
 build --action_env=GATEWAY_SERVICE_BACKEND_URL=http://$(BACKEND_WEB_EXPOSE_HOST):$(BACKEND_WEB_EXPOSE_PORT)/graphql
+build --action_env=GATEWAY_SERVICE_AUTH_URL=http://$(AUTH_WEB_EXPOSE_HOST):$(AUTH_WEB_EXPOSE_PORT)/graphql
 
 # Image Gen service
 

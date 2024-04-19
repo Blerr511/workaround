@@ -1,9 +1,10 @@
-import { ApiProperty } from '@nestjs/swagger';
+import { Field, ObjectType } from '@nestjs/graphql';
 import { WrUser } from '../data/user';
 import { Expose } from 'class-transformer';
 
-export class UserBaseDto implements Omit<WrUser, 'providers'> {
-  @ApiProperty()
+@ObjectType()
+export class UserBaseResponse implements Omit<WrUser, 'providers'> {
+  @Field()
   @Expose()
   uid: string;
 }

@@ -1,8 +1,9 @@
-import { ApiProperty } from '@nestjs/swagger';
+import { Field, ObjectType } from '@nestjs/graphql';
 import { Expose } from 'class-transformer';
 
+@ObjectType()
 export class TokenDataResponseDto {
-  @ApiProperty()
+  @Field()
   @Expose()
   accessToken: string;
 }

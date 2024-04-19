@@ -12,17 +12,17 @@ import { toDto } from '../../app/data/toDto';
 export class AuthResolver {
   constructor(private readonly authApiService: AuthApiService) {}
 
-  @Query(() => SignInResponseGql)
-  async signIn(
-    @Args('cred') data: SignInParamsGql,
-  ): Promise<SignInResponseGql> {
-    return await this.authApiService.login(data).then(toDto(SignInResponseGql));
-  }
+  // @Query(() => SignInResponseGql)
+  // async signIn(
+  //   @Args('cred') data: SignInParamsGql,
+  // ): Promise<SignInResponseGql> {
+  //   return await this.authApiService.login(data).then(toDto(SignInResponseGql));
+  // }
 
-  @Mutation(() => AuthUserGql)
-  async emailSignUp(
-    @Args('user') data: EmailSignUpParamsGql,
-  ): Promise<AuthUserGql> {
-    return await this.authApiService.signUp(data).then(toDto(AuthUserGql));
-  }
+  // @Mutation(() => AuthUserGql)
+  // async emailSignUp(
+  //   @Args('user') data: EmailSignUpParamsGql,
+  // ): Promise<AuthUserGql> {
+  //   return await this.authApiService.signUp(data).then(toDto(AuthUserGql));
+  // }
 }

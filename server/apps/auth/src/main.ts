@@ -3,15 +3,12 @@ import { AppModule } from './app.module';
 import { ConfigService } from './configuration/config.service';
 import { Logger } from '@wr/logger';
 import { ValidationPipe } from '@nestjs/common';
-import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import * as session from 'express-session';
 
 async function bootstrap() {
   const mainLogger = new Logger('AUTH');
 
   const app = await NestFactory.create(AppModule, { logger: mainLogger });
-
-  app.setGlobalPrefix('api');
 
   app.useGlobalPipes(new ValidationPipe({ transform: true }));
 
@@ -26,18 +23,6 @@ async function bootstrap() {
   const config = app.get(ConfigService);
 
   const { host, port } = config.safeGet('web');
-
-  const swaggerConfig = new DocumentBuilder()
-    .setTitle('Cats example')
-    .setDescription('The cats API description')
-    .setVersion('1.0')
-    .addBearerAuth()
-    .addTag('cats')
-    .build();
-
-  const document = SwaggerModule.createDocument(app, swaggerConfig);
-
-  SwaggerModule.setup('api/swagger', app, document);
 
   await app.listen(port, host);
 
