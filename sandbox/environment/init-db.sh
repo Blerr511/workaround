@@ -1,9 +1,16 @@
 #!/bin/bash
 set -e
 
+echo "Creating user \"$AUTH_POSTGRES_USER\" WITH  password ***"
+
+# Create user n database
 psql -v ON_ERROR_STOP=1 --username "postgres" <<-EOSQL
     CREATE USER $AUTH_POSTGRES_USER WITH ENCRYPTED PASSWORD '$AUTH_POSTGRES_PASSWORD' CREATEDB;
     CREATE DATABASE $AUTH_POSTGRES_DB;
+EOSQL
+
+# Exec into database and grant privileges
+psql -v ON_ERROR_STOP=1 --username "postgres" $AUTH_POSTGRES_DB <<-EOSQL
     GRANT ALL PRIVILEGES ON DATABASE $AUTH_POSTGRES_DB TO $AUTH_POSTGRES_USER;
     GRANT ALL PRIVILEGES ON SCHEMA public TO $AUTH_POSTGRES_USER;
     GRANT ALL ON SCHEMA public to $AUTH_POSTGRES_USER;

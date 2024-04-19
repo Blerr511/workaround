@@ -7,7 +7,7 @@ services:
     ports:
       - "${POSTGRES_PORT}:5432"
     volumes:
-      - pg_data:/var/lib/postgresql/data
+      - postgres_data:/var/lib/postgresql/data
       - ./init-db.sh:/docker-entrypoint-initdb.d/init.sh
     environment:
       POSTGRES_PASSWORD: pgpass
@@ -39,7 +39,7 @@ services:
       - rabbitmq_logs:/var/log/rabbitmq
 
 volumes:
-  pg_data:
+  postgres_data:
   redis_data:
   rabbitmq_data:
   rabbitmq_logs:

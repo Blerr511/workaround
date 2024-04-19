@@ -98,7 +98,7 @@ build --action_env=AUTHZ_CLIENT_SECRET=
 
 # POSTGRES SERVICE
 build --action_env=POSTGRES_HOST=localhost
-build --action_env=POSTGRES_PORT=6432
+build --action_env=POSTGRES_PORT=6444
 build --action_env=POSTGRES_USERNAME=wruser
 build --action_env=POSTGRES_PASSWORD=wrpass
 build --action_env=POSTGRES_DATABASE=wr
