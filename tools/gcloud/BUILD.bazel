@@ -1,4 +1,4 @@
-load("//sandbox/gcp:defs.bzl", "secret_version")
+load("//tools/gcloud:defs.bzl", "secret_version")
 
 filegroup(
     name = "gcloud_cli",

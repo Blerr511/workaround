@@ -1,3 +1,5 @@
+node_version = "18.18.0"
+
 load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
 
 http_archive(
@@ -97,8 +99,6 @@ swc_register_toolchains(
 )
 
 load("@rules_nodejs//nodejs:repositories.bzl", "nodejs_register_toolchains")
-
-node_version = "18.11.0"
 
 nodejs_register_toolchains(
     name = "nodejs",

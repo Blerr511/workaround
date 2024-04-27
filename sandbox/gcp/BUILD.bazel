@@ -1,4 +1,4 @@
-load("//sandbox/gcp:defs.bzl", "secret_version")
+load("//tools/gcloud:defs.bzl", "secret_version")
 
 sh_binary(
     name = "active_cloud_builder_sa",
