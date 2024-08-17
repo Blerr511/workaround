@@ -105,6 +105,15 @@ npm_package(
     visibility = ["//visibility:public"],
 )
 
+js_library(
+    name = "pkg",
+    srcs = [
+        "package.json",
+        ":ts",
+    ],
+    visibility = ["//visibility:public"],
+)
+
 sh_binary(
     name = "npm.publish",
     srcs = [

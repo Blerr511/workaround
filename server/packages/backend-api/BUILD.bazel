@@ -5,6 +5,7 @@ load("@aspect_rules_js//npm:defs.bzl", "npm_package")
 load("@npm//server/packages/backend-api:@graphql-codegen/cli/package_json.bzl", codegen = "bin")
 load("//tools/bazel/copy-to-source:defs.bzl", "copy_to_source")
 load("@aspect_rules_js//js:defs.bzl", "js_binary", "js_run_binary")
+load("@aspect_rules_js//js:defs.bzl", "js_library")
 
 npm_link_all_packages(name = "node_modules")
 
@@ -77,6 +78,15 @@ npm_package(
     visibility = ["//visibility:public"],
 )
 
+js_library(
+    name = "pkg",
+    srcs = [
+        "package.json",
+        ":ts",
+    ],
+    visibility = ["//visibility:public"],
+)
+
 sh_binary(
     name = "npm.publish",
     srcs = [
@@ -109,7 +119,6 @@ codegen.gql_gen_binary(
 
 js_run_binary(
     name = "gen",
-    copy_srcs_to_bin= False,
     srcs = [
         "codegen.yaml",
         "//server/apps/gateway:schema",
@@ -119,6 +128,7 @@ js_run_binary(
         "-c",
         "$(location codegen.yaml)",
     ],
+    copy_srcs_to_bin = False,
     include_npm_linked_packages = False,
     tool = ":codegen",
 )
