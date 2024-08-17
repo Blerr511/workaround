@@ -13,6 +13,9 @@ import %workspace%/.aspect/bazelrc/debug.bazelrc
 # Import Aspect recommended Bazel javascript settings for all projects
 import %workspace%/.aspect/bazelrc/javascript.bazelrc
 
+# Import Aspect recommended Bazel python settings for all projects
+import %workspace%/.aspect/bazelrc/python.bazelrc
+
 # Import Aspect recommended Bazel 6 settings for all projects
 import %workspace%/.aspect/bazelrc/bazel6.bazelrc
 
