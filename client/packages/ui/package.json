@@ -10,8 +10,8 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "@types/react-dom": "18.x.x",
     "@types/react": "18.2.0",
+    "@types/react-dom": "18.x.x",
     "react": "18.2.0",
     "typescript-plugin-css-modules": "^5.0.1"
   },
@@ -40,6 +40,7 @@
     "framer-motion": "^10.16.2",
     "konva": "^9.3.2",
     "react-beautiful-dnd": "^13.1.1",
-    "react-konva": "^18.2.10"
+    "react-konva": "^18.2.10",
+    "use-image": "^1.1.1"
   }
 }

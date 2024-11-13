@@ -1,4 +1,4 @@
-"use-client";
+'use-client';
 
 export {
   AdobexdLogo,
@@ -30,15 +30,16 @@ export {
   VisaIcon,
   WalletIcon,
   useModalControl,
-} from "./components";
+} from './components';
 export {
   ContainerLayout,
   HeaderLayout,
   type HeaderLayoutProps,
-} from "./layout";
-export { UIProvider } from "./providers";
+} from './layout';
+export { UIProvider } from './providers';
 export {
   C,
   type KnownComponents,
   registerComponents,
-} from "./utils/registerComponents";
+} from './utils/registerComponents';
+export { GameBoard, PokerGame } from './poker-game';

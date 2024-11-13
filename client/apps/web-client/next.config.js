@@ -1,4 +1,5 @@
-const path = require("path");
+const path = require('path');
+const CopyPlugin = require('copy-webpack-plugin');
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
@@ -6,16 +7,24 @@ const nextConfig = {
   webpack(config, options) {
     config.resolve.symlinks = true;
 
-    config.resolve.alias["@"] = require("path").resolve(__dirname, "src");
+    config.resolve.alias['@'] = require('path').resolve(__dirname, 'src');
+
+    config.plugins.push(
+      new CopyPlugin({
+        patterns: [
+          { from: 'node_modules/@wr/ui/src/assets/cards', to: 'static/cards' },
+        ],
+      })
+    );
 
     config.module.rules.push({
       test: /\.tsx?$/,
-      include: [path.resolve(__dirname, "../../packages/ui/src")],
+      include: [path.resolve(__dirname, '../../packages/ui/src')],
       use: [
         {
-          loader: "swc-loader",
+          loader: 'swc-loader',
           options: {
-            configFile: path.resolve(__dirname, "../../packages/ui/.swcrc"),
+            configFile: path.resolve(__dirname, '../../packages/ui/.swcrc'),
             sourceMaps: false,
           },
         },
@@ -24,12 +33,12 @@ const nextConfig = {
 
     config.module.rules.push({
       test: /\.tsx?$/,
-      include: [path.resolve(__dirname, "../../packages/core/src")],
+      include: [path.resolve(__dirname, '../../packages/core/src')],
       use: [
         {
-          loader: "swc-loader",
+          loader: 'swc-loader',
           options: {
-            configFile: path.resolve(__dirname, "../../packages/core/.swcrc"),
+            configFile: path.resolve(__dirname, '../../packages/core/.swcrc'),
             sourceMaps: false,
           },
         },
@@ -39,15 +48,15 @@ const nextConfig = {
     config.module.rules.push({
       test: /\.tsx?$/,
       include: [
-        path.resolve(__dirname, "../../../server/packages/backend-api/src"),
+        path.resolve(__dirname, '../../../server/packages/backend-api/src'),
       ],
       use: [
         {
-          loader: "swc-loader",
+          loader: 'swc-loader',
           options: {
             configFile: path.resolve(
               __dirname,
-              "../../../server/packages/backend-api/.swcrc"
+              '../../../server/packages/backend-api/.swcrc'
             ),
             sourceMaps: false,
           },
@@ -56,6 +65,8 @@ const nextConfig = {
     });
 
     // config.externals = [...config.externals, { canvas: "canvas" }];
+
+    config.externals = [...config.externals, { canvas: 'canvas' }]; // required to make Konva & react-konva work
 
     return config;
   },
