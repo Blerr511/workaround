@@ -1,4 +1,4 @@
-import { Query, Resolver } from '@nestjs/graphql';
+import { Query, Resolver, Subscription } from '@nestjs/graphql';
 
 import { OperationResultGql } from '../app/graphql-common/operation-result.gql';
 
@@ -6,6 +6,11 @@ import { OperationResultGql } from '../app/graphql-common/operation-result.gql';
 export class AppResolver {
   @Query(() => OperationResultGql)
   async gameServiceOk() {
+    return OperationResultGql.ok();
+  }
+
+  @Subscription(() => OperationResultGql)
+  async gameServiceOkS() {
     return OperationResultGql.ok();
   }
 }

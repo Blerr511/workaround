@@ -21,11 +21,11 @@
     "preinstall": "npx only-allow pnpm"
   },
   "dependencies": {
-    "@apollo/server": "^4.7.1",
-    "@apollo/subgraph": "^2.7.0",
+    "@apollo/server": "4.11.2",
+    "@apollo/subgraph": "2.9.3",
     "@golevelup/nestjs-rabbitmq": "^4.1.0",
     "@google-cloud/storage": "^7.7.0",
-    "@nestjs/apollo": "^12.1.0",
+    "@nestjs/apollo": "12.2.1",
     "@nestjs/common": "9.3.8",
     "@nestjs/core": "9.3.8",
     "@nestjs/graphql": "^11.0.6",

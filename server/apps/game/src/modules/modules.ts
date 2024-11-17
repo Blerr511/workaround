@@ -1,7 +1,9 @@
 import { GraphQLModule } from '@nestjs/graphql';
 import {
   ApolloFederationDriver,
+  ApolloDriver,
   ApolloFederationDriverConfig,
+  ApolloDriverConfig,
 } from '@nestjs/apollo';
 import { ConfigModule } from '../app/configuration/config.module';
 import { PrismaModule } from '@wr/game-data-source';
@@ -14,12 +16,14 @@ export const MODULE_CONFIG = ConfigModule.forRoot({
   ),
 });
 
-export const MODULE_GRAPHQL =
-  GraphQLModule.forRoot<ApolloFederationDriverConfig>({
-    driver: ApolloFederationDriver,
-    autoSchemaFile: {
-      federation: 2,
-    },
-  });
+export const MODULE_GRAPHQL = GraphQLModule.forRoot<ApolloDriverConfig>({
+  driver: ApolloDriver,
+  subscriptions: {
+    'subscriptions-transport-ws': true,
+  },
+  autoSchemaFile: {
+    federation: 2,
+  },
+});
 
 export const MODULE_PRISMA = PrismaModule.forRootAsync();

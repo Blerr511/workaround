@@ -20,6 +20,7 @@ import { ApolloServerPluginLandingPageLocalDefault } from '@apollo/server/plugin
         return {
           driver: ApolloGatewayDriver,
           server: {
+            installSubscriptionHandlers: true,
             playground: false,
             plugins: [
               ApolloServerPluginLandingPageLocalDefault({ embed: true }),
