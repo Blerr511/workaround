@@ -30,6 +30,11 @@ export class ConfigSchema {
   @Expose()
   SERVICE_AUTH_URL: string;
 
+  @IsNotEmpty()
+  @IsString()
+  @Expose()
+  SERVICE_GAME_URL: string;
+
   get web() {
     return {
       expose: {
@@ -41,6 +46,7 @@ export class ConfigSchema {
 
   get services() {
     return {
+      game: this.SERVICE_GAME_URL,
       backend: this.SERVICE_BACKEND_URL,
       auth: this.SERVICE_AUTH_URL,
     };

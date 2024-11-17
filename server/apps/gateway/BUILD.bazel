@@ -58,6 +58,7 @@ js_binary(
         "WEB_EXPOSE_PORT": "$(GATEWAY_WEB_EXPOSE_PORT)",
         "SERVICE_BACKEND_URL": "$(GATEWAY_SERVICE_BACKEND_URL)",
         "SERVICE_AUTH_URL": "$(GATEWAY_SERVICE_AUTH_URL)",
+        "SERVICE_GAME_URL": "$(GATEWAY_SERVICE_GAME_URL)",
     },
     toolchains = [
         "//sandbox:gateway_env_vars",

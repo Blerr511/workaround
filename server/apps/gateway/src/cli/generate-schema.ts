@@ -29,7 +29,7 @@ async function generateSchema() {
 
   const { schema } = composeAndValidate(subgraphs);
 
-  await writeFile('schema.gql', printSchema(schema));
+  await writeFile('schema.gql', printSchema(schema as any));
 }
 
 generateSchema();

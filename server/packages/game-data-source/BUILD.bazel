@@ -1,0 +1,169 @@
+load("@aspect_bazel_lib//lib:write_source_files.bzl", "write_source_files")
+load("@aspect_rules_js//js:defs.bzl", "js_library")
+load("@aspect_rules_js//npm:defs.bzl", "npm_package")
+load("@aspect_rules_ts//ts:defs.bzl", "ts_project")
+load("@npm//:defs.bzl", "npm_link_all_packages")
+load("@npm//server/packages/game-data-source:prisma/package_json.bzl", _prisma = "bin")
+
+npm_link_all_packages(name = "node_modules")
+
+_prisma.prisma_test(
+    name = "validate",
+    args = [
+        "validate",
+        "--schema",
+        "$(location prisma/schema.prisma)",
+    ],
+    data = ["prisma/schema.prisma"],
+    env = {
+        # Fake env for validation.
+        "DATABASE_URL": "postgresql://wr:wr@0.0.0.0:5432/wr",
+    },
+)
+
+_prisma.prisma(
+    name = "generate",
+    srcs = [
+        "prisma/schema.prisma",
+        ":node_modules",
+        "//:node_modules",
+    ],
+    args = [
+        "generate",
+        "--schema",
+        "$(location prisma/schema.prisma)",
+    ],
+    env = {
+        #
+        # Trigger:
+        # https://github.com/prisma/engines-wrapper/blob/850bb6fe48c4b9a05ab17e73dbbdf8caacdc6e41/packages/fetch-engine/src/util.ts#L23
+        # TODO: This downloads stuff, that's bad! We should properly load this.
+        "AWS_LAMBDA_FUNCTION_VERSION": "True",
+        # do not install @prisma/client
+        "PRISMA_GENERATE_SKIP_AUTOINSTALL": "True",
+    },
+    out_dirs = ["prisma/prisma-client"],
+    tags = ["requires-network"],
+)
+
+write_source_files(
+    name = "write",
+    files = {
+        "prisma/prisma-client": ":generate",
+    },
+)
+
+_prisma.prisma_binary(
+    name = "migration.apply",
+    args = [
+        "db",
+        "push",
+        "--schema",
+        "$(location prisma/schema.prisma)",
+        "--skip-generate",
+    ],
+    data = [
+        "prisma/schema.prisma",
+        ":node_modules",
+        "//:node_modules",
+    ],
+    env = {
+        "GAME_POSTGRES_URL": "$(GAME_POSTGRES_URL)",
+    },
+    tags = ["requires-network"],
+    toolchains = ["//sandbox:game_env_vars"],
+)
+
+js_library(
+    name = "prisma-client",
+    srcs = [":generate"],
+    deps = [
+        ":node_modules",
+        "//:node_modules",
+    ],
+)
+
+ts_project(
+    name = "ts",
+    srcs = glob([
+        "src/**/*.ts",
+    ]),
+    data = [
+        "tsconfig.json",
+    ],
+    declaration = True,
+    incremental = True,
+    source_map = True,
+    validate = True,
+    deps = [":prisma-client"],
+)
+
+# make this library available via node_modules
+npm_package(
+    name = "game-data-source",
+    srcs = [
+        "package.json",
+        ":ts",
+    ],
+    # This is a perf improvement; the default will be flipped to False in rules_js 2.0
+    include_runfiles = False,
+    visibility = ["//visibility:public"],
+)
+
+js_library(
+    name = "pkg",
+    srcs = [
+        "package.json",
+        ":ts",
+    ],
+    visibility = ["//visibility:public"],
+)
+
+sh_binary(
+    name = "npm.publish",
+    srcs = [
+        "//tools/npm:npm_cli",
+    ],
+    args = [
+        "publish",
+        "$(location :data-source)",
+        # "--dry-run",
+    ],
+    data = [
+        ":data-source",
+        "//tools/gcloud:npmrc",
+    ],
+    env = {
+        "NPM_CONFIG_USERCONFIG": "$(location //tools/gcloud:npmrc)",
+    },
+    tags = ["requires-network"],
+)
+
+filegroup(
+    name = "game-data-source.json",
+    srcs = [":package.json"],
+    visibility = ["//visibility:public"],
+)
+
+genrule(
+    name = "version",
+    srcs = [
+        "package.json",
+        "//tools/shell:package_version",
+    ],
+    outs = [".game_data_source_version"],
+    cmd = """
+    $(location //tools/shell:package_version) $(location package.json) > $@
+    """,
+)
+
+genrule(
+    name = "dump",
+    outs = ["dump.sql"],
+    cmd = """
+    export PGPASSWORD=$(POSTGRES_PASSWORD)
+    pg_dump -h $(POSTGRES_HOST) -U $(POSTGRES_USERNAME) -p $(POSTGRES_PORT) $(POSTGRES_DATABASE) > $@
+    """,
+    tags = ["requires-network"],
+    toolchains = ["//sandbox:postgres_env_vars"],
+)

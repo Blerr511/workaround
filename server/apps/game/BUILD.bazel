@@ -1,0 +1,170 @@
+load("@aspect_bazel_lib//lib:write_source_files.bzl", "write_source_files")
+load("@aspect_rules_js//js:defs.bzl", "js_binary", "js_library")
+load("@aspect_rules_ts//ts:defs.bzl", "ts_config", "ts_project")
+load("@npm//:defs.bzl", "npm_link_all_packages")
+load("@npm//server/packages/data-source:prisma/package_json.bzl", _prisma = "bin")
+load("//tools/utils:js_image.bzl", "js_image")
+
+npm_link_all_packages(name = "node_modules")
+
+filegroup(
+    name = "project_support_files",
+    srcs = glob([
+        "*.js",
+        ".*.js",
+        "*.json",
+        "*.yaml",
+    ]),
+)
+
+srcs = glob(
+    [
+        "src/**/*.ts",
+        "test/**/*.ts",
+        "prisma/**/*.ts",
+    ],
+)
+
+data = ["project_support_files"]
+
+deps = [
+    ":node_modules",
+    "//:node_modules",
+]
+
+ts_config(
+    name = "tsconfig",
+    src = "tsconfig.json",
+)
+
+_prisma.prisma_test(
+    name = "validate",
+    args = [
+        "validate",
+        "--schema",
+        "$(location prisma/schema.prisma)",
+    ],
+    data = ["prisma/schema.prisma"],
+    env = {
+        # Fake env for validation.
+        "GAME_POSTGRES_URL": "postgresql://wr:wr@0.0.0.0:5432/wr",
+    },
+)
+
+_prisma.prisma(
+    name = "generate",
+    srcs = [
+        "prisma/schema.prisma",
+        ":node_modules",
+        "//:node_modules",
+    ],
+    args = [
+        "generate",
+        "--schema",
+        "$(location prisma/schema.prisma)",
+    ],
+    env = {
+        #
+        # Trigger:
+        # https://github.com/prisma/engines-wrapper/blob/850bb6fe48c4b9a05ab17e73dbbdf8caacdc6e41/packages/fetch-engine/src/util.ts#L23
+        # TODO: This downloads stuff, that's bad! We should properly load this.
+        "AWS_LAMBDA_FUNCTION_VERSION": "True",
+        # do not install @prisma/client
+        "PRISMA_GENERATE_SKIP_AUTOINSTALL": "True",
+    },
+    out_dirs = ["src/generated/client"],
+    tags = ["requires-network"],
+)
+
+_prisma.prisma_binary(
+    name = "migration.apply",
+    args = [
+        "db",
+        "push",
+        "--schema",
+        "$(location prisma/schema.prisma)",
+        "--skip-generate",
+    ],
+    data = [
+        "prisma/schema.prisma",
+        ":node_modules",
+        "//:node_modules",
+    ],
+    env = {
+        "GAME_POSTGRES_URL": "$(GAME_POSTGRES_URL)",
+    },
+    tags = ["requires-network"],
+    toolchains = ["//sandbox:game_env_vars"],
+)
+
+js_library(
+    name = "prisma-client",
+    srcs = [":generate"],
+    deps = [
+        ":node_modules",
+        "//:node_modules",
+    ],
+)
+
+ts_project(
+    name = "ts",
+    srcs = srcs + [":prisma-client"],
+    data = data,
+    declaration = False,
+    incremental = False,
+    source_map = True,
+    tsconfig = ":tsconfig",
+    validate = True,
+    visibility = ["//visibility:public"],
+    deps = deps,
+)
+
+js_binary(
+    name = "start",
+    args = ["-r tsconfig-paths/register"],
+    data = [
+        ":ts",
+    ],
+    entry_point = ":src/main.js",
+    env = {
+        "GAME_POSTGRES_URL": "$(GAME_POSTGRES_URL)",
+        "WEB_EXPOSE_PORT": "$(GAME_WEB_EXPOSE_PORT)",
+        "WEB_EXPOSE_HOST": "$(GAME_WEB_EXPOSE_HOST)",
+    },
+    toolchains = [
+        "//sandbox:game_env_vars",
+    ],
+)
+
+js_binary(
+    name = "run_schema_generator",
+    data = [":ts"],
+    entry_point = ":src/cli/generate-schema.js",
+)
+
+genrule(
+    name = "schema",
+    srcs = [":ts"],
+    outs = ["schema.gql"],  # the output file
+    cmd = """
+    export BAZEL_BINDIR="."
+    export __SKIP_CONFIG_VALIDATION=yes
+    $(execpath :run_schema_generator)
+    cp schema.gql $@
+    """,
+    tools = [":run_schema_generator"],
+    visibility = ["//visibility:public"],
+)
+
+js_image(
+    name = "game",
+    srcs = [":ts"],
+    image = "$(GCP_DOCKER_GAME_IMAGE)",
+    package_json = "package.json",
+    start_cmd = "node src/main.js",
+    deps = [
+        "//server/packages/app-types:app-types.json",
+        "//server/packages/data-source:data-source.json",
+        "//server/packages/logger:logger.json",
+    ],
+)

@@ -1,0 +1,160 @@
+// schema.prisma
+
+datasource db {
+  provider = "postgresql"
+  url      = env("GAME_POSTGRES_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "prisma-client"
+}
+
+enum GameType {
+  TEXAS_HOLDEM
+}
+
+enum GameStatus {
+  WAITING
+  ONGOING
+  FINISHED
+}
+
+enum BetAction {
+  CALL
+  RAISE
+  FOLD
+  CHECK
+  ALL_IN
+}
+
+enum BettingRound {
+  PRE_FLOP
+  FLOP
+  TURN
+  RIVER
+}
+
+enum TransactionType {
+  BUY_IN
+  CASH_OUT
+  WIN
+  LOSS
+}
+
+enum CardSuit {
+  HEARTS
+  DIAMONDS
+  CLUBS
+  SPADES
+}
+
+enum CardRank {
+  TWO
+  THREE
+  FOUR
+  FIVE
+  SIX
+  SEVEN
+  EIGHT
+  NINE
+  TEN
+  JACK
+  QUEEN
+  KING
+  ACE
+}
+
+model User {
+  id           String         @id @default(uuid())
+  balance      Int            @default(0)
+  createdAt    DateTime       @default(now())
+  updatedAt    DateTime       @updatedAt
+  seats        Seat[]
+  bets         Bet[]
+  handsWon     Hand[]         @relation("HandsWon")
+  cards        Card[]
+  PlayerInHand PlayerInHand[]
+}
+
+model Table {
+  id         String   @id @default(uuid())
+  name       String
+  maxPlayers Int
+  bigBlind   Int
+  smallBlind Int
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+  seats      Seat[]
+  Game       Game[]
+}
+
+model Game {
+  id        String     @id @default(uuid())
+  type      GameType
+  status    GameStatus
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+  hands     Hand[]
+  table     Table      @relation(fields: [tableId], references: [id])
+  tableId   String
+}
+
+model Seat {
+  id       String @id @default(uuid())
+  user     User   @relation(fields: [userId], references: [id])
+  userId   String
+  table    Table  @relation(fields: [tableId], references: [id])
+  tableId  String
+  position Int
+  chips    Int    @default(0)
+}
+
+model Hand {
+  id             String         @id @default(uuid())
+  game           Game           @relation(fields: [gameId], references: [id])
+  gameId         String
+  startTime      DateTime       @default(now())
+  endTime        DateTime?
+  winner         User?          @relation("HandsWon", fields: [winnerId], references: [id])
+  winnerId       String?
+  pot            Int            @default(0)
+  bets           Bet[]
+  communityCards Card[]
+  PlayerInHand   PlayerInHand[]
+}
+
+model Card {
+  id     String   @id @default(uuid())
+  hand   Hand?    @relation(fields: [handId], references: [id])
+  handId String?
+  user   User?    @relation(fields: [userId], references: [id])
+  userId String?
+  rank   CardRank
+  suit   CardSuit
+}
+
+model Bet {
+  id        String       @id @default(uuid())
+  hand      Hand         @relation(fields: [handId], references: [id])
+  handId    String
+  user      User         @relation(fields: [userId], references: [id])
+  userId    String
+  amount    Int
+  action    BetAction
+  timestamp DateTime     @default(now())
+  round     BettingRound
+}
+
+model PlayerInHand {
+  id         String  @id @default(uuid())
+  hand       Hand    @relation(fields: [handId], references: [id])
+  handId     String
+  player     User    @relation(fields: [playerId], references: [id])
+  playerId   String
+  hasFolded  Boolean @default(false)
+  hasActed   Boolean @default(false)
+  currentBet Int     @default(0)
+  totalBet   Int     @default(0)
+  isAllIn    Boolean @default(false)
+}

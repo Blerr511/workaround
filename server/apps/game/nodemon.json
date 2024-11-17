@@ -1,0 +1,10 @@
+{
+  "$schema": "https://raw.githubusercontent.com/SchemaStore/schemastore/master/src/schemas/json/nodemon.json",
+  "exec": "bazel run //server/apps/game:start",
+  "watch": [
+    "./src",
+    "server/packages/logger/src",
+    "server/packages/game-data-source/src"
+  ],
+  "ext": ".ts,.js,.json"
+}

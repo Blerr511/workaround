@@ -1,7 +1,7 @@
 {
   "compilerOptions": {
-    "jsx": "preserve",
-    "target": "es5",
+    "jsx": "react",
+    "target": "ES2020",
     "lib": ["dom", "dom.iterable", "esnext"],
     "allowJs": true,
     "skipLibCheck": true,

@@ -28,13 +28,17 @@ import { ApolloServerPluginLandingPageLocalDefault } from '@apollo/server/plugin
           gateway: {
             supergraphSdl: new IntrospectAndCompose({
               subgraphs: [
+                // {
+                //   name: 'backend',
+                //   url: configService.safeGet('services').backend,
+                // },
+                // {
+                //   name: 'auth',
+                //   url: configService.safeGet('services').auth,
+                // },
                 {
-                  name: 'backend',
-                  url: configService.safeGet('services').backend,
-                },
-                {
-                  name: 'auth',
-                  url: configService.safeGet('services').auth,
+                  name: 'game',
+                  url: configService.safeGet('services').game,
                 },
               ],
             }),
