@@ -1,9 +1,10 @@
-import { Module } from '@nestjs/common';
+import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
 import { GraphQLModule } from '@nestjs/graphql';
-import { ApolloGatewayDriver, ApolloGatewayDriverConfig } from '@nestjs/apollo';
-import { IntrospectAndCompose } from '@apollo/gateway';
+import { ApolloGatewayDriverConfig, ApolloGatewayDriver } from '@nestjs/apollo';
 import { ConfigModule } from './app/configuration/config.module';
 import { ConfigService } from './app/configuration';
+import { TokenVerifyMiddleware } from './app/token-verify/token-verify.middleware';
+import { IntrospectAndCompose } from '@apollo/gateway';
 import { ApolloServerPluginLandingPageLocalDefault } from '@apollo/server/plugin/landingPage/default';
 
 @Module({
@@ -52,4 +53,8 @@ import { ApolloServerPluginLandingPageLocalDefault } from '@apollo/server/plugin
   controllers: [],
   providers: [],
 })
-export class AppModule {}
+export class AppModule implements NestModule {
+  configure(consumer: MiddlewareConsumer) {
+    consumer.apply(TokenVerifyMiddleware).forRoutes('*');
+  }
+}

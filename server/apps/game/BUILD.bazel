@@ -121,7 +121,10 @@ ts_project(
 
 js_binary(
     name = "start",
-    args = ["-r tsconfig-paths/register"],
+    args = [
+        "-r tsconfig-paths/register",
+        "--inspect-brk  ",
+    ],
     data = [
         ":ts",
     ],
@@ -131,6 +134,7 @@ js_binary(
         "WEB_EXPOSE_PORT": "$(GAME_WEB_EXPOSE_PORT)",
         "WEB_EXPOSE_HOST": "$(GAME_WEB_EXPOSE_HOST)",
     },
+    node_options = ["--inspect"],
     toolchains = [
         "//sandbox:game_env_vars",
     ],

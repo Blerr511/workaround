@@ -1,6 +1,7 @@
 {
   "name": "ws",
   "dependencies": {
+    "fast-deep-equal": "3.1.1",
     "graphql": "^16.8.1",
     "typescript": "5.0.4"
   },
@@ -12,5 +13,17 @@
   },
   "engines": {
     "node": "18.x.x"
+  },
+  "pnpm": {
+    "overrides": {
+      "fast-deep-equal": "3.1.1"
+    },
+    "packageExtensions": {
+      "*": {
+        "dependencies": {
+          "fast-deep-equal": "3.1.1"
+        }
+      }
+    }
   }
 }
