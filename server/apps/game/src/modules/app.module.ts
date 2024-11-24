@@ -15,12 +15,14 @@ import { GamePlayer } from '../app/game/game-player';
 import { Card } from '../app/game/card';
 import { GameAsyncStorageModule } from './game-async-storage';
 import { GameAdapterModule } from './game-adapter/game-adapter.module';
+import { GraphqlPubsubModule } from '../app/graphql-pubsub';
 
 @Module({
   imports: [
     MODULE_CONFIG,
     MODULE_PRISMA,
     MODULE_GRAPHQL,
+    GraphqlPubsubModule,
     GameAsyncStorageModule,
     GameAdapterModule,
   ],

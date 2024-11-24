@@ -6,6 +6,8 @@ import { ConfigService } from './app/configuration';
 import { TokenVerifyMiddleware } from './app/token-verify/token-verify.middleware';
 import { IntrospectAndCompose } from '@apollo/gateway';
 import { ApolloServerPluginLandingPageLocalDefault } from '@apollo/server/plugin/landingPage/default';
+import { GraphqlPubsubModule } from './app/graphql-pubsub';
+import { SubscriptionsResolver } from './subscriptions.resolver';
 
 @Module({
   imports: [
@@ -14,6 +16,7 @@ import { ApolloServerPluginLandingPageLocalDefault } from '@apollo/server/plugin
         process.env.__SKIP_CONFIG_VALIDATION,
       ),
     }),
+    GraphqlPubsubModule,
     GraphQLModule.forRootAsync<ApolloGatewayDriverConfig>({
       driver: ApolloGatewayDriver,
 
@@ -51,7 +54,7 @@ import { ApolloServerPluginLandingPageLocalDefault } from '@apollo/server/plugin
     }),
   ],
   controllers: [],
-  providers: [],
+  providers: [SubscriptionsResolver],
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {

@@ -3,12 +3,14 @@ import { Mutation, Query, Resolver, Subscription } from '@nestjs/graphql';
 import { OperationResultGql } from '../app/graphql-common/operation-result.gql';
 import { GameAsyncStorageService } from './game-async-storage/game-async-storage.service';
 import { PubSub } from 'graphql-subscriptions';
+import { GqlPubSub } from '../app/graphql-pubsub';
 
 @Resolver()
 export class AppResolver {
-  private readonly pubsub = new PubSub();
-
-  constructor(private readonly asl: GameAsyncStorageService) {}
+  constructor(
+    private readonly asl: GameAsyncStorageService,
+    private readonly pubsub: GqlPubSub,
+  ) {}
 
   @Query(() => OperationResultGql)
   async gameServiceOk() {
@@ -21,7 +23,7 @@ export class AppResolver {
     },
   })
   async gameServiceOkS() {
-    return this.pubsub.asyncIterableIterator('operation-result');
+    return this.pubsub.asyncIterator('operation-result');
   }
 
   @Mutation(() => OperationResultGql)
