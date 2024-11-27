@@ -4,6 +4,7 @@
     "graphql.vscode-graphql",
     "graphql.vscode-graphql-syntax",
     "bazelbuild.vscode-bazel",
-    "devondcarew.bazel-code"
+    "devondcarew.bazel-code",
+    "nvidia.bluebazel"
   ]
 }

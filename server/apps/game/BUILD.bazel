@@ -29,7 +29,6 @@ data = ["project_support_files"]
 
 deps = [
     ":node_modules",
-    "//:node_modules",
 ]
 
 ts_config(

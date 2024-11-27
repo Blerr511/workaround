@@ -1,8 +1,7 @@
 import { Module } from '@nestjs/common';
-
-import { MODULE_CONFIG, MODULE_GRAPHQL } from '../modules/modules';
+import { AppModule } from '../modules/app.module';
 
 @Module({
-  imports: [MODULE_CONFIG, MODULE_GRAPHQL],
+  imports: [AppModule],
 })
 export class GraphqlSchemaModule {}

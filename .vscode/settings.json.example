@@ -1,4 +1,55 @@
 {
+  "bluebazel.buildAtRun": false,
+  "bluebazel.runBinariesDirect": false,
+  "bluebazel.customButtons": [
+    {
+      "title": "watch",
+      "collapsed": false,
+      "buttons": [
+        {
+          "title": "game",
+          "command": "./watch.sh server/apps/game",
+          "description": "Run game backend with watch mode",
+          "tooltip": "game server watch mode",
+          "methodName": "bluebazel.gameServer"
+        },
+        {
+          "title": "backend",
+          "command": "./watch.sh server/apps/backend",
+          "description": "Run backend server with watch mode",
+          "tooltip": "backend server watch mode",
+          "methodName": "bluebazel.backendServer"
+        },
+        {
+          "title": "auth",
+          "command": "./watch.sh server/apps/auth",
+          "description": "Run auth server with watch mode",
+          "tooltip": "auth server watch mode",
+          "methodName": "bluebazel.autherver"
+        },
+        {
+          "title": "gatewaye",
+          "command": "./watch.sh server/apps/gateway",
+          "description": "Run gateway backend with watch mode",
+          "tooltip": "gateway server watch mode",
+          "methodName": "bluebazel.gatewayServer"
+        }
+      ]
+    },
+    {
+      "title": "pnpm",
+      "collapsed": false,
+      "buttons": [
+        {
+          "title": "install",
+          "command": "pnpm install",
+          "description": "Install pnpm dependencies",
+          "tooltip": "pnpm install",
+          "methodName": "bluebazel.pnpmInstall"
+        }
+      ]
+    }
+  ],
   "files.associations": {
     ".bazelrc": "shellscript"
   },
@@ -11,5 +62,6 @@
     "**/Thumbs.db": true,
     "**/dist/**": true,
     "bazel-*": true
-  }
+  },
+  "cSpell.words": ["mercurius", "mercuriusjs", "nestjs"]
 }

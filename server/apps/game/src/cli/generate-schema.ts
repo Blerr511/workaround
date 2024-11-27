@@ -6,10 +6,7 @@ import { writeFileSync } from 'fs';
 import { GraphqlSchemaModule } from './graphql-schema.module';
 
 async function generateSchema() {
-  const app = await NestFactory.createApplicationContext(
-    GraphqlSchemaModule,
-    {},
-  );
+  const app = await NestFactory.createApplicationContext(GraphqlSchemaModule);
 
   const { schema } = app.get(GraphQLSchemaHost);
 

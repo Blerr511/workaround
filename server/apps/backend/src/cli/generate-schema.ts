@@ -3,13 +3,10 @@ import { GraphQLSchemaHost } from '@nestjs/graphql';
 import { printSchema } from 'graphql';
 import { writeFileSync } from 'fs';
 
-import { GraphqlSchemaModule } from './graphql-schema.module';
+import { AppModule } from '../modules/app.module';
 
 async function generateSchema() {
-  const app = await NestFactory.createApplicationContext(
-    GraphqlSchemaModule,
-    {},
-  );
+  const app = await NestFactory.createApplicationContext(AppModule, {});
 
   const { schema } = app.get(GraphQLSchemaHost);
 

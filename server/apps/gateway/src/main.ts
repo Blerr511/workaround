@@ -12,6 +12,8 @@ async function bootstrap() {
 
   const configService = app.get(ConfigService);
 
+  await app.init();
+
   await app.listen(configService.safeGet('web').expose.port);
 
   mainLogger.log(
