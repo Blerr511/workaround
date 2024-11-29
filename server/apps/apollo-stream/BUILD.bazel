@@ -1,0 +1,65 @@
+load("@aspect_rules_js//js:defs.bzl", "js_binary")
+load("@aspect_rules_ts//ts:defs.bzl", "ts_config", "ts_project")
+load("@npm//:defs.bzl", "npm_link_all_packages")
+
+npm_link_all_packages(name = "node_modules")
+
+filegroup(
+    name = "project_support_files",
+    srcs = glob([
+        "*.js",
+        ".*.js",
+        "*.json",
+        "*.yaml",
+    ]),
+)
+
+srcs = glob(
+    [
+        "src/**/*.ts",
+        "test/**/*.ts",
+    ],
+)
+
+data = ["project_support_files"]
+
+deps = [
+    ":node_modules",
+]
+
+ts_config(
+    name = "tsconfig",
+    src = "tsconfig.json",
+)
+
+ts_project(
+    name = "ts",
+    srcs = srcs,
+    data = data,
+    declaration = False,
+    incremental = False,
+    source_map = True,
+    tsconfig = ":tsconfig",
+    validate = True,
+    visibility = ["//visibility:public"],
+    deps = deps,
+)
+
+js_binary(
+    name = "start",
+    args = [
+        "-r tsconfig-paths/register",
+    ],
+    data = [
+        ":ts",
+        "//server/apps/game:schema",
+    ],
+    entry_point = ":src/main.js",
+    env = {
+        "GQL_SOURCES": "$(rootpath //server/apps/game:schema)",
+        "REDIS_HOST": "localhost",
+        "REDIS_PORT": "8379",
+        "WEB_EXPOSE_PORT": "3301",
+        "WEB_EXPOSE_HOST": "localhost",
+    },
+)

@@ -17,18 +17,14 @@ export class AppResolver {
     return OperationResultGql.ok(JSON.stringify(this.asl.getState()));
   }
 
-  @Subscription(() => OperationResultGql, {
-    resolve(payload, args, context, info) {
-      return payload;
-    },
-  })
+  @Subscription(() => OperationResultGql)
   async gameServiceOkS() {
-    return this.pubsub.asyncIterator('operation-result');
+    // dummy
   }
 
   @Mutation(() => OperationResultGql)
   async triggerOk() {
-    this.pubsub.publish(
+    await this.pubsub.publish(
       'operation-result',
       OperationResultGql.ok(JSON.stringify(this.asl.getState())),
     );
