@@ -106,7 +106,7 @@ npm_translate_lock(
     npmrc = "//:.npmrc",
     pnpm_lock = "//:pnpm-lock.yaml",
     pnpm_version = "8.3.1",
-    prod = True,
+    prod = False,
     verify_node_modules_ignored = "//:.bazelignore",
 )
 

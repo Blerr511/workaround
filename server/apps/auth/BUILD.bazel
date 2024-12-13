@@ -1,7 +1,8 @@
 load("@aspect_rules_js//js:defs.bzl", "js_binary", "js_run_binary")
+load("@aspect_rules_swc//swc:defs.bzl", "swc")
 load("@aspect_rules_ts//ts:defs.bzl", "ts_config", "ts_project")
+load("@bazel_skylib//lib:partial.bzl", "partial")
 load("@npm//:defs.bzl", "npm_link_all_packages")
-load("@npm//server/apps/auth:ts-node/package_json.bzl", ts_node = "bin")
 load("@npm//server/apps/auth:typeorm/package_json.bzl", typeorm = "bin")
 load("//tools/bazel/copy-to-source:defs.bzl", "copy_to_source")
 load("//tools/utils:js_image.bzl", "js_image")
@@ -21,7 +22,6 @@ filegroup(
 srcs = glob(
     [
         "src/**/*.ts",
-        "test/**/*.ts",
     ],
 ) + ["datasource.ts"]
 
@@ -46,6 +46,10 @@ ts_project(
     declaration = True,
     incremental = True,
     source_map = True,
+    transpiler = partial.make(
+        swc,
+        swcrc = ".swcrc",
+    ),
     tsconfig = ":tsconfig",
     validate = True,
     visibility = ["//visibility:public"],
@@ -56,7 +60,7 @@ js_binary(
     name = "start",
     data = [
         ":ts",
-    ],
+    ] + glob(["views/**"]),
     entry_point = ":src/main.js",
     env = {
         "WEB_EXPOSE_HOST": "$(AUTH_WEB_EXPOSE_HOST)",
@@ -110,7 +114,9 @@ js_run_binary(
     out_dirs = ["migrations_data"],
     tags = ["requires-network"],
     tool = ":typeorm",
-    toolchains = ["//sandbox:auth_env_vars"],
+    toolchains = [
+        "//sandbox:auth_env_vars",
+    ],
 )
 
 js_run_binary(
@@ -152,6 +158,25 @@ typeorm.typeorm_binary(
     name = "migration.apply",
     args = [
         "migration:run",
+        "-d server/apps/auth/datasource.js",
+    ],
+    data = [":ts"],
+    env = {
+        "POSTGRES_HOST": "$(AUTH_POSTGRES_HOST)",
+        "POSTGRES_PORT": "$(AUTH_POSTGRES_PORT)",
+        "POSTGRES_USERNAME": "$(AUTH_POSTGRES_USERNAME)",
+        "POSTGRES_PASSWORD": "$(AUTH_POSTGRES_PASSWORD)",
+        "POSTGRES_DATABASE": "$(AUTH_POSTGRES_DATABASE)",
+        "POSTGRES_SCHEMA": "$(AUTH_POSTGRES_SCHEMA)",
+    },
+    tags = ["requires-network"],
+    toolchains = ["//sandbox:auth_env_vars"],
+)
+
+typeorm.typeorm_binary(
+    name = "migration.rollback",
+    args = [
+        "migration:revert",
         "-d server/apps/auth/datasource.js",
     ],
     data = [":ts"],

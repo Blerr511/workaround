@@ -6,11 +6,12 @@ import { DataModule } from '../../data/data.module';
 import { AuthProviderDao } from '../../data/auth-provider/auth-provider.dao';
 import { CryptoModule } from '../crypto/crypto.module';
 import { VerifyController } from './verify.controller';
+import { AuthController } from './auth.controller';
 
 @Module({
   imports: [DataModule.forFeature(UserDao, AuthProviderDao), CryptoModule],
   providers: [AuthenticationResolver, AuthenticationService],
   exports: [AuthenticationService],
-  controllers: [VerifyController],
+  controllers: [VerifyController, AuthController],
 })
 export class AuthenticationModule {}

@@ -24,6 +24,10 @@ export class UserDao {
     });
   }
 
+  findByUserName(username: string) {
+    return this.userRepo.findOneBy({ username });
+  }
+
   async createNewUserWithProvider(
     data: Pick<DeepPartial<WrUser>, 'providers'>,
   ): Promise<WrUser> {

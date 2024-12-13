@@ -3,6 +3,7 @@ import {
   Entity,
   ManyToOne,
   PrimaryGeneratedColumn,
+  Relation,
   Unique,
 } from 'typeorm';
 import { WrUser } from '../user/user.entity';
@@ -30,5 +31,5 @@ export class AuthProvider {
     onDelete: 'CASCADE',
     onUpdate: 'CASCADE',
   })
-  user: WrUser;
+  user: Relation<WrUser>;
 }

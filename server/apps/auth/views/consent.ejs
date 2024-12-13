@@ -1,0 +1,14 @@
+<html>
+<body>
+  <h1>Consent</h1>
+  <p>Client <%= clientId %> is requesting access. Allow?</p>
+  <form method="POST" action="/authorize">
+    <input type="hidden" name="client_id" value="<%= clientId %>" />
+    <input type="hidden" name="redirect_uri" value="<%= redirectUri %>" />
+    <input type="hidden" name="scope" value="<%= scope %>" />
+    <input type="hidden" name="state" value="<%= state %>" />
+    <button name="approve" value="yes">Approve</button>
+    <button name="approve" value="no">Deny</button>
+  </form>
+</body>
+</html>

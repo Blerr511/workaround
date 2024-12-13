@@ -128,8 +128,8 @@ build --action_env=DATA_SOURCE_POSTGRES_URL="postgresql://$(BACKEND_POSTGRES_USE
 # AUTH
 build --action_env=AUTH_WEB_EXPOSE_HOST=localhost
 build --action_env=AUTH_WEB_EXPOSE_PORT=3002
-build --action_env=AUTH_POSTGRES_HOST=$(POSTGRES_HOST)
-build --action_env=AUTH_POSTGRES_PORT=$(POSTGRES_PORT)
+build --action_env=AUTH_POSTGRES_HOST=localhost
+build --action_env=AUTH_POSTGRES_PORT=6444
 build --action_env=AUTH_POSTGRES_USERNAME=wrauth
 build --action_env=AUTH_POSTGRES_PASSWORD=wrauthpass
 build --action_env=AUTH_POSTGRES_DATABASE=wrauth

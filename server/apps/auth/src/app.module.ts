@@ -10,6 +10,8 @@ import {
   MODULE_GRAPHQL,
   MODULE_TYPEORM,
 } from './modules';
+import { Oath2Module } from './app/oath2/oath2.module';
+import { AuthPassportModule } from './app/passport/passport.module';
 
 @Module({
   imports: [
@@ -18,6 +20,8 @@ import {
     MODULE_TYPEORM,
     ...INTERNAL_MODULES,
     AuthzModule,
+    Oath2Module,
+    AuthPassportModule,
   ],
   controllers: [],
   providers: [
