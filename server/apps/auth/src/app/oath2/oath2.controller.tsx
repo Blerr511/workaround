@@ -2,6 +2,9 @@ import { Controller, Get, Query, Req, Res, Post, Body } from '@nestjs/common';
 import { Request, Response } from 'express';
 import { Oauth2Service } from './oath2.service';
 import { AuthGuard } from '@nestjs/passport';
+import { renderToString } from 'react-dom/server';
+import { App } from '@wr/oauth-view';
+import React from 'react';
 
 @Controller()
 export class Oauth2Controller {
@@ -45,28 +48,30 @@ export class Oauth2Controller {
     @Body('state') state: string,
     @Body('approve') approve: string,
   ) {
+    const html = renderToString(<App />);
+    return res.send(html);
     // User must be logged in at this point
-    const user = req.user as any;
-    if (!user || !this.oauth2Service.validateClient(clientId, redirectUri)) {
-      return res.status(400).send('Unauthorized or invalid client');
-    }
+    // const user = req.user as any;
+    // if (!user || !this.oauth2Service.validateClient(clientId, redirectUri)) {
+    //   return res.status(400).send('Unauthorized or invalid client');
+    // }
 
-    if (approve === 'yes') {
-      const code = this.oauth2Service.generateCode(
-        clientId,
-        redirectUri,
-        user.id,
-      );
-      const redirectUrl = new URL(redirectUri);
-      redirectUrl.searchParams.set('code', code);
-      if (state) redirectUrl.searchParams.set('state', state);
-      return res.redirect(redirectUrl.toString());
-    } else {
-      // User denied access
-      const redirectUrl = new URL(redirectUri);
-      redirectUrl.searchParams.set('error', 'access_denied');
-      return res.redirect(redirectUrl.toString());
-    }
+    // if (approve === 'yes') {
+    //   const code = this.oauth2Service.generateCode(
+    //     clientId,
+    //     redirectUri,
+    //     user.id,
+    //   );
+    //   const redirectUrl = new URL(redirectUri);
+    //   redirectUrl.searchParams.set('code', code);
+    //   if (state) redirectUrl.searchParams.set('state', state);
+    //   return res.redirect(redirectUrl.toString());
+    // } else {
+    //   // User denied access
+    //   const redirectUrl = new URL(redirectUri);
+    //   redirectUrl.searchParams.set('error', 'access_denied');
+    //   return res.redirect(redirectUrl.toString());
+    // }
   }
 
   @Post('token')

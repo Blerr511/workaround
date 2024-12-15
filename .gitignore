@@ -6,3 +6,4 @@ node_modules
 local.bazelrc
 **/prisma/prisma-client
 .aspect/bazelrc/current/*
+**/False/**

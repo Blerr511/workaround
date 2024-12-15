@@ -11,10 +11,18 @@
     "parser": {
       "importAssertions": false,
       "syntax": "typescript",
-      "tsx": false,
+      "tsx": true,
       "decorators": true
     },
     "transform": {
+      "react": {
+        "runtime": "automatic",
+        "pragma": "React.createElement",
+        "pragmaFrag": "React.Fragment",
+        "throwIfNamespace": true,
+        "development": false,
+        "useBuiltins": false
+      },
       "legacyDecorator": true,
       "decoratorMetadata": true,
       "useDefineForClassFields": false

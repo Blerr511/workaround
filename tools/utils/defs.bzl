@@ -18,3 +18,21 @@ def substitution_file(name, file, data = [], substitutions = {}, **kwargs):
         cmd = cmd_string,
         **kwargs
     )
+
+def _symlink_node_modules_impl(ctx):
+    # Create a symlink for each file in srcs
+    for src in ctx.files.srcs:
+        ctx.actions.symlink(
+            output = ctx.actions.declare_symlink(ctx.attr.output + "/" + src.basename),
+            target_path = src.basename,
+        )
+
+    return DefaultInfo()
+
+symlink_node_modules = rule(
+    implementation = _symlink_node_modules_impl,
+    attrs = {
+        "srcs": attr.label_list(allow_files = True),
+        "output": attr.string(default = "node_modules"),
+    },
+)

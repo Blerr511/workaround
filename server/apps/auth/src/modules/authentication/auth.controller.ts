@@ -19,7 +19,6 @@ export class AuthController {
         throw err;
       }
       delete req.session['oauth2_request'];
-      console.log(req.session);
       return res.redirect(redirectUrl);
     });
   }
