@@ -1,99 +1,53 @@
 load("@aspect_rules_js//npm:defs.bzl", "npm_package")
-load("@aspect_rules_swc//swc:defs.bzl", "swc")
-load("@aspect_rules_ts//ts:defs.bzl", "ts_config", "ts_project")
-load("@bazel_skylib//lib:partial.bzl", "partial")
-load("@bazel_skylib//rules:copy_directory.bzl", "copy_directory")
 load("@npm//:defs.bzl", "npm_link_all_packages")
-load("@npm//client/packages/oauth-view:react-scripts/package_json.bzl", _react = "bin")
-load("//tools/utils:defs.bzl", "symlink_node_modules")
+load("@npm//client/packages/oauth-view:rollup/package_json.bzl", _rollup = "bin")
 
 npm_link_all_packages(name = "node_modules")
-
-ts_config(
-    name = "tsconfig",
-    src = "tsconfig.json",
-)
-
-ts_project(
-    name = "ts",
-    srcs = glob([
-        "src/**/*.ts",
-        "src/**/*.tsx",
-    ]) + ["index.ts"],
-    allow_js = True,
-    data = [
-        ":tsconfig",
-    ],
-    declaration = True,
-    incremental = True,
-    preserve_jsx = False,
-    resolve_json_module = True,
-    source_map = True,
-    transpiler = partial.make(
-        swc,
-        args = ["--env-name=prod"],
-        source_maps = "true",
-        swcrc = ".swcrc",
-    ),
-    validate = True,
-    deps = [
-        ":node_modules",
-        "//:node_modules",
-    ],
-)
-
-genrule(
-    name = "prod_package_json",
-    srcs = ["package.json"],
-    outs = ["prod_package.json"],
-    cmd = """
-    jq '.main = "build/index.js"' $(location package.json) > $@
-    """,
-)
 
 filegroup(
     name = "build_srcs",
     srcs = [
         "package.json",
         ":node_modules",
-        ":ts",
-        ":ts_types",
     ] + glob([
+        "src/**/*.ts",
+        "src/**/*.tsx",
+    ]) + ["index.ts"] + glob([
         "public/**",
         "src/**/*.css",
     ]),
 )
 
-_react.react_scripts(
+_rollup.rollup(
     name = "build",
-    srcs =[":build_srcs"],
-    args = [
-        "build",
+    srcs = [
+        "package.json",
+        "rollup.config.js",
+        "swc.config.json",
+        "tsconfig.json",
+        ":build_srcs",
     ],
-    chdir = package_name(),
-    out_dirs = ["build"],
+    args = [
+        "-c",
+        "$(location rollup.config.js)",
+        "--bundleConfigAsCjs",
+    ],
+    env = {
+        "ROOT_PATH": package_name(),
+    },
+    out_dirs = ["dist"],
     tags = ["requires-network"],
-)
-
-genrule(
-    name = "t",
-    srcs = [":build"],
-    outs = ["ts.txt"],
-    cmd = """
-    ls $(location :build) > $@
-    """,
 )
 
 # make this library available via node_modules
 npm_package(
     name = "pkg",
     srcs = [
+        "package.json",
         ":build",
-        ":prod_package_json",
     ],
     # This is a perf improvement; the default will be flipped to False in rules_js 2.0
     include_runfiles = False,
-    replace_prefixes = {"prod_package.json": "package.json"},
     visibility = ["//visibility:public"],
 )
 
