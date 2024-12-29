@@ -1,6 +1,10 @@
 {
   "$schema": "https://raw.githubusercontent.com/SchemaStore/schemastore/master/src/schemas/json/nodemon.json",
   "exec": "bazel run //server/apps/auth:start",
-  "watch": ["./src", "server/packages/logger/src"],
+  "watch": [
+    "./src",
+    "server/packages/logger/src",
+    "client/packages/oauth-view"
+  ],
   "ext": ".ts,.js,.json,.tsx,.ts"
 }
