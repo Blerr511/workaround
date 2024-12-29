@@ -3,12 +3,10 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@types/react": "^19.0.1",
-    "@types/react-dom": "18.x.x",
+    "@types/react": "17.0.30",
+    "@types/react-dom": "^17",
     "cra-template-typescript": "1.2.0",
     "postcss-flexbugs-fixes": "^5.0.2",
-    "react": "^19.0.0",
-    "react-dom": "^19.0.0",
     "react-scripts": "5.0.1",
     "rollup": "^4.29.1",
     "web-vitals": "^4.2.4"
@@ -34,12 +32,18 @@
       "last 1 safari version"
     ]
   },
+  "peerDependencies": {
+    "react": "17",
+    "react-dom": "17",
+    "react-router-dom": "6"
+  },
   "devDependencies": {
     "@rollup/plugin-commonjs": "^28.0.2",
     "@rollup/plugin-node-resolve": "^16.0.0",
     "@rollup/plugin-swc": "^0.4.0",
     "autoprefixer": "10.4.14",
     "postcss": "8.4.22",
+    "rollup-plugin-copy": "^3.5.0",
     "rollup-plugin-postcss": "^4.0.2"
   }
 }

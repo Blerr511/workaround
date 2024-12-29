@@ -12,6 +12,7 @@ import {
 } from './modules';
 import { Oath2Module } from './app/oath2/oath2.module';
 import { AuthPassportModule } from './app/passport/passport.module';
+import { SsrModule } from './app/ssr/ssr.module';
 
 @Module({
   imports: [
@@ -19,6 +20,7 @@ import { AuthPassportModule } from './app/passport/passport.module';
     MODULE_GRAPHQL,
     MODULE_TYPEORM,
     ...INTERNAL_MODULES,
+    SsrModule,
     AuthzModule,
     Oath2Module,
     AuthPassportModule,

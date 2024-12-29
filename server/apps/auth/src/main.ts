@@ -8,6 +8,7 @@ import * as cookieParser from 'cookie-parser';
 import * as passport from 'passport';
 import { NestExpressApplication } from '@nestjs/platform-express';
 import { join } from 'path';
+import { reactViewEngine } from './app/ssr/reactJsxRenderer';
 
 async function bootstrap() {
   const mainLogger = new Logger('AUTH');
@@ -34,10 +35,6 @@ async function bootstrap() {
   const config = app.get(ConfigService);
 
   const { host, port } = config.safeGet('web');
-
-  app.setBaseViewsDir(join(__dirname, '..', 'views'));
-  app.useStaticAssets(join(__dirname, '..', 'public'));
-  app.setViewEngine('ejs');
 
   await app.listen(port, host);
 

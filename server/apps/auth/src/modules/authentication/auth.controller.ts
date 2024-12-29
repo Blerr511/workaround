@@ -1,12 +1,16 @@
 import { Controller, Get, Post, Req, Res, UseGuards } from '@nestjs/common';
 import { Response, Request } from 'express';
 import { AuthGuard } from '@nestjs/passport';
+import { Render } from '../../app/ssr/render.decorator';
+import { App, AppProps } from '@wr/oauth-view';
+import { AppView } from '../../app/ssr/app.view';
 
 @Controller('auth')
 export class AuthController {
   @Get('login')
-  loginForm(@Req() req: Request, @Res() res: Response) {
-    return res.render('login', { error: null });
+  @Render<AppProps>(AppView)
+  loginForm(@Req() req: Request, @Res() res: Response): AppProps {
+    return { name: 'auth login' };
   }
 
   @Post('login')

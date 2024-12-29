@@ -27,7 +27,7 @@ export class Oauth2Controller {
 
     // Check if user is logged in
     const user = req.user as any;
-    console.log(req.user, req.originalUrl);
+
     if (!user) {
       // Store the original request in session so after login we can return here
       req.session['oauth2_request'] = req.originalUrl;
@@ -35,7 +35,9 @@ export class Oauth2Controller {
     }
 
     // Show a consent screen (if needed). For simplicity, let's always show consent.
-    return res.render('consent', { clientId, redirectUri, scope, state });
+    return res.render('/authorize', {
+      props: { clientId, redirectUri, scope, state },
+    });
   }
 
   @Post('authorize')
