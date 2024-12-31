@@ -7,8 +7,6 @@ import * as session from 'express-session';
 import * as cookieParser from 'cookie-parser';
 import * as passport from 'passport';
 import { NestExpressApplication } from '@nestjs/platform-express';
-import { join } from 'path';
-import { reactViewEngine } from './app/ssr/reactJsxRenderer';
 
 async function bootstrap() {
   const mainLogger = new Logger('AUTH');
