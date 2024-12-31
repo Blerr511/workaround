@@ -23,3 +23,7 @@ export declare namespace JSXTemplate {
     (data: T, props: RenderProps): string;
   }
 }
+
+export type IPageProps<T> = T & {
+  renderProps?: JSXTemplate.RenderProps;
+};

@@ -2,6 +2,7 @@ import './App.css';
 import { Routes, Route, Link, BrowserRouter } from 'react-router-dom';
 import { StaticRouter } from 'react-router-dom/server';
 import { JSXTemplate } from './AppServer.props';
+import { ConsentPage } from './pages';
 
 export interface AppProps {
   name: string;
@@ -26,13 +27,17 @@ function App(props: AppProps) {
           Learn React
         </a>
       </header>
-      <StaticRouter location={props.renderProps?.$req.url || ''}>
+      <Router location={props.renderProps?.$req.url || ''}>
         <Routes>
           <Route path="/" element={<div>/</div>} />
           <Route path="/authorize" element={<div>authorize</div>} />
+          <Route
+            path="/consent"
+            element={<ConsentPage appName="" renderProps={props.renderProps} />}
+          />
           <Route path="/auth/login" element={<div>auth/login</div>} />
         </Routes>
-      </StaticRouter>
+      </Router>
     </div>
   );
 }
