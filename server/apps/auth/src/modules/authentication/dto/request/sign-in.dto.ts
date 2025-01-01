@@ -1,21 +1,22 @@
-import { ArgsType, Field } from '@nestjs/graphql';
+import { ApiProperty } from '@nestjs/swagger';
 import { Transform } from 'class-transformer';
 import { IsNotEmpty, IsString } from 'class-validator';
 
-@ArgsType()
 export class SignInDto {
-  @Field()
+  @ApiProperty()
   @IsNotEmpty()
   @IsString()
   username: string;
 
-  @Field()
   @IsNotEmpty()
   @IsString()
   @Transform(({ value }) => String(value).trim())
+  @ApiProperty()
   password: string;
 
-  @Field()
   @IsNotEmpty()
+  @ApiProperty({
+    enum: ['email', 'phone'],
+  })
   provider: string;
 }

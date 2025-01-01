@@ -45,7 +45,16 @@ export class AuthenticationService {
       uid: provider.user.uid,
     });
 
-    return { accessToken };
+    const refreshToken = await this.cryptoService.createJwtToken({
+      provider: {
+        id: provider.providerId,
+        name: provider.name,
+        identifier: provider.identifier,
+      },
+      uid: provider.user.uid,
+    });
+
+    return { accessToken, refreshToken, user: provider.user };
   }
 
   async verify(token: string) {

@@ -1,4 +1,4 @@
-import './ConsentPage.css';
+import './consent.css';
 import { IPageProps } from '../../AppServer.props';
 
 export interface ConsentPageProps {

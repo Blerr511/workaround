@@ -57,28 +57,48 @@ ts_project(
     deps = deps,
 )
 
+service_env = {
+    "WEB_EXPOSE_HOST": "$(AUTH_WEB_EXPOSE_HOST)",
+    "WEB_EXPOSE_PORT": "$(AUTH_WEB_EXPOSE_PORT)",
+    "POSTGRES_HOST": "$(AUTH_POSTGRES_HOST)",
+    "POSTGRES_PORT": "$(AUTH_POSTGRES_PORT)",
+    "POSTGRES_USERNAME": "$(AUTH_POSTGRES_USERNAME)",
+    "POSTGRES_PASSWORD": "$(AUTH_POSTGRES_PASSWORD)",
+    "POSTGRES_DATABASE": "$(AUTH_POSTGRES_DATABASE)",
+    "POSTGRES_SCHEMA": "$(AUTH_POSTGRES_SCHEMA)",
+    "JWT_SECRET": "$(AUTH_JWT_SECRET)",
+    "JWT_LIFE_SECONDS": "$(AUTH_JWT_LIFE_SECONDS)",
+    "AUTHZ_DOMAIN": "$(AUTH_AUTHZ_DOMAIN)",
+    "AUTHZ_CLIENT_ID": "$(AUTH_AUTHZ_CLIENT_ID)",
+    "AUTHZ_CLIENT_SECRET": "$(AUTH_AUTHZ_CLIENT_SECRET)",
+    "AUTH_WEB_HOST": "$(AUTH_WEB_HOST)",
+}
+
 js_binary(
     name = "start",
     data = [
         ":ts",
     ] + glob(["views/**"]),
     entry_point = ":src/main.js",
-    env = {
-        "WEB_EXPOSE_HOST": "$(AUTH_WEB_EXPOSE_HOST)",
-        "WEB_EXPOSE_PORT": "$(AUTH_WEB_EXPOSE_PORT)",
-        "POSTGRES_HOST": "$(AUTH_POSTGRES_HOST)",
-        "POSTGRES_PORT": "$(AUTH_POSTGRES_PORT)",
-        "POSTGRES_USERNAME": "$(AUTH_POSTGRES_USERNAME)",
-        "POSTGRES_PASSWORD": "$(AUTH_POSTGRES_PASSWORD)",
-        "POSTGRES_DATABASE": "$(AUTH_POSTGRES_DATABASE)",
-        "POSTGRES_SCHEMA": "$(AUTH_POSTGRES_SCHEMA)",
-        "JWT_SECRET": "$(AUTH_JWT_SECRET)",
-        "JWT_LIFE_SECONDS": "$(AUTH_JWT_LIFE_SECONDS)",
-        "AUTHZ_DOMAIN": "$(AUTH_AUTHZ_DOMAIN)",
-        "AUTHZ_CLIENT_ID": "$(AUTH_AUTHZ_CLIENT_ID)",
-        "AUTHZ_CLIENT_SECRET": "$(AUTH_AUTHZ_CLIENT_SECRET)",
-    },
+    env = service_env,
     toolchains = ["//sandbox:auth_env_vars"],
+)
+
+js_binary(
+    name = "run_schema_generator",
+    data = [":ts"],
+    entry_point = ":src/cli/generate-schema.js",
+)
+
+js_run_binary(
+    name = "schema",
+    outs = ["openapi.json"],
+    env = dict(service_env) | {
+        "__SKIP_CONFIG_VALIDATION": "yes",
+    },
+    tool = ":run_schema_generator",
+    toolchains = ["//sandbox:auth_env_vars"],
+    visibility = ["//visibility:public"],
 )
 
 js_image(

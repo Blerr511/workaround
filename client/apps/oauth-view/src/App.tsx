@@ -1,43 +1,23 @@
 import './App.css';
-import { Routes, Route, Link, BrowserRouter } from 'react-router-dom';
-import { StaticRouter } from 'react-router-dom/server';
-import { JSXTemplate } from './AppServer.props';
+import { Routes, Route, BrowserRouter } from 'react-router-dom';
 import { ConsentPage } from './pages';
+import { LoginPage } from './pages/login';
 
 export interface AppProps {
   name: string;
-  renderProps?: JSXTemplate.RenderProps;
 }
 
 function App(props: AppProps) {
-  const Router = props.renderProps ? StaticRouter : BrowserRouter;
-
   return (
     <div className="App">
-      <header>
-        <p>
-          Edit <code>{props.name}</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-      <Router location={props.renderProps?.$req.url || ''}>
+      <BrowserRouter>
         <Routes>
           <Route path="/" element={<div>/</div>} />
           <Route path="/authorize" element={<div>authorize</div>} />
-          <Route
-            path="/consent"
-            element={<ConsentPage appName="" renderProps={props.renderProps} />}
-          />
-          <Route path="/auth/login" element={<div>auth/login</div>} />
+          <Route path="/consent" element={<ConsentPage appName="" />} />
+          <Route path="/auth/login" element={<LoginPage />} />
         </Routes>
-      </Router>
+      </BrowserRouter>
     </div>
   );
 }

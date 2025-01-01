@@ -1,0 +1,131 @@
+load("@aspect_rules_js//js:defs.bzl", "js_binary", "js_library", "js_run_binary")
+load("@aspect_rules_js//npm:defs.bzl", "npm_package")
+load("@aspect_rules_ts//ts:defs.bzl", "ts_config", "ts_project")
+load("@npm//:@openapitools/openapi-generator-cli/package_json.bzl", codegen = "bin")
+load("@npm//:defs.bzl", "npm_link_all_packages")
+load("//tools/bazel/copy-to-source:defs.bzl", "copy_to_source")
+
+npm_link_all_packages(name = "node_modules")
+
+filegroup(
+    name = "project_support_files",
+    srcs = glob([
+        "*.json",
+        ".*.json",
+        "*.js",
+        ".*.js",
+    ]),
+)
+
+srcs = glob(
+    [
+        "src/**/*.ts",
+    ],
+)
+
+data = ["project_support_files"]
+
+deps = [
+    ":node_modules/@openapitools/openapi-generator-cli",
+    "//:node_modules",
+]
+
+ts_config(
+    name = "tsconfig",
+    src = "tsconfig.json",
+)
+
+ts_project(
+    name = "ts",
+    srcs = glob(["src/**"]),
+    data = [
+        ":tsconfig",
+    ],
+    declaration = True,
+    incremental = False,
+    source_map = True,
+    tsconfig = ":tsconfig",
+    validate = True,
+    deps = deps,
+)
+
+# make this library available via node_modules
+npm_package(
+    name = "backend-api",
+    srcs = [
+        "package.json",
+        ":ts",
+    ],
+    # This is a perf improvement; the default will be flipped to False in rules_js 2.0
+    include_runfiles = False,
+    visibility = ["//visibility:public"],
+)
+
+js_library(
+    name = "pkg",
+    srcs = [
+        "package.json",
+        ":ts",
+    ],
+    visibility = ["//visibility:public"],
+)
+
+sh_binary(
+    name = "npm.publish",
+    srcs = [
+        "//tools/npm:npm_cli",
+    ],
+    args = [
+        "publish",
+        "$(location :backend-api)",
+        # "--dry-run",
+    ],
+    data = [
+        ":backend-api",
+        "//tools/gcloud:npmrc",
+    ],
+    env = {
+        "NPM_CONFIG_USERCONFIG": "$(location //tools/gcloud:npmrc)",
+    },
+    tags = ["requires-network"],
+)
+
+filegroup(
+    name = "backend-api.json",
+    srcs = [":package.json"],
+    visibility = ["//visibility:public"],
+)
+
+codegen.openapi_generator_cli_binary(
+    name = "codegen",
+)
+
+js_run_binary(
+    name = "generator",
+    srcs = [
+        ":openapitools.json",
+        "//server/apps/auth:schema",
+    ],
+    args = [
+        "--openapitools",
+        "openapitools.json",
+        "generate",
+        "-i ../../../$(rootpath //server/apps/auth:schema)",
+        "-o __generated__",
+        "-g typescript-axios",
+    ],
+    chdir = package_name(),
+    out_dirs = ["__generated__"],
+    tags = [
+        "no-cache",
+        "requires-network",
+    ],
+    tool = ":codegen",
+)
+
+copy_to_source( 
+    name = "generate",
+    data = [":generator"],
+    destionation = "{}/src/__generated__".format(package_name()),
+    source = "$(location :generator)",
+)

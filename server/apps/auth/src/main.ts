@@ -7,6 +7,7 @@ import * as session from 'express-session';
 import * as cookieParser from 'cookie-parser';
 import * as passport from 'passport';
 import { NestExpressApplication } from '@nestjs/platform-express';
+import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 
 async function bootstrap() {
   const mainLogger = new Logger('AUTH');
@@ -33,6 +34,17 @@ async function bootstrap() {
   const config = app.get(ConfigService);
 
   const { host, port } = config.safeGet('web');
+
+  const swaggerConfig = new DocumentBuilder()
+    .setTitle('WR Auth')
+    .setVersion('1.0.0')
+    .setDescription('WR Auth server')
+    .build();
+
+  const documentFactory = () =>
+    SwaggerModule.createDocument(app, swaggerConfig);
+
+  SwaggerModule.setup('api', app, documentFactory);
 
   await app.listen(port, host);
 

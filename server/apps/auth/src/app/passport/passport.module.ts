@@ -2,7 +2,7 @@ import { Global, Module } from '@nestjs/common';
 import { DataModule } from '../../data/data.module';
 import { UserDao } from '../../data/user';
 import { PassportModule } from '@nestjs/passport';
-import { LocalStrategy } from './local.strategy';
+import { JwtStrategy } from './local.strategy';
 import { UsersSerializer } from './user.serializer';
 
 @Global()
@@ -14,6 +14,6 @@ import { UsersSerializer } from './user.serializer';
       defaultStrategy: 'local',
     }),
   ],
-  providers: [LocalStrategy, UsersSerializer],
+  providers: [JwtStrategy, UsersSerializer],
 })
 export class AuthPassportModule {}

@@ -70,6 +70,9 @@ export class ConfigSchema {
   @Expose()
   AUTHZ_CLIENT_SECRET: string;
 
+  @Expose()
+  AUTH_WEB_HOST: string;
+
   get authz() {
     return {
       domain: this.AUTHZ_DOMAIN,
@@ -83,6 +86,12 @@ export class ConfigSchema {
     return {
       host: this.WEB_EXPOSE_HOST,
       port: this.WEB_EXPOSE_PORT,
+      webApp: {
+        host: this.AUTH_WEB_HOST,
+        routes: {
+          login: `${this.AUTH_WEB_HOST}/auth/login`,
+        },
+      },
     };
   }
 

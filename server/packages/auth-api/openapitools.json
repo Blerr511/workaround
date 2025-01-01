@@ -1,0 +1,8 @@
+{
+  "$schema": "../../../node_modules/@openapitools/openapi-generator-cli/config.schema.json",
+  "spaces": 2,
+  "generator-cli": {
+    "storageDir": "/tmp/openapi-generator-cli",
+    "version": "7.10.0"
+  }
+}

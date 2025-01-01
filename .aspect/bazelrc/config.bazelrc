@@ -125,8 +125,13 @@ build --action_env=NEXT_PUBLIC_WEB_CLIENT_API_URL=http://$(GATEWAY_WEB_EXPOSE_HO
 # DATA-SOURCE
 build --action_env=DATA_SOURCE_POSTGRES_URL="postgresql://$(BACKEND_POSTGRES_USERNAME):$(BACKEND_POSTGRES_PASSWORD)@$(POSTGRES_HOST):$(POSTGRES_PORT)/$(BACKEND_POSTGRES_DATABASE)?schema=$(BACKEND_POSTGRES_SCHEMA)"
 
+# Local envs
+
+build --action_env=AUTH_API_PROXY_HOST=auth.localhost
+build --action_env=AUTH_WEB_PROXY_HOST=accounts.localhost
+
 # AUTH
-build --action_env=AUTH_WEB_EXPOSE_HOST=localhost
+build --action_env=AUTH_WEB_EXPOSE_HOST=0.0.0.0
 build --action_env=AUTH_WEB_EXPOSE_PORT=3002
 build --action_env=AUTH_POSTGRES_HOST=localhost
 build --action_env=AUTH_POSTGRES_PORT=6444
@@ -136,6 +141,8 @@ build --action_env=AUTH_POSTGRES_DATABASE=wrauth
 build --action_env=AUTH_POSTGRES_SCHEMA=public
 build --action_env=AUTH_JWT_SECRET=qazedfrtgb4567
 build --action_env=AUTH_JWT_LIFE_SECONDS=3600
+build --action_env=AUTH_WEB_HOST=http://$(AUTH_WEB_PROXY_HOST)
+
 ## AUTH0
 ### specify it on your local.bazelrc file
 build --action_env=AUTH_AUTHZ_DOMAIN=$(AUTHZ_DOMAIN)

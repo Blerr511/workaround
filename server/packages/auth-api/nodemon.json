@@ -1,0 +1,6 @@
+{
+  "$schema": "https://raw.githubusercontent.com/SchemaStore/schemastore/master/src/schemas/json/nodemon.json",
+  "exec": "./server/packages/backend-api/generate.sh",
+  "watch": ["client/packages/core/src/operations"],
+  "ext": ".ts,.js,.json,.tsx,.graphql,.gql"
+}

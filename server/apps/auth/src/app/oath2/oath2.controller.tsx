@@ -1,12 +1,14 @@
 import { Controller, Get, Query, Req, Res, Post, Body } from '@nestjs/common';
 import { Request, Response } from 'express';
 import { Oauth2Service } from './oath2.service';
-import { renderToString } from 'react-dom/server';
-import React from 'react';
+import { ConfigService } from '../../configuration/config.service';
 
 @Controller()
 export class Oauth2Controller {
-  constructor(private oauth2Service: Oauth2Service) {}
+  constructor(
+    private oauth2Service: Oauth2Service,
+    private readonly configService: ConfigService,
+  ) {}
 
   @Get('authorize')
   authorize(
@@ -29,7 +31,9 @@ export class Oauth2Controller {
     if (!user) {
       // Store the original request in session so after login we can return here
       req.session['oauth2_request'] = req.originalUrl;
-      return res.redirect('/auth/login');
+      return res.redirect(
+        this.configService.safeGet('web').webApp.routes.login,
+      );
     }
 
     // Show a consent screen (if needed). For simplicity, let's always show consent.

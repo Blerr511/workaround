@@ -29,6 +29,7 @@ genrule(
     srcs = ["//sandbox:web_client_env_vars.env"],
     outs = [".env"],
     cmd = """
-    cp $(location //sandbox:web_client_env_vars.env) $@
+    cat $(location //sandbox:web_client_env_vars.env) > $@
+    echo PORT=3011 >> $@
     """,
 )

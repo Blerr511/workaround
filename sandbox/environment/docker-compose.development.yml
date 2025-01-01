@@ -36,20 +36,27 @@ services:
       interval: 30s
       timeout: 10s
       retries: 3
-  rabbitmq:
-    image: 'rabbitmq:3.12-management'
-    ports:
-      - '${RABBITMQ_PORT}:5672'
-      - '15672:15672'
-    environment:
-      RABBITMQ_DEFAULT_USER: ${RABBITMQ_DEFAULT_USER}
-      RABBITMQ_DEFAULT_PASS: ${RABBITMQ_DEFAULT_PASS}
-    volumes:
-      - rabbitmq_data:/var/lib/rabbitmq
-      - rabbitmq_logs:/var/log/rabbitmq
-
+  # rabbitmq:
+  #   image: 'rabbitmq:3.12-management'
+  #   ports:
+  #     - '${RABBITMQ_PORT}:5672'
+  #     - '15672:15672'
+  #   environment:
+  #     RABBITMQ_DEFAULT_USER: ${RABBITMQ_DEFAULT_USER}
+  #     RABBITMQ_DEFAULT_PASS: ${RABBITMQ_DEFAULT_PASS}
+  #   volumes:
+  #     - rabbitmq_data:/var/lib/rabbitmq
+  #     - rabbitmq_logs:/var/log/rabbitmq
+  auth_nginx:
+      image: nginx:latest
+      ports:
+        - "80:80" 
+      volumes:
+        - ./auth_ngnix.conf:/etc/nginx/nginx.conf:ro  # Mount the custom nginx.conf
+      extra_hosts:
+        - "host.docker.internal:host-gateway"  # Access the host machine from the container
 volumes:
   postgres_data:
   redis_data:
-  rabbitmq_data:
+  # rabbitmq_data:
   rabbitmq_logs:

@@ -1,4 +1,17 @@
-package_name = "sandbox/environment"
+load("//tools/utils:defs.bzl", "substitution_file")
+
+substitution_file(
+    name = "ngnix_conf",
+    outs = "auth_ngnix.conf",
+    file = "ngnix.conf.tpl",
+    substitutions = {
+        "AUTH_WEB_EXPOSE_PORT": "$(AUTH_WEB_EXPOSE_PORT)",
+    },
+    toolchains = [
+        "//sandbox:auth_env_vars",
+        "//sandbox:local_dc_env_vars",
+    ],
+)
 
 sh_binary(
     name = "dc",
@@ -7,11 +20,12 @@ sh_binary(
     ],
     args = [
         "--env-file $(location {env_vars_file})".format(env_vars_file = "//sandbox:local_dc_env_vars"),
-        "--file={package}/docker-compose.development.yml".format(package = package_name),
+        "--file={package}/docker-compose.development.yml".format(package = package_name()),
     ],
     data = [
         "init-db.sh",
         ":docker-compose.development.yml",
+        ":ngnix_conf",
         "//sandbox:local_dc_env_vars",
     ],
     toolchains = [

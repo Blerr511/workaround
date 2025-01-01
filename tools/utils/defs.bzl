@@ -1,20 +1,28 @@
-def substitution_file(name, file, data = [], substitutions = {}, **kwargs):
+def substitution_file(name, file, outs = None, data = [], substitutions = {}, **kwargs):
     export_commands = []
+    shell_format = ""
     for key, value in substitutions.items():
         export_commands.append("export {}={}".format(key, value))
-
+        print(key)
+        shell_format = "{shell_format} {p}{s}{key}{e}".format(shell_format = shell_format, key = key,p = "$$",s = "{",e = "}")
+    print(shell_format)
+    
     cmd_string = """
         {exports}
-        envsubst < $(location {file}) > $@
+        envsubst '{shell_format}' < $(location {file}) > $@
     """.format(
         exports = "\n".join(export_commands),
         file = file,
+        shell_format = shell_format,
     )
+
+    if outs == None:
+        outs = "generated_{}".format(file)
 
     native.genrule(
         name = name,
         srcs = [file] + data,
-        outs = ["generated_{}".format(file)],
+        outs = [outs],
         cmd = cmd_string,
         **kwargs
     )

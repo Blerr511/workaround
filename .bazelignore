@@ -13,5 +13,6 @@ client/packages/core/node_modules
 server/apps/gateway/node_modules
 server/apps/apollo-stream/node_modules
 server/packages/app-types/node_modules
+server/packages/auth-api/node_modules
 server/packages/game-data-source/prisma/prisma-client/node_modules
-client/packages/oauth-view/node_modules
+client/apps/oauth-view/node_modules

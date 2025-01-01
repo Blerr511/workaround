@@ -1,4 +1,3 @@
-import { UseGuards, applyDecorators } from '@nestjs/common';
-import { AuthGuard } from './auth-guard';
+import { applyDecorators } from '@nestjs/common';
 
-export const ApiAuth = () => applyDecorators(UseGuards(AuthGuard));
+export const ApiAuth = () => applyDecorators(...[]);

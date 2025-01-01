@@ -1,6 +1,7 @@
 {
   "name": "ws",
   "dependencies": {
+    "@openapitools/openapi-generator-cli": "^2.15.3",
     "fast-deep-equal": "3.1.1",
     "graphql": "^16.8.1",
     "typescript": "5.0.4"
