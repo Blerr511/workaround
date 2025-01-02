@@ -116,19 +116,23 @@ build --action_env=RABBITMQ_DEFAULT_PASS=thisiscarrot
 
 build --action_env=RABBITMQ_QUEUE_SAVE_FRAGMENTS="save-fragments"
 
+# Local envs
+
+build --action_env=AUTH_WEB_PROXY_HOST=wr.accounts.localhost
+
 # WEB-CLIENT
 
 build --action_env=WEB_CLIENT_AUTHZ_DOMAIN=$(AUTHZ_DOMAIN)
 build --action_env=WEB_CLIENT_AUTHZ_CLIENT_ID=$(AUTHZ_CLIENT_ID)
 build --action_env=NEXT_PUBLIC_WEB_CLIENT_API_URL=http://$(GATEWAY_WEB_EXPOSE_HOST):$(GATEWAY_WEB_EXPOSE_PORT)/graphql
 
+# OAUTH-VIEW
+
+build --action_env=OAUTH_VIEW_WEB_EXPOSE_PORT=3011
+build --action_env=REACT_APP_OAUTH_VIEW_API_URL=http://$(AUTH_WEB_PROXY_HOST)
+
 # DATA-SOURCE
 build --action_env=DATA_SOURCE_POSTGRES_URL="postgresql://$(BACKEND_POSTGRES_USERNAME):$(BACKEND_POSTGRES_PASSWORD)@$(POSTGRES_HOST):$(POSTGRES_PORT)/$(BACKEND_POSTGRES_DATABASE)?schema=$(BACKEND_POSTGRES_SCHEMA)"
-
-# Local envs
-
-build --action_env=AUTH_API_PROXY_HOST=auth.localhost
-build --action_env=AUTH_WEB_PROXY_HOST=accounts.localhost
 
 # AUTH
 build --action_env=AUTH_WEB_EXPOSE_HOST=0.0.0.0

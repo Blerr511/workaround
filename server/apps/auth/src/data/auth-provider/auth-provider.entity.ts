@@ -27,6 +27,11 @@ export class AuthProvider {
   @Column({ nullable: true })
   password: string;
 
+  @Column({
+    default: false,
+  })
+  isVerified: boolean;
+
   @ManyToOne(() => WrUser, (user) => user.providers, {
     onDelete: 'CASCADE',
     onUpdate: 'CASCADE',

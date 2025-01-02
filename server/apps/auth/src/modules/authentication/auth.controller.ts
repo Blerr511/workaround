@@ -13,7 +13,12 @@ import { AuthenticationService } from './authentication.service';
 import { SignInDto } from './dto/request/sign-in.dto';
 import { toDto } from '../../dto/toDto';
 import { UserInfoResponseDto } from './dto/response/user-info-response.dto';
-import { ApiCreatedResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
+import {
+  ApiCreatedResponse,
+  ApiOkResponse,
+  ApiOperation,
+  ApiTags,
+} from '@nestjs/swagger';
 
 @Controller('api/auth')
 @ApiTags('auth')
@@ -21,7 +26,7 @@ export class AuthController {
   constructor(private readonly authenticationService: AuthenticationService) {}
 
   @Post('app/login')
-  @ApiCreatedResponse({
+  @ApiOkResponse({
     type: UserInfoResponseDto,
   })
   @ApiOperation({
@@ -45,7 +50,7 @@ export class AuthController {
       maxAge: 3600 * 1000,
     });
 
-    return toDto(user, UserInfoResponseDto);
+    res.status(200).end(JSON.stringify(toDto(user, UserInfoResponseDto)));
   }
 
   @Post('login')

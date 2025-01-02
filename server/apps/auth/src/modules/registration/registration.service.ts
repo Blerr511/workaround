@@ -26,6 +26,8 @@ export class RegistrationService {
 
     const newUser = await this.userDao.createNewUserWithProvider({
       providers: [new EmailProvider(params.email, passwordHash)],
+      username: params.email,
+      passwordHash,
     });
 
     return await this.userDao.getByUid(newUser.uid, { providers: true });

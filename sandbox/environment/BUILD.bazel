@@ -6,10 +6,11 @@ substitution_file(
     file = "ngnix.conf.tpl",
     substitutions = {
         "AUTH_WEB_EXPOSE_PORT": "$(AUTH_WEB_EXPOSE_PORT)",
-        "AUTH_API_PROXY_HOST": "$(AUTH_API_PROXY_HOST)",
         "AUTH_WEB_PROXY_HOST": "$(AUTH_WEB_PROXY_HOST)",
+        "OAUTH_VIEW_WEB_EXPOSE_PORT": "$(OAUTH_VIEW_WEB_EXPOSE_PORT)",
     },
     toolchains = [
+        "//sandbox:oauth_view_env_vars",
         "//sandbox:auth_env_vars",
         "//sandbox:local_dc_env_vars",
     ],

@@ -15,7 +15,10 @@
     "incremental": true,
     "sourceMap": true,
     "declaration": true,
-    "plugins": [{ "name": "typescript-plugin-css-modules" }]
+    "plugins": [{ "name": "typescript-plugin-css-modules" }],
+    "paths": {
+      "@wr/auth-api": ["../../../server/packages/auth-api"]
+    }
   },
   "exclude": ["node_modules"]
 }

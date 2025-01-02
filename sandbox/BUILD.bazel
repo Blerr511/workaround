@@ -143,7 +143,6 @@ import_env_vars(
         "AUTH_POSTGRES_PASSWORD": "AUTH_POSTGRES_PASSWORD",
         "AUTH_POSTGRES_DATABASE": "AUTH_POSTGRES_DATABASE",
         "AUTH_POSTGRES_SCHEMA": "AUTH_POSTGRES_SCHEMA",
-        "AUTH_API_PROXY_HOST": "AUTH_API_PROXY_HOST",
         "AUTH_WEB_PROXY_HOST": "AUTH_WEB_PROXY_HOST",
     },
     visibility = ["//visibility:public"],
@@ -239,6 +238,15 @@ import_env_vars(
         "WEB_CLIENT_AUTHZ_DOMAIN": "WEB_CLIENT_AUTHZ_DOMAIN",
         "WEB_CLIENT_AUTHZ_CLIENT_ID": "WEB_CLIENT_AUTHZ_CLIENT_ID",
         "NEXT_PUBLIC_WEB_CLIENT_API_URL": "NEXT_PUBLIC_WEB_CLIENT_API_URL",
+    },
+    visibility = ["//visibility:public"],
+)
+
+import_env_vars(
+    name = "oauth_view_env_vars",
+    vars_mapping = {
+        "OAUTH_VIEW_WEB_EXPOSE_PORT": "OAUTH_VIEW_WEB_EXPOSE_PORT",
+        "REACT_APP_OAUTH_VIEW_API_URL": "REACT_APP_OAUTH_VIEW_API_URL",
     },
     visibility = ["//visibility:public"],
 )

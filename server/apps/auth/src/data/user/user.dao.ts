@@ -29,7 +29,7 @@ export class UserDao {
   }
 
   async createNewUserWithProvider(
-    data: Pick<DeepPartial<WrUser>, 'providers'>,
+    data: Pick<DeepPartial<WrUser>, 'providers' | 'username' | 'passwordHash'>,
   ): Promise<WrUser> {
     const newUser = this.userRepo.create(data);
 

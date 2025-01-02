@@ -26,10 +26,11 @@ js_image(
 
 genrule(
     name = "env",
-    srcs = ["//sandbox:web_client_env_vars.env"],
+    srcs = ["//sandbox:oauth_view_env_vars.env"],
     outs = [".env"],
     cmd = """
-    cat $(location //sandbox:web_client_env_vars.env) > $@
-    echo PORT=3011 >> $@
+    cat $(location //sandbox:oauth_view_env_vars.env) > $@
+    echo "PORT=$(OAUTH_VIEW_WEB_EXPOSE_PORT)" >> $@
     """,
+    toolchains = ["//sandbox:oauth_view_env_vars"],
 )

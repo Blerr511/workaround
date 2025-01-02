@@ -1,9 +1,25 @@
-import { Controller, Get, Query, Req, Res, Post, Body } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Query,
+  Req,
+  Res,
+  Post,
+  Body,
+  UseGuards,
+} from '@nestjs/common';
 import { Request, Response } from 'express';
 import { Oauth2Service } from './oath2.service';
 import { ConfigService } from '../../configuration/config.service';
+import { AuthGuard } from '@nestjs/passport';
+import { ApiOperation, ApiTags } from '@nestjs/swagger';
+import {
+  Oauth2CreedsWithApprove,
+  Oauth2DefaultCreeds,
+} from './dto/request/oath2-default-creds.dto';
 
-@Controller()
+@Controller('oauth')
+@ApiTags('oauth')
 export class Oauth2Controller {
   constructor(
     private oauth2Service: Oauth2Service,
@@ -11,14 +27,12 @@ export class Oauth2Controller {
   ) {}
 
   @Get('authorize')
+  @UseGuards(AuthGuard('jwt'))
   authorize(
     @Req() req: Request,
     @Res() res: Response,
-    @Query('client_id') clientId: string,
-    @Query('redirect_uri') redirectUri: string,
-    @Query('response_type') responseType = 'code',
-    @Query('scope') scope: string,
-    @Query('state') state: string,
+    @Query()
+    { clientId, redirectUri, responseType, scope }: Oauth2DefaultCreeds,
   ) {
     // Validate client and redirectUri
     if (!this.oauth2Service.validateClient(clientId, redirectUri)) {
@@ -37,44 +51,55 @@ export class Oauth2Controller {
     }
 
     // Show a consent screen (if needed). For simplicity, let's always show consent.
-    return res.render('/authorize', {
-      props: { clientId, redirectUri, scope, state },
-    });
+    return res.redirect(
+      `/consent?client_id=${clientId}&redirect_uri=${encodeURIComponent(
+        redirectUri,
+      )}&response_type=${responseType}&scope=${scope}&state=${'state'}`,
+    );
   }
 
-  @Post('authorize')
+  @Post('confirm-scope')
+  @ApiOperation({
+    operationId: 'confirmScope',
+  })
+  @UseGuards(AuthGuard('jwt'))
   confirmAuthorization(
     @Req() req: Request,
     @Res() res: Response,
-    @Body('client_id') clientId: string,
-    @Body('redirect_uri') redirectUri: string,
-    @Body('scope') scope: string,
-    @Body('state') state: string,
-    @Body('approve') approve: string,
+    @Query()
+    {
+      clientId,
+      redirectUri: _redirectUri,
+      responseType,
+      scope,
+      approve,
+      state,
+    }: Oauth2CreedsWithApprove,
   ) {
-    // const html = renderToString(<App />);
-    // return res.send(html);
-    // User must be logged in at this point
-    // const user = req.user as any;
-    // if (!user || !this.oauth2Service.validateClient(clientId, redirectUri)) {
-    //   return res.status(400).send('Unauthorized or invalid client');
-    // }
-    // if (approve === 'yes') {
-    //   const code = this.oauth2Service.generateCode(
-    //     clientId,
-    //     redirectUri,
-    //     user.id,
-    //   );
-    //   const redirectUrl = new URL(redirectUri);
-    //   redirectUrl.searchParams.set('code', code);
-    //   if (state) redirectUrl.searchParams.set('state', state);
-    //   return res.redirect(redirectUrl.toString());
-    // } else {
-    //   // User denied access
-    //   const redirectUrl = new URL(redirectUri);
-    //   redirectUrl.searchParams.set('error', 'access_denied');
-    //   return res.redirect(redirectUrl.toString());
-    // }
+    console.log('req.user', req.user);
+
+    const redirectUri = decodeURIComponent(_redirectUri);
+
+    const user = req.user as any;
+    if (!user || !this.oauth2Service.validateClient(clientId, redirectUri)) {
+      return res.status(400).send('Unauthorized or invalid client');
+    }
+    if (approve === 'yes') {
+      const code = this.oauth2Service.generateCode(
+        clientId,
+        redirectUri,
+        user.id,
+      );
+      const redirectUrl = new URL(redirectUri);
+      redirectUrl.searchParams.set('code', code);
+      if (state) redirectUrl.searchParams.set('state', state);
+      return res.redirect(redirectUrl.toString());
+    } else {
+      // User denied access
+      const redirectUrl = new URL(redirectUri);
+      redirectUrl.searchParams.set('error', 'access_denied');
+      return res.redirect(redirectUrl.toString());
+    }
   }
 
   @Post('token')

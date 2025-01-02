@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@wr/auth-api": "workspace:^",
     "axios": "^1.4.0",
     "passport-jwt": "^4.0.1",
     "react": "^19.0.0",

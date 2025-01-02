@@ -26,6 +26,25 @@ import { BASE_PATH, COLLECTION_FORMATS, BaseAPI, RequiredError, operationServerM
 /**
  * 
  * @export
+ * @interface EmailPassSignUpDto
+ */
+export interface EmailPassSignUpDto {
+    /**
+     * 
+     * @type {string}
+     * @memberof EmailPassSignUpDto
+     */
+    'email': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof EmailPassSignUpDto
+     */
+    'password': string;
+}
+/**
+ * 
+ * @export
  * @interface SignInDto
  */
 export interface SignInDto {
@@ -68,6 +87,25 @@ export interface UserInfoResponseDto {
      * @memberof UserInfoResponseDto
      */
     'uid': string;
+}
+/**
+ * 
+ * @export
+ * @interface WrUserDto
+ */
+export interface WrUserDto {
+    /**
+     * 
+     * @type {string}
+     * @memberof WrUserDto
+     */
+    'uid': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof WrUserDto
+     */
+    'username': string;
 }
 
 /**
@@ -301,30 +339,101 @@ export class AuthApi extends BaseAPI {
 
 
 /**
- * Oauth2Api - axios parameter creator
+ * OauthApi - axios parameter creator
  * @export
  */
-export const Oauth2ApiAxiosParamCreator = function (configuration?: Configuration) {
+export const OauthApiAxiosParamCreator = function (configuration?: Configuration) {
     return {
+        /**
+         * 
+         * @summary 
+         * @param {string} clientId 
+         * @param {string} redirectUri 
+         * @param {string} responseType 
+         * @param {string} scope 
+         * @param {ConfirmScopeApproveEnum} approve 
+         * @param {string} [state] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        confirmScope: async (clientId: string, redirectUri: string, responseType: string, scope: string, approve: ConfirmScopeApproveEnum, state?: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'clientId' is not null or undefined
+            assertParamExists('confirmScope', 'clientId', clientId)
+            // verify required parameter 'redirectUri' is not null or undefined
+            assertParamExists('confirmScope', 'redirectUri', redirectUri)
+            // verify required parameter 'responseType' is not null or undefined
+            assertParamExists('confirmScope', 'responseType', responseType)
+            // verify required parameter 'scope' is not null or undefined
+            assertParamExists('confirmScope', 'scope', scope)
+            // verify required parameter 'approve' is not null or undefined
+            assertParamExists('confirmScope', 'approve', approve)
+            const localVarPath = `/oauth/confirm-scope`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            if (clientId !== undefined) {
+                localVarQueryParameter['client_id'] = clientId;
+            }
+
+            if (redirectUri !== undefined) {
+                localVarQueryParameter['redirect_uri'] = redirectUri;
+            }
+
+            if (responseType !== undefined) {
+                localVarQueryParameter['response_type'] = responseType;
+            }
+
+            if (scope !== undefined) {
+                localVarQueryParameter['scope'] = scope;
+            }
+
+            if (state !== undefined) {
+                localVarQueryParameter['state'] = state;
+            }
+
+            if (approve !== undefined) {
+                localVarQueryParameter['approve'] = approve;
+            }
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
         /**
          * 
          * @param {string} clientId 
          * @param {string} redirectUri 
+         * @param {string} responseType 
          * @param {string} scope 
-         * @param {string} state 
+         * @param {string} [state] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        oauth2ControllerAuthorize: async (clientId: string, redirectUri: string, scope: string, state: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        oauth2ControllerAuthorize: async (clientId: string, redirectUri: string, responseType: string, scope: string, state?: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'clientId' is not null or undefined
             assertParamExists('oauth2ControllerAuthorize', 'clientId', clientId)
             // verify required parameter 'redirectUri' is not null or undefined
             assertParamExists('oauth2ControllerAuthorize', 'redirectUri', redirectUri)
+            // verify required parameter 'responseType' is not null or undefined
+            assertParamExists('oauth2ControllerAuthorize', 'responseType', responseType)
             // verify required parameter 'scope' is not null or undefined
             assertParamExists('oauth2ControllerAuthorize', 'scope', scope)
-            // verify required parameter 'state' is not null or undefined
-            assertParamExists('oauth2ControllerAuthorize', 'state', state)
-            const localVarPath = `/authorize`;
+            const localVarPath = `/oauth/authorize`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
             let baseOptions;
@@ -342,6 +451,10 @@ export const Oauth2ApiAxiosParamCreator = function (configuration?: Configuratio
 
             if (redirectUri !== undefined) {
                 localVarQueryParameter['redirect_uri'] = redirectUri;
+            }
+
+            if (responseType !== undefined) {
+                localVarQueryParameter['response_type'] = responseType;
             }
 
             if (scope !== undefined) {
@@ -368,37 +481,8 @@ export const Oauth2ApiAxiosParamCreator = function (configuration?: Configuratio
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        oauth2ControllerConfirmAuthorization: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            const localVarPath = `/authorize`;
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-
-            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-
-    
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         * 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
         oauth2ControllerToken: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            const localVarPath = `/token`;
+            const localVarPath = `/oauth/token`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
             let baseOptions;
@@ -425,36 +509,44 @@ export const Oauth2ApiAxiosParamCreator = function (configuration?: Configuratio
 };
 
 /**
- * Oauth2Api - functional programming interface
+ * OauthApi - functional programming interface
  * @export
  */
-export const Oauth2ApiFp = function(configuration?: Configuration) {
-    const localVarAxiosParamCreator = Oauth2ApiAxiosParamCreator(configuration)
+export const OauthApiFp = function(configuration?: Configuration) {
+    const localVarAxiosParamCreator = OauthApiAxiosParamCreator(configuration)
     return {
         /**
          * 
+         * @summary 
          * @param {string} clientId 
          * @param {string} redirectUri 
+         * @param {string} responseType 
          * @param {string} scope 
-         * @param {string} state 
+         * @param {ConfirmScopeApproveEnum} approve 
+         * @param {string} [state] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async oauth2ControllerAuthorize(clientId: string, redirectUri: string, scope: string, state: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.oauth2ControllerAuthorize(clientId, redirectUri, scope, state, options);
+        async confirmScope(clientId: string, redirectUri: string, responseType: string, scope: string, approve: ConfirmScopeApproveEnum, state?: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.confirmScope(clientId, redirectUri, responseType, scope, approve, state, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['Oauth2Api.oauth2ControllerAuthorize']?.[localVarOperationServerIndex]?.url;
+            const localVarOperationServerBasePath = operationServerMap['OauthApi.confirmScope']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * 
+         * @param {string} clientId 
+         * @param {string} redirectUri 
+         * @param {string} responseType 
+         * @param {string} scope 
+         * @param {string} [state] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async oauth2ControllerConfirmAuthorization(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.oauth2ControllerConfirmAuthorization(options);
+        async oauth2ControllerAuthorize(clientId: string, redirectUri: string, responseType: string, scope: string, state?: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.oauth2ControllerAuthorize(clientId, redirectUri, responseType, scope, state, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['Oauth2Api.oauth2ControllerConfirmAuthorization']?.[localVarOperationServerIndex]?.url;
+            const localVarOperationServerBasePath = operationServerMap['OauthApi.oauth2ControllerAuthorize']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
@@ -465,38 +557,46 @@ export const Oauth2ApiFp = function(configuration?: Configuration) {
         async oauth2ControllerToken(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.oauth2ControllerToken(options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['Oauth2Api.oauth2ControllerToken']?.[localVarOperationServerIndex]?.url;
+            const localVarOperationServerBasePath = operationServerMap['OauthApi.oauth2ControllerToken']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
     }
 };
 
 /**
- * Oauth2Api - factory interface
+ * OauthApi - factory interface
  * @export
  */
-export const Oauth2ApiFactory = function (configuration?: Configuration, basePath?: string, axios?: AxiosInstance) {
-    const localVarFp = Oauth2ApiFp(configuration)
+export const OauthApiFactory = function (configuration?: Configuration, basePath?: string, axios?: AxiosInstance) {
+    const localVarFp = OauthApiFp(configuration)
     return {
+        /**
+         * 
+         * @summary 
+         * @param {string} clientId 
+         * @param {string} redirectUri 
+         * @param {string} responseType 
+         * @param {string} scope 
+         * @param {ConfirmScopeApproveEnum} approve 
+         * @param {string} [state] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        confirmScope(clientId: string, redirectUri: string, responseType: string, scope: string, approve: ConfirmScopeApproveEnum, state?: string, options?: RawAxiosRequestConfig): AxiosPromise<void> {
+            return localVarFp.confirmScope(clientId, redirectUri, responseType, scope, approve, state, options).then((request) => request(axios, basePath));
+        },
         /**
          * 
          * @param {string} clientId 
          * @param {string} redirectUri 
+         * @param {string} responseType 
          * @param {string} scope 
-         * @param {string} state 
+         * @param {string} [state] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        oauth2ControllerAuthorize(clientId: string, redirectUri: string, scope: string, state: string, options?: RawAxiosRequestConfig): AxiosPromise<void> {
-            return localVarFp.oauth2ControllerAuthorize(clientId, redirectUri, scope, state, options).then((request) => request(axios, basePath));
-        },
-        /**
-         * 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        oauth2ControllerConfirmAuthorization(options?: RawAxiosRequestConfig): AxiosPromise<void> {
-            return localVarFp.oauth2ControllerConfirmAuthorization(options).then((request) => request(axios, basePath));
+        oauth2ControllerAuthorize(clientId: string, redirectUri: string, responseType: string, scope: string, state?: string, options?: RawAxiosRequestConfig): AxiosPromise<void> {
+            return localVarFp.oauth2ControllerAuthorize(clientId, redirectUri, responseType, scope, state, options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -510,44 +610,170 @@ export const Oauth2ApiFactory = function (configuration?: Configuration, basePat
 };
 
 /**
- * Oauth2Api - object-oriented interface
+ * OauthApi - object-oriented interface
  * @export
- * @class Oauth2Api
+ * @class OauthApi
  * @extends {BaseAPI}
  */
-export class Oauth2Api extends BaseAPI {
+export class OauthApi extends BaseAPI {
+    /**
+     * 
+     * @summary 
+     * @param {string} clientId 
+     * @param {string} redirectUri 
+     * @param {string} responseType 
+     * @param {string} scope 
+     * @param {ConfirmScopeApproveEnum} approve 
+     * @param {string} [state] 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof OauthApi
+     */
+    public confirmScope(clientId: string, redirectUri: string, responseType: string, scope: string, approve: ConfirmScopeApproveEnum, state?: string, options?: RawAxiosRequestConfig) {
+        return OauthApiFp(this.configuration).confirmScope(clientId, redirectUri, responseType, scope, approve, state, options).then((request) => request(this.axios, this.basePath));
+    }
+
     /**
      * 
      * @param {string} clientId 
      * @param {string} redirectUri 
+     * @param {string} responseType 
      * @param {string} scope 
-     * @param {string} state 
+     * @param {string} [state] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
-     * @memberof Oauth2Api
+     * @memberof OauthApi
      */
-    public oauth2ControllerAuthorize(clientId: string, redirectUri: string, scope: string, state: string, options?: RawAxiosRequestConfig) {
-        return Oauth2ApiFp(this.configuration).oauth2ControllerAuthorize(clientId, redirectUri, scope, state, options).then((request) => request(this.axios, this.basePath));
+    public oauth2ControllerAuthorize(clientId: string, redirectUri: string, responseType: string, scope: string, state?: string, options?: RawAxiosRequestConfig) {
+        return OauthApiFp(this.configuration).oauth2ControllerAuthorize(clientId, redirectUri, responseType, scope, state, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
      * 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
-     * @memberof Oauth2Api
-     */
-    public oauth2ControllerConfirmAuthorization(options?: RawAxiosRequestConfig) {
-        return Oauth2ApiFp(this.configuration).oauth2ControllerConfirmAuthorization(options).then((request) => request(this.axios, this.basePath));
-    }
-
-    /**
-     * 
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof Oauth2Api
+     * @memberof OauthApi
      */
     public oauth2ControllerToken(options?: RawAxiosRequestConfig) {
-        return Oauth2ApiFp(this.configuration).oauth2ControllerToken(options).then((request) => request(this.axios, this.basePath));
+        return OauthApiFp(this.configuration).oauth2ControllerToken(options).then((request) => request(this.axios, this.basePath));
+    }
+}
+
+/**
+ * @export
+ */
+export const ConfirmScopeApproveEnum = {
+    Yes: 'yes',
+    No: 'no'
+} as const;
+export type ConfirmScopeApproveEnum = typeof ConfirmScopeApproveEnum[keyof typeof ConfirmScopeApproveEnum];
+
+
+/**
+ * RegistrationApi - axios parameter creator
+ * @export
+ */
+export const RegistrationApiAxiosParamCreator = function (configuration?: Configuration) {
+    return {
+        /**
+         * 
+         * @summary 
+         * @param {EmailPassSignUpDto} emailPassSignUpDto 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        register: async (emailPassSignUpDto: EmailPassSignUpDto, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'emailPassSignUpDto' is not null or undefined
+            assertParamExists('register', 'emailPassSignUpDto', emailPassSignUpDto)
+            const localVarPath = `/registration/register`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(emailPassSignUpDto, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+    }
+};
+
+/**
+ * RegistrationApi - functional programming interface
+ * @export
+ */
+export const RegistrationApiFp = function(configuration?: Configuration) {
+    const localVarAxiosParamCreator = RegistrationApiAxiosParamCreator(configuration)
+    return {
+        /**
+         * 
+         * @summary 
+         * @param {EmailPassSignUpDto} emailPassSignUpDto 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async register(emailPassSignUpDto: EmailPassSignUpDto, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<WrUserDto>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.register(emailPassSignUpDto, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['RegistrationApi.register']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+    }
+};
+
+/**
+ * RegistrationApi - factory interface
+ * @export
+ */
+export const RegistrationApiFactory = function (configuration?: Configuration, basePath?: string, axios?: AxiosInstance) {
+    const localVarFp = RegistrationApiFp(configuration)
+    return {
+        /**
+         * 
+         * @summary 
+         * @param {EmailPassSignUpDto} emailPassSignUpDto 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        register(emailPassSignUpDto: EmailPassSignUpDto, options?: RawAxiosRequestConfig): AxiosPromise<WrUserDto> {
+            return localVarFp.register(emailPassSignUpDto, options).then((request) => request(axios, basePath));
+        },
+    };
+};
+
+/**
+ * RegistrationApi - object-oriented interface
+ * @export
+ * @class RegistrationApi
+ * @extends {BaseAPI}
+ */
+export class RegistrationApi extends BaseAPI {
+    /**
+     * 
+     * @summary 
+     * @param {EmailPassSignUpDto} emailPassSignUpDto 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof RegistrationApi
+     */
+    public register(emailPassSignUpDto: EmailPassSignUpDto, options?: RawAxiosRequestConfig) {
+        return RegistrationApiFp(this.configuration).register(emailPassSignUpDto, options).then((request) => request(this.axios, this.basePath));
     }
 }
 

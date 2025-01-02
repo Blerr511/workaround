@@ -1,11 +1,31 @@
 import './consent.css';
 import { IPageProps } from '../../AppServer.props';
+import { OauthService } from '../../service/auth.service';
+import { useSearchParams } from 'react-router-dom';
 
 export interface ConsentPageProps {
   appName: string;
 }
 
 export const ConsentPage = (props: IPageProps<ConsentPageProps>) => {
+  const [searchParams] = useSearchParams();
+  console.log(searchParams);
+  const handleApply = (allow: boolean) => async () => {
+    const response = await OauthService.confirmScope(
+      searchParams.get('client_id')!,
+      encodeURIComponent(searchParams.get('redirect_uri')!),
+      searchParams.get('response_type')!,
+      searchParams.get('scope')!,
+      allow ? 'yes' : 'no',
+      searchParams.get('state')!,
+      { withCredentials: true }
+    ).then((res) => res.headers['location']);
+
+    if (response) {
+      window.location = response;
+    }
+  };
+
   return (
     <div className="consent-page">
       <div className="consent-header">
@@ -30,8 +50,12 @@ export const ConsentPage = (props: IPageProps<ConsentPageProps>) => {
         </p>
       </div>
       <div className="consent-footer">
-        <button className="consent-button approve">Allow</button>
-        <button className="consent-button deny">Deny</button>
+        <button className="consent-button approve" onClick={handleApply(true)}>
+          Allow
+        </button>
+        <button className="consent-button deny" onClick={handleApply(false)}>
+          Deny
+        </button>
       </div>
     </div>
   );

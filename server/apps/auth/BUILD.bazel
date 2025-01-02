@@ -131,6 +131,7 @@ js_run_binary(
         "POSTGRES_PASSWORD": "$(AUTH_POSTGRES_PASSWORD)",
         "POSTGRES_DATABASE": "$(AUTH_POSTGRES_DATABASE)",
         "POSTGRES_SCHEMA": "$(AUTH_POSTGRES_SCHEMA)",
+        "DATA_SOURCE_POSTGRES_URL": "",
     },
     out_dirs = ["migrations_data"],
     tags = ["requires-network"],
