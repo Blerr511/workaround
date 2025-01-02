@@ -144,7 +144,7 @@ import_env_vars(
         "AUTH_POSTGRES_DATABASE": "AUTH_POSTGRES_DATABASE",
         "AUTH_POSTGRES_SCHEMA": "AUTH_POSTGRES_SCHEMA",
         "AUTH_API_PROXY_HOST": "AUTH_API_PROXY_HOST",
-        "AUTH_WEB_PROXY_HOST": "AUTH_API_PROXY_HOST",
+        "AUTH_WEB_PROXY_HOST": "AUTH_WEB_PROXY_HOST",
     },
     visibility = ["//visibility:public"],
 )

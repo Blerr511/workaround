@@ -3,10 +3,8 @@ def substitution_file(name, file, outs = None, data = [], substitutions = {}, **
     shell_format = ""
     for key, value in substitutions.items():
         export_commands.append("export {}={}".format(key, value))
-        print(key)
-        shell_format = "{shell_format} {p}{s}{key}{e}".format(shell_format = shell_format, key = key,p = "$$",s = "{",e = "}")
-    print(shell_format)
-    
+        shell_format = "{shell_format} {p}{s}{key}{e}".format(shell_format = shell_format, key = key, p = "$$", s = "{", e = "}")
+
     cmd_string = """
         {exports}
         envsubst '{shell_format}' < $(location {file}) > $@
