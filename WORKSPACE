@@ -170,3 +170,7 @@ load("@io_bazel_rules_k8s//toolchains/kubectl:kubectl_configure.bzl", "kubectl_c
 # k8s_go_deps()
 
 kubectl_configure(name = "local_k8s_config")
+
+load("//.aspect:internal_envsubst_deps.bzl", "load_envsubst_deps")
+
+load_envsubst_deps()

@@ -5,23 +5,39 @@ def substitution_file(name, file, outs = None, data = [], substitutions = {}, **
         export_commands.append("export {}={}".format(key, value))
         shell_format = "{shell_format} {p}{s}{key}{e}".format(shell_format = shell_format, key = key, p = "$$", s = "{", e = "}")
 
-    cmd_string = """
-        {exports}
-        envsubst '{shell_format}' < $(location {file}) > $@
-    """.format(
-        exports = "\n".join(export_commands),
-        file = file,
-        shell_format = shell_format,
-    )
-
     if outs == None:
         outs = "generated_{}".format(file)
+
+    cmd = select({
+        "@platforms//os:osx": """
+            {exports}
+            $(location @envsubst_darwin_amd64//:envsubst_bin) '{shell_format}' < $(location {file}) > $@
+        """.format(
+            exports = "\n".join(export_commands),
+            file = file,
+            shell_format = shell_format,
+        ),
+        "@platforms//os:linux": """
+            {exports}
+            $(location @envsubst_linux_amd64//:envsubst_bin) '{shell_format}' < $(location {file}) > $@
+        """.format(
+            exports = "\n".join(export_commands),
+            file = file,
+            shell_format = shell_format,
+        ),
+    })
 
     native.genrule(
         name = name,
         srcs = [file] + data,
         outs = [outs],
-        cmd = cmd_string,
+        cmd = cmd,
+        tools = [
+            "@envsubst_darwin_amd64//:envsubst_bin",
+            "@envsubst_linux_amd64//:envsubst_bin",
+            "@envsubst_darwin_arm64//:envsubst_bin",
+            "@envsubst_linux_arm64//:envsubst_bin",
+        ],
         **kwargs
     )
 

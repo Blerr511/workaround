@@ -1,35 +1,18 @@
-# Workaround
+# Workaround Monorepo
 
-Requirements
+This repository is organized as a Bazel monorepo for full-stack development, with all builds, tests, and service runs performed via Bazel targets. Local infrastructure is managed via Bazel-wrapped Docker Compose.
 
-- [bazel](https://bazel.build/install)
-- [docker](https://docs.docker.com/engine/install/)
-- [jq](https://jqlang.github.io/jq/download/)
-- [pnpm@8.3.1](https://www.npmjs.com/package/pnpm/v/8.3.1)
+## Sections
 
-## bazel installation
+### 1. Local Development Environment
+- [sandbox/environment/Readme.md](sandbox/environment/Readme.md)
 
-Recommended way of installing bazel is to use [@bazel/bazelisk](https://www.npmjs.com/package/@bazel/bazelisk) npm package
-just install it globally `npm i -g @bazel/bazelisk` and run any bazel target in workspace, it will fetch and install required bazel version
+### 2. Auth Service (NestJS)
+- [server/apps/auth/Readme.md](server/apps/auth/Readme.md)
 
-## Starting development
+### 3. OAuth View Frontend (React)
+- [client/apps/oauth-view/Readme.md](client/apps/oauth-view/Readme.md)
 
-1. Run docker compose file for local development
+---
 
-```bash
-bazel run //sandbox/environment:dc -- up -d
-```
-
-2. Run apps locally in watch mode
-   use [watch.sh](./watch.sh) utility for running targets in watch mode
-
-- web-client - `./watch.sh client/apps/web-client`
-- game - `./watch.sh server/apps/game`
-- backend - `./watch.sh server/apps/backend`
-- auth - `./watch.sh server/apps/auth`
-- gateway - `./watch.sh server/apps/gateway`
-
-3. Run db migrations
-
-- game db - `bazel run //server/apps/game:migration.apply`
-- backend db - `bazel run //server/packages/data-source:migration.apply` // TODO - move migrations from data-source package to backend service
+Each section's README contains details on the purpose of the package, and how to run/build it using Bazel.

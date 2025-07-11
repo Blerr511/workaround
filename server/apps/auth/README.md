@@ -22,52 +22,36 @@
   <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
   [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
 
-## Description
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+## Run the Service (Development)
 
-## Installation
-
-```bash
-$ pnpm install
+```sh
+bazel run //server/apps/auth:start
 ```
 
-## Running the app
+## Build the Service
 
-```bash
-# development
-$ pnpm run start
-
-# watch mode
-$ pnpm run start:dev
-
-# production mode
-$ pnpm run start:prod
+```sh
+bazel build //server/apps/auth:ts
 ```
 
-## Test
+## Database Migrations
 
-```bash
-# unit tests
-$ pnpm run test
+- **Generate migration:**  
+  ```sh
+  bazel run //server/apps/auth:migration.create.file -- <MigrationName>
+  ```
+- **Apply migrations:**  
+  ```sh
+  bazel run //server/apps/auth:migration.apply
+  ```
+- **Rollback last migration:**  
+  ```sh
+  bazel run //server/apps/auth:migration.rollback
+  ```
 
-# e2e tests
-$ pnpm run test:e2e
+## Generate OpenAPI Schema
 
-# test coverage
-$ pnpm run test:cov
+```sh
+bazel run //server/apps/auth:schema
 ```
-
-## Support
-
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
-
-## Stay in touch
-
-- Author - [Kamil Myśliwiec](https://kamilmysliwiec.com)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
-
-## License
-
-Nest is [MIT licensed](LICENSE).
